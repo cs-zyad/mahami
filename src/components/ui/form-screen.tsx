@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: Palette.canvas },
   keyboard: { flex: 1 },
   content: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 14, paddingBottom: 30 },
-  topBar: { flexDirection: 'row', marginBottom: 24 },
-  headerCopy: { alignItems: 'flex-start', marginBottom: 30 },
+  topBar: { flexDirection: 'row-reverse', marginBottom: 24 },
+  headerCopy: { alignItems: 'flex-end', marginBottom: 30 },
   title: { color: Palette.ink, fontSize: 29, fontWeight: '900', writingDirection: 'rtl' },
   subtitle: { color: Palette.inkMuted, fontSize: 12, marginTop: 4, writingDirection: 'rtl' },
 });

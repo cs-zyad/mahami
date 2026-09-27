@@ -123,7 +123,7 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   form: { gap: 18 },
   submit: { marginTop: 6 },
-  footer: { flexDirection: 'row-reverse', justifyContent: 'center', gap: 6, marginTop: 24 },
+  footer: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 24 },
   footerText: { color: Palette.inkMuted, fontSize: 14, writingDirection: 'rtl' },
   link: { color: Palette.primary, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
   authError: { color: Palette.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },

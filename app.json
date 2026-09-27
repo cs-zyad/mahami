@@ -50,13 +50,7 @@
       "@react-native-community/datetimepicker",
       "expo-notifications",
       "expo-image",
-      "expo-web-browser",
-      [
-        "expo-localization",
-        {
-          "forcesRTL": true
-        }
-      ]
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

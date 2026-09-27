@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   statusRow: {
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     gap: 8,
     justifyContent: 'center',
   },

@@ -145,7 +145,7 @@ export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
 
 const styles = StyleSheet.create({
   wrapper: { gap: 9 },
-  fieldsRow: { flexDirection: 'row', gap: 10 },
+  fieldsRow: { flexDirection: 'row-reverse', gap: 10 },
   field: {
     flex: 1,
     minHeight: 82,
@@ -155,20 +155,20 @@ const styles = StyleSheet.create({
     backgroundColor: Palette.surface,
     paddingHorizontal: 11,
     paddingVertical: 10,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 9,
   },
   fieldOpen: { borderColor: Palette.primary, backgroundColor: '#FBF6F0' },
   iconBox: { width: 34, height: 34, borderRadius: 11, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  copy: { flex: 1, alignItems: 'flex-start', gap: 4 },
+  copy: { flex: 1, alignItems: 'flex-end', gap: 4 },
   label: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
   value: { maxWidth: '100%', color: Palette.ink, fontSize: 12, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   placeholder: { color: Palette.inkMuted, fontWeight: '700' },
   pickerPanel: { borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, overflow: 'hidden', paddingBottom: 8 },
   doneButton: { minHeight: 44, marginHorizontal: 12, borderRadius: Radius.small, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
   doneText: { color: Palette.primary, fontSize: 14, fontWeight: '900' },
-  clearButton: { minHeight: 34, alignSelf: 'flex-end', justifyContent: 'center', paddingHorizontal: 5 },
+  clearButton: { minHeight: 34, alignSelf: 'flex-start', justifyContent: 'center', paddingHorizontal: 5 },
   clearText: { color: Palette.danger, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
   pressed: { opacity: 0.75, transform: [{ scale: 0.99 }] },
 });

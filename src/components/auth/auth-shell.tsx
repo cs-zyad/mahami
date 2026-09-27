@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
   keyboard: { flex: 1 },
   content: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 18, paddingBottom: 32 },
   topBar: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 58,
   },
-  heading: { alignItems: 'flex-start', marginBottom: 30 },
+  heading: { alignItems: 'flex-end', marginBottom: 30 },
   title: {
     color: Palette.ink,
     fontSize: 34,

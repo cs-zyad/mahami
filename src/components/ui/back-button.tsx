@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     borderColor: Palette.line,
     backgroundColor: Palette.surface,
     paddingHorizontal: 12,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 7,

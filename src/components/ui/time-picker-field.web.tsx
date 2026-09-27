@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Palette.line,
     paddingHorizontal: 14,
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'center',
     gap: 4,
   },
