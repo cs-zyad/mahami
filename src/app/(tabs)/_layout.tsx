@@ -19,6 +19,8 @@ function TabIcon({ focused, color, icon, androidIcon, fallback }: IconProps) {
   );
 }
 
+export const unstable_settings = { initialRouteName: 'home' };
+
 export default function TabLayout() {
   return (
     <Tabs
@@ -31,24 +33,10 @@ export default function TabLayout() {
         tabBarItemStyle: styles.tabItem,
       }}>
       <Tabs.Screen
-        name="home"
+        name="profile"
         options={{
-          title: 'الرئيسية',
-          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="house.fill" androidIcon="home" fallback="⌂" />,
-        }}
-      />
-      <Tabs.Screen
-        name="tasks"
-        options={{
-          title: 'المهام',
-          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="checkmark.circle.fill" androidIcon="check_circle" fallback="✓" />,
-        }}
-      />
-      <Tabs.Screen
-        name="ai-tasks"
-        options={{
-          title: 'مهام AI',
-          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="sparkles" androidIcon="auto_awesome" fallback="✦" />,
+          title: 'حسابي',
+          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="person.fill" androidIcon="person" fallback="●" />,
         }}
       />
       <Tabs.Screen
@@ -59,10 +47,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="ai-tasks"
         options={{
-          title: 'حسابي',
-          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="person.fill" androidIcon="person" fallback="●" />,
+          title: 'مهام AI',
+          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="sparkles" androidIcon="auto_awesome" fallback="✦" />,
+        }}
+      />
+      <Tabs.Screen
+        name="tasks"
+        options={{
+          title: 'المهام',
+          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="checkmark.circle.fill" androidIcon="check_circle" fallback="✓" />,
+        }}
+      />
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: 'الرئيسية',
+          tabBarIcon: ({ focused, color }) => <TabIcon focused={focused} color={color} icon="house.fill" androidIcon="home" fallback="⌂" />,
         }}
       />
     </Tabs>
