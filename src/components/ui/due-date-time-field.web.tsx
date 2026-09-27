@@ -64,8 +64,8 @@ export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row-reverse', gap: 10 },
-  field: { flex: 1, minHeight: 76, borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, padding: 12, alignItems: 'flex-end', justifyContent: 'center', gap: 5 },
+  row: { flexDirection: 'row', gap: 10 },
+  field: { flex: 1, minHeight: 76, borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, padding: 12, alignItems: 'flex-start', justifyContent: 'center', gap: 5 },
   label: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
   input: { width: '100%', color: Palette.ink, fontSize: 13, fontWeight: '900', textAlign: 'right' },
 });

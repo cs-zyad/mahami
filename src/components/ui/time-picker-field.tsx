@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Palette.line,
     paddingHorizontal: 14,
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  copy: { flex: 1, alignItems: 'flex-end', gap: 4 },
+  copy: { flex: 1, alignItems: 'flex-start', gap: 4 },
   value: { color: Palette.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
   hint: { color: Palette.inkMuted, fontSize: 11, writingDirection: 'rtl' },
   pickerPanel: {
