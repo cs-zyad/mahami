@@ -1,18 +1,23 @@
 {
   "expo": {
-    "name": "APP-mhame",
-    "slug": "APP-mhame",
+    "name": "مهامي",
+    "slug": "mahami",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "appmhame",
+    "scheme": "mahami",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.zyad.mahami",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.zyad.mahami",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#6D4935",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -25,18 +30,38 @@
     },
     "plugins": [
       "expo-router",
+      "expo-apple-authentication",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "اسمح لمهامي باختيار صورة لتحويل محتواها إلى مهام.",
+          "cameraPermission": "اسمح لمهامي باستخدام الكاميرا لالتقاط صورة وتحويلها إلى مهام.",
+          "microphonePermission": false
+        }
+      ],
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "resizeMode": "contain",
+          "backgroundColor": "#F6F1E8"
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker",
+      "expo-notifications",
+      "expo-image",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "04841687-7436-424e-82e4-30163dee2574"
+      }
+    },
+    "owner": "cs-zyad"
   }
 }

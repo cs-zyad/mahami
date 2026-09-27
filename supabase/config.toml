@@ -1,0 +1,13 @@
+project_id = "mahami"
+
+[functions.analyze-task-image]
+verify_jwt = true
+
+[functions.analyze-task-voice]
+verify_jwt = true
+
+[functions.sync-revenuecat-subscription]
+verify_jwt = true
+
+[functions.revenuecat-webhook]
+verify_jwt = false
