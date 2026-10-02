@@ -158,7 +158,7 @@ export default function ProfileScreen() {
             title="مهامي بلس"
             subtitle={smartStatus?.allowanceType === 'monthly'
               ? `${smartStatus.remaining} من ${smartStatus.usageLimit} عملية ذكية متبقية`
-              : 'حوّل الصور إلى مهام · ١٠ ر.س شهريًا'}
+              : 'حوّل الصور والجداول إلى مهام جاهزة'}
             icon="sparkles"
             androidIcon="auto_awesome"
             onPress={() => router.push('/mahami-plus')}

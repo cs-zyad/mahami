@@ -40,6 +40,9 @@ export default function MahamiPlusScreen() {
   }, [purchasesConfigured, session?.user.id]);
 
   const active = status?.allowanceType === 'monthly';
+  // Only App Store may state the price. Until the product loads there is no
+  // price to show, and inventing one would advertise a sum nobody can be charged.
+  const price = packageToBuy?.product.priceString;
 
   const subscribe = async () => {
     const userId = session?.user.id;
@@ -87,10 +90,12 @@ export default function MahamiPlusScreen() {
           <AppIcon name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }} size={30} tintColor={Palette.primary} fallback="✦" />
         </View>
         <Text style={styles.plan}>مهامي بلس</Text>
-        <View style={styles.priceRow}>
-          <Text style={styles.period}>شهريًا</Text>
-          <Text style={styles.price}>{packageToBuy?.product.priceString || '١٠ ر.س'}</Text>
-        </View>
+        {!!price && (
+          <View style={styles.priceRow}>
+            <Text style={styles.period}>شهريًا</Text>
+            <Text style={styles.price}>{price}</Text>
+          </View>
+        )}
         <Text style={styles.cancel}>يتجدد تلقائيًا ويمكنك الإلغاء من إعدادات Apple.</Text>
       </View>
 
@@ -122,7 +127,7 @@ export default function MahamiPlusScreen() {
           )}
           {!!purchaseError && <Text style={styles.error}>{purchaseError}</Text>}
           <PrimaryButton
-            label={processing ? 'جاري التواصل مع App Store...' : `اشترك بـ ${packageToBuy?.product.priceString || '١٠ ر.س'} شهريًا`}
+            label={processing ? 'جاري التواصل مع App Store...' : price ? `اشترك بـ ${price} شهريًا` : 'اشترك في مهامي بلس'}
             disabled={!packageToBuy || processing}
             onPress={() => void subscribe()}
           />
@@ -131,7 +136,7 @@ export default function MahamiPlusScreen() {
       )}
 
       <Text style={styles.terms}>
-        اشتراك شهري يتجدد تلقائيًا بـ {packageToBuy?.product.priceString || '١٠ ر.س'} حتى تلغيه من إعدادات Apple قبل ٢٤ ساعة من نهاية الفترة. باستمرارك توافق على{' '}
+        اشتراك شهري يتجدد تلقائيًا{price ? ` بـ ${price}` : ''} حتى تلغيه من إعدادات Apple قبل ٢٤ ساعة من نهاية الفترة. باستمرارك توافق على{' '}
         <Text style={styles.termsLink} onPress={() => void WebBrowser.openBrowserAsync(TERMS_URL)}>شروط الاستخدام</Text>
         {' '}و{' '}
         <Text style={styles.termsLink} onPress={() => void WebBrowser.openBrowserAsync(PRIVACY_URL)}>سياسة الخصوصية</Text>.
