@@ -73,21 +73,19 @@ const webhook = withSupabase({ auth: 'none' }, async (req, ctx) => {
     ? (event.period_type === 'TRIAL' ? 'trialing' : canceledButActive ? 'canceled' : event.type === 'BILLING_ISSUE' ? 'past_due' : 'active')
     : 'inactive';
 
-  const { error: updateError } = await ctx.supabaseAdmin.from('smart_scan_accounts').upsert({
-    user_id: userId,
-    plan: active ? 'plus' : 'free',
-    subscription_status: status,
-    subscription_provider: 'revenuecat',
-    subscription_product_id: event.product_id ?? null,
-    subscription_customer_id: event.app_user_id ?? userId,
-    subscription_period_start: typeof event.purchased_at_ms === 'number'
+  const { error: updateError } = await ctx.supabaseAdmin.rpc('apply_revenuecat_subscription', {
+    p_user_id: userId,
+    p_is_active: active,
+    p_status: status,
+    p_product_id: event.product_id ?? null,
+    p_customer_id: event.app_user_id ?? userId,
+    p_period_start: typeof event.purchased_at_ms === 'number'
       ? new Date(event.purchased_at_ms).toISOString()
       : null,
-    subscription_period_end: active
+    p_period_end: active
       ? (expiration?.toISOString() ?? '2099-12-31T23:59:59.999Z')
       : null,
-    updated_at: new Date().toISOString(),
-  }, { onConflict: 'user_id' });
+  });
 
   if (updateError) {
     console.error('RevenueCat webhook update failed', updateError.code);

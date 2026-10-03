@@ -45,17 +45,15 @@ const syncSubscription = withSupabase({ auth: 'user' }, async (_req, ctx) => {
     ? (entitlement?.expires_date ?? '2099-12-31T23:59:59.999Z')
     : null;
 
-  const { error } = await ctx.supabaseAdmin.from('smart_scan_accounts').upsert({
-    user_id: userId,
-    plan: isActive ? 'plus' : 'free',
-    subscription_status: isActive ? 'active' : 'inactive',
-    subscription_provider: 'revenuecat',
-    subscription_product_id: entitlement?.product_identifier ?? null,
-    subscription_customer_id: userId,
-    subscription_period_start: isActive ? periodStart : null,
-    subscription_period_end: periodEnd,
-    updated_at: new Date().toISOString(),
-  }, { onConflict: 'user_id' });
+  const { error } = await ctx.supabaseAdmin.rpc('apply_revenuecat_subscription', {
+    p_user_id: userId,
+    p_is_active: isActive,
+    p_status: isActive ? 'active' : 'inactive',
+    p_product_id: entitlement?.product_identifier ?? null,
+    p_customer_id: userId,
+    p_period_start: isActive ? periodStart : null,
+    p_period_end: periodEnd,
+  });
 
   if (error) {
     console.error('Supabase subscription update failed', error.code);
