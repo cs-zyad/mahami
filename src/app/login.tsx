@@ -14,6 +14,9 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState<string>();
+  // Apple leads, but the email form must stay reachable: accounts created
+  // before this change can only sign in that way.
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const { signIn } = useAuth();
 
   const handleLogin = async () => {
@@ -37,7 +40,25 @@ export default function LoginScreen() {
 
   return (
     <AuthShell title="أهلًا بعودتك" subtitle="سجّل دخولك وكمل من المكان الذي توقفت عنده.">
+      <View style={styles.primaryAuth}>
+        <AppleSignInButton />
+      </View>
+
+      {!showEmailForm && (
+        <View style={styles.altRow}>
+          <Pressable onPress={() => setShowEmailForm(true)} hitSlop={10}>
+            <Text style={styles.altLink}>تسجيل الدخول بالبريد الإلكتروني</Text>
+          </Pressable>
+        </View>
+      )}
+
+      {showEmailForm && (
       <View style={styles.form}>
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>أو بالبريد الإلكتروني</Text>
+          <View style={styles.dividerLine} />
+        </View>
         <TextField
           label="البريد الإلكتروني"
           placeholder="name@example.com"
@@ -68,16 +89,7 @@ export default function LoginScreen() {
           disabled={loading}
         />
       </View>
-
-      <View style={styles.quickLogin}>
-        <View style={styles.dividerRow}>
-          <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>أو دخول سريع</Text>
-          <View style={styles.dividerLine} />
-        </View>
-
-        <AppleSignInButton />
-      </View>
+      )}
 
       <View style={styles.footer}>
         <Pressable onPress={() => router.replace('/signup')} hitSlop={10}>
@@ -91,8 +103,10 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   form: { gap: 18 },
-  quickLogin: { gap: 12, marginTop: 28 },
-  dividerRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 2 },
+  primaryAuth: { gap: 12 },
+  altRow: { alignItems: 'center', marginTop: 20 },
+  altLink: { color: Palette.primary, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
+  dividerRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 12, marginBottom: 2 },
   dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: Palette.line },
   dividerText: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
   forgot: { color: Palette.primary, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },

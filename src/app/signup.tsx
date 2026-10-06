@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { AppleSignInButton } from '@/components/auth/apple-sign-in-button';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
@@ -18,6 +19,10 @@ export default function SignUpScreen() {
   const [confirmationEmail, setConfirmationEmail] = useState<string>();
   const [resending, setResending] = useState(false);
   const [resendStatus, setResendStatus] = useState<string>();
+  // Apple is the default path: it needs no email delivery, so it is unaffected
+  // by the sending limits that block the email form. The form stays reachable
+  // for anyone who prefers it.
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const { resendConfirmation, signUp } = useAuth();
   const emailValid = email.includes('@');
   const passwordValid = password.length >= 8;
@@ -59,7 +64,7 @@ export default function SignUpScreen() {
         <View style={styles.confirmationCard}>
           <Text style={styles.confirmationIcon}>✉</Text>
           <Text style={styles.confirmationTitle}>تفقد بريدك الإلكتروني</Text>
-          <Text style={styles.confirmationText}>أرسلنا رابط التأكيد إلى {confirmationEmail}. افتح الرابط من نفس الجوال الذي عليه Expo Go.</Text>
+          <Text style={styles.confirmationText}>أرسلنا رابط التأكيد إلى {confirmationEmail}. افتح الرابط من نفس الجوال الذي ثبّت عليه التطبيق.</Text>
           {!!resendStatus && <Text style={styles.resendStatus}>{resendStatus}</Text>}
           <PrimaryButton
             label={resending ? 'جاري الإرسال...' : 'إرسال رابط جديد'}
@@ -74,7 +79,25 @@ export default function SignUpScreen() {
 
   return (
     <AuthShell title="ابدأ مساحتك" subtitle="ثلاث خطوات بسيطة، وبعدها يكون يومك أمامك بوضوح.">
+      <View style={styles.primaryAuth}>
+        <AppleSignInButton intent="sign-up" />
+      </View>
+
+      {!showEmailForm && (
+        <View style={styles.altRow}>
+          <Pressable onPress={() => setShowEmailForm(true)} hitSlop={10}>
+            <Text style={styles.altLink}>إنشاء حساب بالبريد الإلكتروني</Text>
+          </Pressable>
+        </View>
+      )}
+
+      {showEmailForm && (
       <View style={styles.form}>
+        <View style={styles.dividerRow}>
+          <View style={styles.dividerLine} />
+          <Text style={styles.dividerText}>أو بالبريد الإلكتروني</Text>
+          <View style={styles.dividerLine} />
+        </View>
         <TextField
           label="الاسم"
           placeholder="كيف نناديك؟"
@@ -110,6 +133,8 @@ export default function SignUpScreen() {
           style={styles.submit}
         />
       </View>
+      )}
+
       <View style={styles.footer}>
         <Pressable onPress={() => router.replace('/login')} hitSlop={10}>
           <Text style={styles.link}>تسجيل الدخول</Text>
@@ -123,6 +148,12 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   form: { gap: 18 },
   submit: { marginTop: 6 },
+  primaryAuth: { gap: 12 },
+  altRow: { alignItems: 'center', marginTop: 20 },
+  altLink: { color: Palette.primary, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
+  dividerRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 12, marginTop: 14 },
+  dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: Palette.line },
+  dividerText: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
   footer: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 24 },
   footerText: { color: Palette.inkMuted, fontSize: 14, writingDirection: 'rtl' },
   link: { color: Palette.primary, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
