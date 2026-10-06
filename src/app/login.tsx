@@ -91,12 +91,6 @@ export default function LoginScreen() {
       </View>
       )}
 
-      <View style={styles.footer}>
-        <Pressable onPress={() => router.replace('/signup')} hitSlop={10}>
-          <Text style={styles.link}>إنشاء حساب</Text>
-        </Pressable>
-        <Text style={styles.footerText}>جديد في مهامي؟</Text>
-      </View>
     </AuthShell>
   );
 }
@@ -111,8 +105,5 @@ const styles = StyleSheet.create({
   dividerText: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
   forgot: { color: Palette.primary, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
   confirmationLink: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', textAlign: 'right', writingDirection: 'rtl' },
-  footer: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 24 },
-  footerText: { color: Palette.inkMuted, fontSize: 14, writingDirection: 'rtl' },
-  link: { color: Palette.primary, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
   authError: { color: Palette.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
 });
