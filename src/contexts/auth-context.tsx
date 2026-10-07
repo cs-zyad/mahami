@@ -31,7 +31,7 @@ type AuthContextValue = {
   updatePassword: (password: string) => Promise<AuthResult>;
   updateProfileName: (name: string) => Promise<AuthResult>;
   deleteAccount: () => Promise<AuthResult>;
-  completeOnboarding: () => Promise<AuthResult>;
+  completeOnboarding: (name?: string) => Promise<AuthResult>;
   signOut: () => Promise<AuthResult>;
 };
 
@@ -286,12 +286,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession((current) => current && data.user ? { ...current, user: data.user } : current);
       return {};
     },
-    completeOnboarding: async () => {
+    completeOnboarding: async (name?: string) => {
       if (!supabase) return { error: missingConfigurationError };
 
-      const { error } = await supabase.auth.updateUser({
-        data: { onboarding_completed: true },
-      });
+      // Apple only sends the name on the very first sign-in, and not at all
+      // when the account hides it, so onboarding asks for it and saves it here.
+      const trimmed = name?.trim();
+      const data: Record<string, unknown> = { onboarding_completed: true };
+      if (trimmed) {
+        data.full_name = trimmed;
+        data.given_name = trimmed.split(' ')[0];
+      }
+
+      const { error } = await supabase.auth.updateUser({ data });
 
       return error ? { error: translateAuthError(error.message, error.code) } : {};
     },

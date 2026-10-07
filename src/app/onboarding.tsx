@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { BackButton } from '@/components/ui/back-button';
 import { PrimaryButton } from '@/components/ui/primary-button';
+import { TextField } from '@/components/ui/text-field';
 import { Palette, Radius, Shadow } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 
@@ -43,13 +44,21 @@ function SetupOption({ title, description, selected, onPress, icon, androidIcon 
 }
 
 export default function OnboardingScreen() {
+  const { completeOnboarding, session } = useAuth();
+  // Prefilled when Apple shared a name on first sign-in; empty when the
+  // account hid it, which is the case this screen exists to cover.
+  const [name, setName] = useState(String(session?.user.user_metadata.full_name ?? ''));
+  const [submitted, setSubmitted] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [saving, setSaving] = useState(false);
   const [setupError, setSetupError] = useState<string>();
-  const { completeOnboarding } = useAuth();
+  const nameValid = name.trim().length > 0;
 
   const handleContinue = async () => {
+    setSubmitted(true);
     setSetupError(undefined);
+    if (!nameValid) return;
+
     setSaving(true);
 
     // Asked only now, exactly as the note under the button promises.
@@ -57,7 +66,7 @@ export default function OnboardingScreen() {
       await Notifications.requestPermissionsAsync().catch(() => undefined);
     }
 
-    const result = await completeOnboarding();
+    const result = await completeOnboarding(name);
     setSaving(false);
 
     if (result.error) {
@@ -78,7 +87,18 @@ export default function OnboardingScreen() {
 
         <View style={styles.heading}>
           <Text style={styles.title}>خلّ مهامي يعمل{`\n`}بالطريقة المناسبة لك</Text>
-          <Text style={styles.subtitle}>اختر ما يناسبك الآن. تقدر تغيّر هذه الخيارات من الإعدادات في أي وقت.</Text>
+          <Text style={styles.subtitle}>عرّفنا باسمك واختر ما يناسبك. تقدر تغيّر هذه الخيارات من الإعدادات في أي وقت.</Text>
+        </View>
+
+        <View style={styles.nameField}>
+          <TextField
+            label="الاسم"
+            placeholder="كيف نناديك؟"
+            value={name}
+            onChangeText={setName}
+            autoComplete="name"
+            error={submitted && !nameValid ? 'اكتب اسمك للمتابعة' : undefined}
+          />
         </View>
 
         <View style={styles.options}>
@@ -122,7 +142,8 @@ const styles = StyleSheet.create({
   heading: { alignItems: 'flex-end', marginTop: 52 },
   title: { color: Palette.ink, fontSize: 35, lineHeight: 47, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   subtitle: { color: Palette.inkMuted, fontSize: 15, lineHeight: 25, textAlign: 'right', writingDirection: 'rtl', marginTop: 10, maxWidth: 350 },
-  options: { gap: 14, marginTop: 34 },
+  nameField: { marginTop: 28 },
+  options: { gap: 14, marginTop: 22 },
   option: {
     minHeight: 105, backgroundColor: Palette.surface, borderRadius: Radius.large,
     borderWidth: 1, borderColor: 'transparent', padding: 18,
