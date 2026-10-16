@@ -62,6 +62,12 @@
         "projectId": "04841687-7436-424e-82e4-30163dee2574"
       }
     },
-    "owner": "cs-zyad"
+    "owner": "cs-zyad",
+    "updates": {
+      "url": "https://u.expo.dev/04841687-7436-424e-82e4-30163dee2574"
+    },
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    }
   }
 }

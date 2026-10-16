@@ -6,6 +6,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { BrandMark } from '@/components/ui/brand-mark';
 import { AuthProvider, useAuth } from '@/contexts/auth-context';
 import { Palette } from '@/constants/design';
+import { useOverTheAirUpdates } from '@/hooks/use-over-the-air-updates';
 import { RoutinesProvider } from '@/contexts/routines-context';
 import { TasksProvider } from '@/contexts/tasks-context';
 
@@ -74,6 +75,8 @@ function AppNavigator() {
 }
 
 export default function RootLayout() {
+  useOverTheAirUpdates();
+
   return (
     <AuthProvider>
       <TasksProvider>
