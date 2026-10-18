@@ -2,7 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Palette, ThemeName, defaultTheme, shadowFor, themes } from '@/constants/design';
+import {
+  Palette,
+  ThemeName,
+  defaultTheme,
+  shadowFor,
+  themeOrnament,
+  themes,
+} from '@/constants/design';
 
 const STORAGE_KEY = 'mahami.theme';
 
@@ -10,6 +17,8 @@ type ThemeContextValue = {
   theme: ThemeName;
   palette: Palette;
   shadow: ReturnType<typeof shadowFor>;
+  /** Whether this theme draws the sadu banding. */
+  ornament: boolean;
   setTheme: (name: ThemeName) => void;
   /** False until the saved choice has been read, so nothing flashes the wrong theme. */
   ready: boolean;
@@ -51,6 +60,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       theme,
       palette: themes[theme],
       shadow: shadowFor(themes[theme]),
+      ornament: themeOrnament[theme],
       setTheme,
       ready,
     }),

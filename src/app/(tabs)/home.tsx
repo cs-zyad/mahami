@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SaduBand } from '@/components/ui/sadu-band';
 import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -142,6 +143,7 @@ export default function HomeScreen() {
           accessibilityLabel="فتح مهام اليوم"
           onPress={() => router.push({ pathname: '/tasks', params: { view: 'today' } })}
           style={({ pressed }) => [styles.dayCard, pressed && styles.dayCardPressed]}>
+          <SaduBand compact />
           <View style={styles.dayCardTop}>
             <View style={styles.remainingPill}><Text style={styles.remainingPillText}>{remaining} متبقية</Text></View>
             <View style={styles.dayCopy}>

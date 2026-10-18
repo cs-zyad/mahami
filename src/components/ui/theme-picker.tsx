@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from 'react-native';
 
-import { Radius, themeLabels, themeOrder, themes } from '@/constants/design';
+import { Radius, themeDescriptions, themeLabels, themeOrder, themes } from '@/constants/design';
 import { makeStyles, useTheme } from '@/contexts/theme-context';
 
 // Each card previews the theme it selects, drawn in that theme's own colours
@@ -35,7 +35,12 @@ export function ThemePicker() {
             </View>
 
             <View style={styles.labelRow}>
-              <Text style={[styles.label, { color: preview.ink }]}>{themeLabels[name]}</Text>
+              <View style={styles.labelCopy}>
+                <Text style={[styles.label, { color: preview.ink }]}>{themeLabels[name]}</Text>
+                <Text style={[styles.description, { color: preview.inkMuted }]}>
+                  {themeDescriptions[name]}
+                </Text>
+              </View>
               {selected && (
                 <View style={[styles.check, { backgroundColor: preview.primary }]}>
                   <Text style={[styles.checkMark, { color: preview.white }]}>✓</Text>
@@ -50,9 +55,8 @@ export function ThemePicker() {
 }
 
 const useStyles = makeStyles((P, S) => ({
-  row: { flexDirection: 'row', gap: 12 },
+  row: { gap: 11 },
   card: {
-    flex: 1,
     borderRadius: Radius.medium,
     borderWidth: 1.5,
     padding: 12,
@@ -71,7 +75,9 @@ const useStyles = makeStyles((P, S) => ({
   },
   swatch: { width: 20, height: 20, borderRadius: Radius.pill },
   bar: { flex: 1, height: 6, borderRadius: Radius.pill, opacity: 0.55 },
-  labelRow: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between' },
+  labelRow: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', gap: 10 },
+  labelCopy: { flex: 1, alignItems: 'flex-start', gap: 3 },
+  description: { fontSize: 11, lineHeight: 17, writingDirection: 'rtl', textAlign: 'right' },
   label: { fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
   check: { width: 21, height: 21, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
   checkMark: { fontSize: 12, fontWeight: '900' },

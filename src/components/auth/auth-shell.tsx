@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View,  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SaduBand } from '@/components/ui/sadu-band';
 import { makeStyles } from '@/contexts/theme-context';
 import { BackButton } from '@/components/ui/back-button';
 import { BrandMark } from '@/components/ui/brand-mark';
@@ -31,6 +32,7 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>{subtitle}</Text>
           </View>
+          <View style={styles.headingBand}><SaduBand /></View>
           {children}
         </ScrollView>
       </KeyboardAvoidingView>
@@ -48,7 +50,8 @@ const useStyles = makeStyles((P) => ({
     justifyContent: 'space-between',
     marginBottom: 58,
   },
-  heading: { alignItems: 'flex-end', marginBottom: 30 },
+  heading: { alignItems: 'flex-end', marginBottom: 14 },
+  headingBand: { marginBottom: 24 },
   title: {
     color: P.ink,
     fontSize: 34,
