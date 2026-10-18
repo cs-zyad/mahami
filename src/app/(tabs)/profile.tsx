@@ -6,6 +6,7 @@ import { Alert, AppState, Linking, Pressable, ScrollView, StyleSheet, Switch, Te
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { makeStyles, useTheme } from '@/contexts/theme-context';
+import { ThemePicker } from '@/components/ui/theme-picker';
 import { AppIcon } from '@/components/ui/app-icon';
 import { Radius } from '@/constants/design';
 import { PRIVACY_URL, SUPPORT_URL } from '@/constants/links';
@@ -169,6 +170,9 @@ export default function ProfileScreen() {
             onPress={() => router.push('/mahami-plus')}
           />
         </View>
+
+        <Text style={styles.sectionLabel}>المظهر</Text>
+        <ThemePicker />
 
         <Text style={styles.sectionLabel}>التفضيلات</Text>
         <View style={styles.settingsCard}>
