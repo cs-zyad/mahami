@@ -40,14 +40,15 @@
   "devDependencies": {
     "@expo/ngrok": "^4.1.0",
     "@types/react": "~19.2.4",
+    "cross-env": "^10.1.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.2",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "start": "expo start",
-    "dev": "expo start --dev-client",
-    "dev:tunnel": "expo start --dev-client --tunnel",
+    "dev": "cross-env APP_VARIANT=development expo start --dev-client",
+    "dev:tunnel": "cross-env APP_VARIANT=development expo start --dev-client --tunnel",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
