@@ -3,11 +3,12 @@ import { router, useSegments } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { DueDateTimeField } from '@/components/ui/due-date-time-field';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useTasks } from '@/contexts/tasks-context';
 import { defaultTaskCategories } from '@/lib/task-categories';
 import { analyzeTaskImage, getSmartScanStatus, SmartCaptureError, smartCaptureErrorMessage } from '@/lib/smart-capture';
@@ -41,6 +42,8 @@ function quotaCopy(status: SmartScanStatus | null) {
 }
 
 export default function SmartCaptureScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const segments = useSegments();
   const isTabScreen = segments[0] === '(tabs)';
   const { addTask, tasks } = useTasks();
@@ -214,7 +217,7 @@ export default function SmartCaptureScreen() {
       showBack={!isTabScreen}>
       <View style={styles.quotaCard}>
         <View style={styles.quotaIcon}>
-          <AppIcon name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }} size={19} tintColor={Palette.primary} fallback="✦" />
+          <AppIcon name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }} size={19} tintColor={palette.primary} fallback="✦" />
         </View>
         <View style={styles.quotaCopy}>
           <Text style={styles.quotaTitle}>{status?.allowanceType === 'monthly' ? 'مهامي بلس' : 'التجربة المجانية'}</Text>
@@ -253,14 +256,14 @@ export default function SmartCaptureScreen() {
                 value={draft.title}
                 onChangeText={(title) => updateDraft(draft.id, { title })}
                 placeholder="عنوان المهمة"
-                placeholderTextColor={Palette.inkMuted}
+                placeholderTextColor={palette.inkMuted}
                 style={styles.titleInput}
               />
               <TextInput
                 value={draft.description}
                 onChangeText={(description) => updateDraft(draft.id, { description })}
                 placeholder="تفاصيل إضافية — اختياري"
-                placeholderTextColor={Palette.inkMuted}
+                placeholderTextColor={palette.inkMuted}
                 multiline
                 style={styles.descriptionInput}
               />
@@ -342,7 +345,7 @@ export default function SmartCaptureScreen() {
               <AppIcon
                 name={{ ios: 'mic.fill', android: 'mic', web: 'mic' }}
                 size={27}
-                tintColor={Palette.white}
+                tintColor={palette.white}
                 fallback="●"
               />
             </View>
@@ -363,7 +366,7 @@ export default function SmartCaptureScreen() {
 
           <View style={styles.heroCard}>
             <View style={styles.heroSymbol}>
-              <AppIcon name={{ ios: 'text.viewfinder', android: 'document_scanner', web: 'document_scanner' }} size={38} tintColor={Palette.primary} fallback="▣" />
+              <AppIcon name={{ ios: 'text.viewfinder', android: 'document_scanner', web: 'document_scanner' }} size={38} tintColor={palette.primary} fallback="▣" />
             </View>
             <Text style={styles.heroTitle}>صوّرها، ومهامي يرتبها</Text>
             <Text style={styles.heroText}>جدول، رسالة، ملاحظات أو ورقة مكتوبة. ستراجع النتيجة دائمًا قبل أن تُحفظ.</Text>
@@ -371,7 +374,7 @@ export default function SmartCaptureScreen() {
           <PrimaryButton label="اختيار صورة من الجوال" onPress={() => void pickImage()} />
           <PrimaryButton label="التقاط صورة بالكاميرا" variant="secondary" onPress={() => void takePhoto()} />
           <View style={styles.privacyRow}>
-            <AppIcon name={{ ios: 'lock.fill', android: 'lock', web: 'lock' }} size={14} tintColor={Palette.success} fallback="●" />
+            <AppIcon name={{ ios: 'lock.fill', android: 'lock', web: 'lock' }} size={14} tintColor={palette.success} fallback="●" />
             <Text style={styles.privacyText}>لا نحتفظ بالصورة في حسابك أو قاعدة بيانات مهامي.</Text>
           </View>
         </View>
@@ -387,7 +390,7 @@ export default function SmartCaptureScreen() {
           ) : (
             <PrimaryButton label={analyzing ? 'جاري قراءة الصورة...' : 'تحويل الصورة إلى مهام'} disabled={analyzing || loadingStatus} onPress={() => void analyze()} />
           )}
-          {analyzing && <ActivityIndicator color={Palette.primary} style={styles.loader} />}
+          {analyzing && <ActivityIndicator color={palette.primary} style={styles.loader} />}
         </View>
       ) : null}
 
@@ -396,65 +399,65 @@ export default function SmartCaptureScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  voiceCard: { minHeight: 154, borderRadius: Radius.large, backgroundColor: Palette.primary, padding: 17, flexDirection: 'row-reverse', flexWrap: 'wrap', alignItems: 'center', gap: 13, ...Shadow.card },
+const useStyles = makeStyles((P, S) => ({
+  voiceCard: { minHeight: 154, borderRadius: Radius.large, backgroundColor: P.primary, padding: 17, flexDirection: 'row-reverse', flexWrap: 'wrap', alignItems: 'center', gap: 13, ...S.card },
   voiceCardSoon: { opacity: 0.75 },
-  voiceIcon: { width: 54, height: 54, borderRadius: 19, backgroundColor: Palette.accent, alignItems: 'center', justifyContent: 'center' },
+  voiceIcon: { width: 54, height: 54, borderRadius: 19, backgroundColor: P.accent, alignItems: 'center', justifyContent: 'center' },
   voiceCopy: { flex: 1, minWidth: 180, alignItems: 'flex-end' },
-  voiceTitle: { color: Palette.white, fontSize: 17, fontWeight: '900', writingDirection: 'rtl' },
+  voiceTitle: { color: P.white, fontSize: 17, fontWeight: '900', writingDirection: 'rtl' },
   voiceText: { color: '#EEDFD3', fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl', marginTop: 5 },
   voiceSoonBadge: { width: '100%', minHeight: 42, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.14)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
-  voiceSoonText: { color: Palette.white, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
+  voiceSoonText: { color: P.white, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
   methodDivider: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 4 },
-  dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: Palette.line },
-  dividerText: { color: Palette.inkMuted, fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
-  quotaCard: { minHeight: 76, borderRadius: Radius.medium, backgroundColor: Palette.surface, borderWidth: 1, borderColor: Palette.line, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 11, ...Shadow.card },
-  quotaIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: P.line },
+  dividerText: { color: P.inkMuted, fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
+  quotaCard: { minHeight: 76, borderRadius: Radius.medium, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 11, ...S.card },
+  quotaIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   quotaCopy: { flex: 1, alignItems: 'flex-end' },
-  quotaTitle: { color: Palette.ink, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
-  quotaText: { color: Palette.inkMuted, fontSize: 10, marginTop: 4, writingDirection: 'rtl' },
-  upgradePill: { backgroundColor: Palette.primary, borderRadius: Radius.pill, paddingHorizontal: 13, paddingVertical: 8 },
-  upgradePillText: { color: Palette.white, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
+  quotaTitle: { color: P.ink, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
+  quotaText: { color: P.inkMuted, fontSize: 10, marginTop: 4, writingDirection: 'rtl' },
+  upgradePill: { backgroundColor: P.primary, borderRadius: Radius.pill, paddingHorizontal: 13, paddingVertical: 8 },
+  upgradePillText: { color: P.white, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
   startWrap: { gap: 12, marginTop: 18 },
-  heroCard: { minHeight: 190, borderRadius: Radius.large, backgroundColor: '#EFE3D5', padding: 22, alignItems: 'center', justifyContent: 'center', ...Shadow.card },
-  heroSymbol: { width: 68, height: 68, borderRadius: 23, backgroundColor: Palette.surface, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  heroTitle: { color: Palette.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
-  heroText: { color: Palette.inkMuted, fontSize: 12, lineHeight: 21, textAlign: 'center', writingDirection: 'rtl', marginTop: 9, maxWidth: 280 },
+  heroCard: { minHeight: 190, borderRadius: Radius.large, backgroundColor: '#EFE3D5', padding: 22, alignItems: 'center', justifyContent: 'center', ...S.card },
+  heroSymbol: { width: 68, height: 68, borderRadius: 23, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
+  heroTitle: { color: P.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
+  heroText: { color: P.inkMuted, fontSize: 12, lineHeight: 21, textAlign: 'center', writingDirection: 'rtl', marginTop: 9, maxWidth: 280 },
   privacyRow: { minHeight: 42, flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'center', gap: 7 },
-  privacyText: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
+  privacyText: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
   previewWrap: { gap: 13, marginTop: 18 },
-  preview: { width: '100%', height: 310, borderRadius: Radius.large, backgroundColor: Palette.surfaceMuted },
+  preview: { width: '100%', height: 310, borderRadius: Radius.large, backgroundColor: P.surfaceMuted },
   changeImage: { alignSelf: 'center', paddingHorizontal: 12, paddingVertical: 7 },
-  changeImageText: { color: Palette.primary, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
+  changeImageText: { color: P.primary, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
   loader: { marginTop: 2 },
   reviewWrap: { gap: 13, marginTop: 18 },
   reviewHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  reviewCount: { color: Palette.primary, fontSize: 11, fontWeight: '900', backgroundColor: Palette.accentSoft, borderRadius: Radius.pill, paddingHorizontal: 11, paddingVertical: 7, writingDirection: 'rtl' },
+  reviewCount: { color: P.primary, fontSize: 11, fontWeight: '900', backgroundColor: P.accentSoft, borderRadius: Radius.pill, paddingHorizontal: 11, paddingVertical: 7, writingDirection: 'rtl' },
   reviewCopy: { alignItems: 'flex-end' },
-  reviewTitle: { color: Palette.ink, fontSize: 18, fontWeight: '900', writingDirection: 'rtl' },
-  reviewText: { color: Palette.inkMuted, fontSize: 10, marginTop: 3, writingDirection: 'rtl' },
-  draftCard: { borderRadius: Radius.large, backgroundColor: Palette.surface, borderWidth: 1, borderColor: Palette.line, padding: 15, gap: 10, ...Shadow.card },
+  reviewTitle: { color: P.ink, fontSize: 18, fontWeight: '900', writingDirection: 'rtl' },
+  reviewText: { color: P.inkMuted, fontSize: 10, marginTop: 3, writingDirection: 'rtl' },
+  draftCard: { borderRadius: Radius.large, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line, padding: 15, gap: 10, ...S.card },
   draftCardOff: { opacity: 0.52 },
   draftTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  draftNumber: { color: Palette.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
-  checkbox: { width: 28, height: 28, borderRadius: 9, borderWidth: 1.5, borderColor: Palette.line, alignItems: 'center', justifyContent: 'center' },
-  checkboxSelected: { backgroundColor: Palette.success, borderColor: Palette.success },
-  check: { color: Palette.white, fontWeight: '900' },
-  titleInput: { minHeight: 52, borderRadius: Radius.small, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.canvas, paddingHorizontal: 13, color: Palette.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  descriptionInput: { minHeight: 68, borderRadius: Radius.small, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.canvas, padding: 13, color: Palette.ink, fontSize: 12, textAlign: 'right', textAlignVertical: 'top', writingDirection: 'rtl' },
-  fieldLabel: { color: Palette.ink, fontSize: 11, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginTop: 2 },
+  draftNumber: { color: P.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
+  checkbox: { width: 28, height: 28, borderRadius: 9, borderWidth: 1.5, borderColor: P.line, alignItems: 'center', justifyContent: 'center' },
+  checkboxSelected: { backgroundColor: P.success, borderColor: P.success },
+  check: { color: P.white, fontWeight: '900' },
+  titleInput: { minHeight: 52, borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.canvas, paddingHorizontal: 13, color: P.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  descriptionInput: { minHeight: 68, borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.canvas, padding: 13, color: P.ink, fontSize: 12, textAlign: 'right', textAlignVertical: 'top', writingDirection: 'rtl' },
+  fieldLabel: { color: P.ink, fontSize: 11, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginTop: 2 },
   priorityRow: { flexDirection: 'row-reverse', gap: 6 },
   priority: { flex: 1, minHeight: 42, borderRadius: 12, borderWidth: 1, borderColor: 'transparent', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
   priorityText: { fontSize: 9, fontWeight: '900', writingDirection: 'rtl' },
   reminderOptions: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 7 },
-  reminderOption: { minHeight: 36, borderRadius: Radius.pill, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.canvas, paddingHorizontal: 11, alignItems: 'center', justifyContent: 'center' },
-  reminderOptionSelected: { borderColor: Palette.primary, backgroundColor: Palette.accentSoft },
-  reminderOptionText: { color: Palette.inkMuted, fontSize: 9, fontWeight: '800', writingDirection: 'rtl' },
-  reminderOptionTextSelected: { color: Palette.primary },
+  reminderOption: { minHeight: 36, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.canvas, paddingHorizontal: 11, alignItems: 'center', justifyContent: 'center' },
+  reminderOptionSelected: { borderColor: P.primary, backgroundColor: P.accentSoft },
+  reminderOptionText: { color: P.inkMuted, fontSize: 9, fontWeight: '800', writingDirection: 'rtl' },
+  reminderOptionTextSelected: { color: P.primary },
   categoryRow: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 8 },
-  categoryChip: { minHeight: 38, justifyContent: 'center', borderRadius: Radius.small, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.canvas, paddingHorizontal: 14 },
-  categoryChipSelected: { borderColor: Palette.primary, borderWidth: 2, backgroundColor: Palette.accentSoft },
-  categoryChipText: { color: Palette.inkMuted, fontSize: 13, fontWeight: '800', writingDirection: 'rtl' },
-  categoryChipTextSelected: { color: Palette.primary },
-  error: { color: Palette.danger, fontSize: 12, lineHeight: 19, textAlign: 'right', writingDirection: 'rtl', backgroundColor: '#F8E9E5', borderRadius: Radius.small, padding: 12 },
-});
+  categoryChip: { minHeight: 38, justifyContent: 'center', borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.canvas, paddingHorizontal: 14 },
+  categoryChipSelected: { borderColor: P.primary, borderWidth: 2, backgroundColor: P.accentSoft },
+  categoryChipText: { color: P.inkMuted, fontSize: 13, fontWeight: '800', writingDirection: 'rtl' },
+  categoryChipTextSelected: { color: P.primary },
+  error: { color: P.danger, fontSize: 12, lineHeight: 19, textAlign: 'right', writingDirection: 'rtl', backgroundColor: '#F8E9E5', borderRadius: Radius.small, padding: 12 },
+}));

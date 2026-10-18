@@ -1,17 +1,10 @@
 import { ReactNode } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View,  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { BackButton } from '@/components/ui/back-button';
 import { BrandMark } from '@/components/ui/brand-mark';
-import { Palette } from '@/constants/design';
 
 type AuthShellProps = {
   title: string;
@@ -20,6 +13,7 @@ type AuthShellProps = {
 };
 
 export function AuthShell({ title, subtitle, children }: AuthShellProps) {
+  const styles = useStyles();
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -44,8 +38,8 @@ export function AuthShell({ title, subtitle, children }: AuthShellProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P) => ({
+  safeArea: { flex: 1, backgroundColor: P.canvas },
   keyboard: { flex: 1 },
   content: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 18, paddingBottom: 32 },
   topBar: {
@@ -56,7 +50,7 @@ const styles = StyleSheet.create({
   },
   heading: { alignItems: 'flex-end', marginBottom: 30 },
   title: {
-    color: Palette.ink,
+    color: P.ink,
     fontSize: 34,
     lineHeight: 45,
     fontWeight: '900',
@@ -64,7 +58,7 @@ const styles = StyleSheet.create({
     writingDirection: 'rtl',
   },
   subtitle: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 15,
     lineHeight: 25,
     textAlign: 'right',
@@ -72,4 +66,4 @@ const styles = StyleSheet.create({
     marginTop: 8,
     maxWidth: 330,
   },
-});
+}));

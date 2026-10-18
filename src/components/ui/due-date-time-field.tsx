@@ -1,9 +1,10 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useState } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 
 type PickerMode = 'date' | 'time';
 
@@ -38,6 +39,8 @@ function formatTime(value: Date) {
 }
 
 export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const [openMode, setOpenMode] = useState<PickerMode>();
 
   const openPicker = (mode: PickerMode) => {
@@ -70,7 +73,7 @@ export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
             <AppIcon
               name={{ ios: 'calendar', android: 'calendar_today', web: 'calendar_today' }}
               size={18}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="▣"
             />
           </View>
@@ -91,7 +94,7 @@ export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
             <AppIcon
               name={{ ios: 'clock', android: 'schedule', web: 'schedule' }}
               size={18}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="◷"
             />
           </View>
@@ -143,7 +146,7 @@ export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   wrapper: { gap: 9 },
   fieldsRow: { flexDirection: 'row-reverse', gap: 10 },
   field: {
@@ -151,24 +154,24 @@ const styles = StyleSheet.create({
     minHeight: 82,
     borderRadius: Radius.medium,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     paddingHorizontal: 11,
     paddingVertical: 10,
     flexDirection: 'row-reverse',
     alignItems: 'center',
     gap: 9,
   },
-  fieldOpen: { borderColor: Palette.primary, backgroundColor: '#FBF6F0' },
-  iconBox: { width: 34, height: 34, borderRadius: 11, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  fieldOpen: { borderColor: P.primary, backgroundColor: '#FBF6F0' },
+  iconBox: { width: 34, height: 34, borderRadius: 11, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   copy: { flex: 1, alignItems: 'flex-end', gap: 4 },
-  label: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
-  value: { maxWidth: '100%', color: Palette.ink, fontSize: 12, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  placeholder: { color: Palette.inkMuted, fontWeight: '700' },
-  pickerPanel: { borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, overflow: 'hidden', paddingBottom: 8 },
-  doneButton: { minHeight: 44, marginHorizontal: 12, borderRadius: Radius.small, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  doneText: { color: Palette.primary, fontSize: 14, fontWeight: '900' },
+  label: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
+  value: { maxWidth: '100%', color: P.ink, fontSize: 12, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  placeholder: { color: P.inkMuted, fontWeight: '700' },
+  pickerPanel: { borderRadius: Radius.medium, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, overflow: 'hidden', paddingBottom: 8 },
+  doneButton: { minHeight: 44, marginHorizontal: 12, borderRadius: Radius.small, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  doneText: { color: P.primary, fontSize: 14, fontWeight: '900' },
   clearButton: { minHeight: 34, alignSelf: 'flex-start', justifyContent: 'center', paddingHorizontal: 5 },
-  clearText: { color: Palette.danger, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
+  clearText: { color: P.danger, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
   pressed: { opacity: 0.75, transform: [{ scale: 0.99 }] },
-});
+}));

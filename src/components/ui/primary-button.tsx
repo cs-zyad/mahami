@@ -1,6 +1,7 @@
-import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, Text, ViewStyle } from 'react-native';
 
-import { Palette, Radius } from '@/constants/design';
+import { makeStyles } from '@/contexts/theme-context';
+import { Radius } from '@/constants/design';
 
 type PrimaryButtonProps = {
   label: string;
@@ -17,6 +18,7 @@ export function PrimaryButton({
   disabled = false,
   style,
 }: PrimaryButtonProps) {
+  const styles = useStyles();
   return (
     <Pressable
       accessibilityRole="button"
@@ -35,7 +37,7 @@ export function PrimaryButton({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   base: {
     minHeight: 56,
     borderRadius: Radius.medium,
@@ -43,11 +45,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
-  primary: { backgroundColor: Palette.primary },
-  secondary: { backgroundColor: Palette.surface, borderWidth: 1, borderColor: Palette.line },
+  primary: { backgroundColor: P.primary },
+  secondary: { backgroundColor: P.surface, borderWidth: 1, borderColor: P.line },
   ghost: { backgroundColor: 'transparent' },
-  label: { color: Palette.white, fontSize: 16, fontWeight: '800', writingDirection: 'rtl' },
-  darkLabel: { color: Palette.primary },
+  label: { color: P.white, fontSize: 16, fontWeight: '800', writingDirection: 'rtl' },
+  darkLabel: { color: P.primary },
   pressed: { opacity: 0.86, transform: [{ scale: 0.99 }] },
   disabled: { opacity: 0.45 },
-});
+}));

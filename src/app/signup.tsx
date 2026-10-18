@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { AppleSignInButton } from '@/components/auth/apple-sign-in-button';
 import { AuthShell } from '@/components/auth/auth-shell';
-import { Palette } from '@/constants/design';
 
 // New accounts are created through Apple only. Signing up by email sends a
 // confirmation message, and Supabase's built-in mail service caps the whole
@@ -11,6 +11,7 @@ import { Palette } from '@/constants/design';
 // day. Apple sends no mail. Existing email accounts still sign in from the
 // login screen.
 export default function SignUpScreen() {
+  const styles = useStyles();
   return (
     <AuthShell title="ابدأ مساحتك" subtitle="سجّل بحساب Apple وابدأ خلال ثوانٍ.">
       <View style={styles.primaryAuth}>
@@ -31,10 +32,10 @@ export default function SignUpScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   primaryAuth: { gap: 12 },
   note: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 13,
     lineHeight: 22,
     marginTop: 18,
@@ -42,6 +43,6 @@ const styles = StyleSheet.create({
     writingDirection: 'rtl',
   },
   footer: { flexDirection: 'row', justifyContent: 'center', gap: 6, marginTop: 28 },
-  footerText: { color: Palette.inkMuted, fontSize: 14, writingDirection: 'rtl' },
-  link: { color: Palette.primary, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-});
+  footerText: { color: P.inkMuted, fontSize: 14, writingDirection: 'rtl' },
+  link: { color: P.primary, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+}));

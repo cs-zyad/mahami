@@ -2,14 +2,16 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { AppleSignInButton } from '@/components/auth/apple-sign-in-button';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette } from '@/constants/design';
+
 import { useAuth } from '@/contexts/auth-context';
 
 export default function LoginScreen() {
+  const styles = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -95,15 +97,15 @@ export default function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   form: { gap: 18 },
   primaryAuth: { gap: 12 },
   altRow: { alignItems: 'center', marginTop: 20 },
-  altLink: { color: Palette.primary, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
+  altLink: { color: P.primary, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
   dividerRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 12, marginBottom: 2 },
-  dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: Palette.line },
-  dividerText: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
-  forgot: { color: Palette.primary, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
-  confirmationLink: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', textAlign: 'right', writingDirection: 'rtl' },
-  authError: { color: Palette.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
-});
+  dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: P.line },
+  dividerText: { color: P.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
+  forgot: { color: P.primary, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
+  confirmationLink: { color: P.inkMuted, fontSize: 12, fontWeight: '700', textAlign: 'right', writingDirection: 'rtl' },
+  authError: { color: P.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
+}));

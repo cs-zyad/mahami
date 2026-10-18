@@ -1,9 +1,10 @@
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useState } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 
 type TimePickerFieldProps = {
   value: Date;
@@ -21,6 +22,8 @@ export function formatRoutineTime(value: Date) {
 }
 
 export function TimePickerField({ value, onChange }: TimePickerFieldProps) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const [open, setOpen] = useState(false);
 
   const handleChange = (_event: DateTimePickerEvent, selectedTime?: Date) => {
@@ -39,7 +42,7 @@ export function TimePickerField({ value, onChange }: TimePickerFieldProps) {
           <AppIcon
             name={{ ios: 'clock.fill', android: 'schedule', web: 'schedule' }}
             size={20}
-            tintColor={Palette.primary}
+            tintColor={palette.primary}
             fallback="◷"
           />
         </View>
@@ -50,7 +53,7 @@ export function TimePickerField({ value, onChange }: TimePickerFieldProps) {
         <AppIcon
           name={{ ios: open ? 'chevron.up' : 'chevron.down', android: open ? 'expand_less' : 'expand_more' }}
           size={15}
-          tintColor={Palette.inkMuted}
+          tintColor={palette.inkMuted}
           fallback={open ? '⌃' : '⌄'}
         />
       </Pressable>
@@ -80,14 +83,14 @@ export function TimePickerField({ value, onChange }: TimePickerFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   wrapper: { gap: 8 },
   timeCard: {
     minHeight: 76,
     borderRadius: Radius.medium,
-    backgroundColor: Palette.surface,
+    backgroundColor: P.surface,
     borderWidth: 1,
-    borderColor: Palette.line,
+    borderColor: P.line,
     paddingHorizontal: 14,
     flexDirection: 'row-reverse',
     alignItems: 'center',
@@ -97,18 +100,18 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 14,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: P.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
   copy: { flex: 1, alignItems: 'flex-end', gap: 4 },
-  value: { color: Palette.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
-  hint: { color: Palette.inkMuted, fontSize: 11, writingDirection: 'rtl' },
+  value: { color: P.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
+  hint: { color: P.inkMuted, fontSize: 11, writingDirection: 'rtl' },
   pickerPanel: {
     borderRadius: Radius.medium,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     overflow: 'hidden',
     paddingBottom: 8,
   },
@@ -116,10 +119,10 @@ const styles = StyleSheet.create({
     minHeight: 44,
     marginHorizontal: 12,
     borderRadius: Radius.small,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: P.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  doneText: { color: Palette.primary, fontSize: 14, fontWeight: '900' },
+  doneText: { color: P.primary, fontSize: 14, fontWeight: '900' },
   pressed: { opacity: 0.78, transform: [{ scale: 0.99 }] },
-});
+}));

@@ -1,14 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette } from '@/constants/design';
+
 import { useAuth } from '@/contexts/auth-context';
 
 export default function EditProfileScreen() {
+  const styles = useStyles();
   const { session, updateProfileName } = useAuth();
   const [name, setName] = useState(String(session?.user.user_metadata.full_name ?? ''));
   const [loading, setLoading] = useState(false);
@@ -62,11 +64,11 @@ export default function EditProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   contact: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 13,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
-});
+}));

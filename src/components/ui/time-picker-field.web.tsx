@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
-import { Palette, Radius } from '@/constants/design';
+import { makeStyles } from '@/contexts/theme-context';
+import { Radius } from '@/constants/design';
 
 type TimePickerFieldProps = {
   value: Date;
@@ -19,6 +20,7 @@ export function formatRoutineTime(value: Date) {
 }
 
 export function TimePickerField({ value, onChange }: TimePickerFieldProps) {
+  const styles = useStyles();
   const initialValue = `${String(value.getHours()).padStart(2, '0')}:${String(value.getMinutes()).padStart(2, '0')}`;
   const [text, setText] = useState(initialValue);
 
@@ -50,18 +52,18 @@ export function TimePickerField({ value, onChange }: TimePickerFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   timeCard: {
     minHeight: 76,
     borderRadius: Radius.medium,
-    backgroundColor: Palette.surface,
+    backgroundColor: P.surface,
     borderWidth: 1,
-    borderColor: Palette.line,
+    borderColor: P.line,
     paddingHorizontal: 14,
     alignItems: 'flex-end',
     justifyContent: 'center',
     gap: 4,
   },
-  input: { color: Palette.ink, fontSize: 20, fontWeight: '900', textAlign: 'right', minWidth: 120 },
-  hint: { color: Palette.inkMuted, fontSize: 11, writingDirection: 'rtl' },
-});
+  input: { color: P.ink, fontSize: 20, fontWeight: '900', textAlign: 'right', minWidth: 120 },
+  hint: { color: P.inkMuted, fontSize: 11, writingDirection: 'rtl' },
+}));

@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 import { PurchasesPackage } from 'react-native-purchases';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { PRIVACY_URL, TERMS_URL } from '@/constants/links';
 import { useAuth } from '@/contexts/auth-context';
 import { getMahamiPlusPackage, isPurchasesConfigured, purchaseErrorMessage, purchaseMahamiPlus, restoreMahamiPlus } from '@/lib/purchases';
@@ -21,6 +22,8 @@ const benefits = [
 ] as const;
 
 export default function MahamiPlusScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const { session } = useAuth();
   const [status, setStatus] = useState<SmartScanStatus | null>(null);
   const [packageToBuy, setPackageToBuy] = useState<PurchasesPackage | null>(null);
@@ -87,7 +90,7 @@ export default function MahamiPlusScreen() {
     <FormScreen title="مهامي بلس" subtitle="حوّل ما تراه إلى خطة قابلة للإنجاز.">
       <View style={styles.hero}>
         <View style={styles.crown}>
-          <AppIcon name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }} size={30} tintColor={Palette.primary} fallback="✦" />
+          <AppIcon name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }} size={30} tintColor={palette.primary} fallback="✦" />
         </View>
         <Text style={styles.plan}>مهامي بلس</Text>
         {!!price && (
@@ -107,7 +110,7 @@ export default function MahamiPlusScreen() {
               <Text style={styles.benefitText}>{description}</Text>
             </View>
             <View style={styles.benefitIcon}>
-              <AppIcon name={{ ios: icon, android: 'check_circle', web: 'check_circle' }} size={19} tintColor={Palette.primary} fallback="✓" />
+              <AppIcon name={{ ios: icon, android: 'check_circle', web: 'check_circle' }} size={19} tintColor={palette.primary} fallback="✓" />
             </View>
           </View>
         ))}
@@ -121,7 +124,7 @@ export default function MahamiPlusScreen() {
         </View>
       ) : (
         <View style={styles.actions}>
-          {loadingProduct && <ActivityIndicator color={Palette.primary} />}
+          {loadingProduct && <ActivityIndicator color={palette.primary} />}
           {!purchasesConfigured && (
             <Text style={styles.setupNotice}>الاشتراك غير متاح على هذا الجهاز حاليًا. حاول مرة أخرى بعد قليل.</Text>
           )}
@@ -145,27 +148,27 @@ export default function MahamiPlusScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  hero: { minHeight: 250, borderRadius: Radius.large, backgroundColor: Palette.primary, padding: 24, alignItems: 'center', justifyContent: 'center', ...Shadow.card },
-  crown: { width: 68, height: 68, borderRadius: 24, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  plan: { color: Palette.white, fontSize: 24, fontWeight: '900', writingDirection: 'rtl' },
+const useStyles = makeStyles((P, S) => ({
+  hero: { minHeight: 250, borderRadius: Radius.large, backgroundColor: P.primary, padding: 24, alignItems: 'center', justifyContent: 'center', ...S.card },
+  crown: { width: 68, height: 68, borderRadius: 24, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
+  plan: { color: P.white, fontSize: 24, fontWeight: '900', writingDirection: 'rtl' },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8, marginTop: 13 },
   period: { color: '#DDCDC1', fontSize: 11, writingDirection: 'rtl' },
-  price: { color: Palette.white, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
+  price: { color: P.white, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
   cancel: { color: '#DDCDC1', fontSize: 10, marginTop: 10, textAlign: 'center', writingDirection: 'rtl' },
-  benefits: { borderRadius: Radius.large, backgroundColor: Palette.surface, paddingHorizontal: 15, marginTop: 18, ...Shadow.card },
+  benefits: { borderRadius: Radius.large, backgroundColor: P.surface, paddingHorizontal: 15, marginTop: 18, ...S.card },
   benefit: { minHeight: 82, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  benefitBorder: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: Palette.line },
+  benefitBorder: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: P.line },
   benefitCopy: { flex: 1, alignItems: 'flex-end' },
-  benefitTitle: { color: Palette.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-  benefitText: { color: Palette.inkMuted, fontSize: 10, lineHeight: 17, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
-  benefitIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  benefitTitle: { color: P.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  benefitText: { color: P.inkMuted, fontSize: 10, lineHeight: 17, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
+  benefitIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   actions: { gap: 7, marginTop: 18 },
-  setupNotice: { color: Palette.inkMuted, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl', backgroundColor: Palette.accentSoft, borderRadius: Radius.small, padding: 12 },
-  error: { color: Palette.danger, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl', backgroundColor: '#F8E9E5', borderRadius: Radius.small, padding: 12 },
-  activeCard: { gap: 10, borderRadius: Radius.large, backgroundColor: Palette.successSoft, padding: 18, marginTop: 18 },
-  activeTitle: { color: Palette.success, fontSize: 16, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  activeText: { color: Palette.inkMuted, fontSize: 11, textAlign: 'right', writingDirection: 'rtl', marginBottom: 4 },
-  terms: { color: Palette.inkMuted, fontSize: 10, lineHeight: 18, textAlign: 'center', writingDirection: 'rtl', marginTop: 12, paddingHorizontal: 14 },
-  termsLink: { color: Palette.primary, fontWeight: '800', textDecorationLine: 'underline' },
-});
+  setupNotice: { color: P.inkMuted, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl', backgroundColor: P.accentSoft, borderRadius: Radius.small, padding: 12 },
+  error: { color: P.danger, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl', backgroundColor: '#F8E9E5', borderRadius: Radius.small, padding: 12 },
+  activeCard: { gap: 10, borderRadius: Radius.large, backgroundColor: P.successSoft, padding: 18, marginTop: 18 },
+  activeTitle: { color: P.success, fontSize: 16, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  activeText: { color: P.inkMuted, fontSize: 11, textAlign: 'right', writingDirection: 'rtl', marginBottom: 4 },
+  terms: { color: P.inkMuted, fontSize: 10, lineHeight: 18, textAlign: 'center', writingDirection: 'rtl', marginTop: 12, paddingHorizontal: 14 },
+  termsLink: { color: P.primary, fontWeight: '800', textDecorationLine: 'underline' },
+}));

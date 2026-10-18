@@ -1,9 +1,10 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
 
-import { Palette } from '@/constants/design';
+import { makeStyles, useTheme } from '@/contexts/theme-context';
+
 import { useAuth } from '@/contexts/auth-context';
 
 type AppleProfile = {
@@ -31,6 +32,8 @@ function optionalText(value: string | null | undefined) {
 }
 
 function AppleSignInButtonIOS({ intent = 'sign-in' }: AppleSignInButtonProps) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const [isAvailable, setIsAvailable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -121,7 +124,7 @@ function AppleSignInButtonIOS({ intent = 'sign-in' }: AppleSignInButtonProps) {
 
       {isLoading && (
         <View style={styles.statusRow} accessibilityLiveRegion="polite">
-          <ActivityIndicator color={Palette.primary} size="small" />
+          <ActivityIndicator color={palette.primary} size="small" />
           <Text style={styles.statusText}>جاري تسجيل الدخول بحساب Apple...</Text>
         </View>
       )}
@@ -140,7 +143,7 @@ export function AppleSignInButton(props: AppleSignInButtonProps) {
   return <AppleSignInButtonIOS {...props} />;
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   container: {
     gap: 10,
     width: '100%',
@@ -156,16 +159,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusText: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 13,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   errorText: {
-    color: Palette.danger,
+    color: P.danger,
     fontSize: 13,
     lineHeight: 21,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
-});
+}));

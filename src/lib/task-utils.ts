@@ -91,9 +91,9 @@ export function taskCountdown(task: Task, now = new Date()): TaskCountdown {
   return { label, state: hours < 24 ? 'soon' : 'upcoming' };
 }
 
-export function taskPriorityColor(task: Task) {
-  if (task.important && task.urgent) return Palette.urgent;
-  if (task.important) return Palette.important;
-  if (task.urgent) return '#B89238';
-  return Palette.later;
+export function taskPriorityColor(task: Task, palette: Palette) {
+  if (task.important && task.urgent) return palette.urgent;
+  if (task.important) return palette.important;
+  if (task.urgent) return palette.accent;
+  return palette.later;
 }

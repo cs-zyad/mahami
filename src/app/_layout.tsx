@@ -1,17 +1,20 @@
 import { router, Stack, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 import { BrandMark } from '@/components/ui/brand-mark';
 import { AuthProvider, useAuth } from '@/contexts/auth-context';
-import { Palette } from '@/constants/design';
+import { themeStatusBar } from '@/constants/design';
+import { ThemeProvider, makeStyles, useTheme } from '@/contexts/theme-context';
 import { useOverTheAirUpdates } from '@/hooks/use-over-the-air-updates';
 import { RoutinesProvider } from '@/contexts/routines-context';
 import { TasksProvider } from '@/contexts/tasks-context';
 
 function AppNavigator() {
   const { loading, session } = useAuth();
+  const { palette } = useTheme();
+  const styles = useStyles();
   const segments = useSegments();
 
   useEffect(() => {
@@ -56,7 +59,7 @@ function AppNavigator() {
     return (
       <View style={styles.loadingScreen}>
         <BrandMark />
-        <ActivityIndicator color={Palette.primary} size="small" />
+        <ActivityIndicator color={palette.primary} size="small" />
         <Text style={styles.loadingText}>جاري تجهيز حسابك...</Text>
       </View>
     );
@@ -66,7 +69,7 @@ function AppNavigator() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: Palette.canvas },
+        contentStyle: { backgroundColor: palette.canvas },
         animation: 'fade_from_bottom',
       }}>
       <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
@@ -74,14 +77,14 @@ function AppNavigator() {
   );
 }
 
-export default function RootLayout() {
-  useOverTheAirUpdates();
+function ThemedApp() {
+  const { theme } = useTheme();
 
   return (
     <AuthProvider>
       <TasksProvider>
         <RoutinesProvider>
-          <StatusBar style="dark" />
+          <StatusBar style={themeStatusBar[theme]} />
           <AppNavigator />
         </RoutinesProvider>
       </TasksProvider>
@@ -89,17 +92,27 @@ export default function RootLayout() {
   );
 }
 
-const styles = StyleSheet.create({
+export default function RootLayout() {
+  useOverTheAirUpdates();
+
+  return (
+    <ThemeProvider>
+      <ThemedApp />
+    </ThemeProvider>
+  );
+}
+
+const useStyles = makeStyles((P) => ({
   loadingScreen: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 18,
-    backgroundColor: Palette.canvas,
+    backgroundColor: P.canvas,
   },
   loadingText: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 13,
     writingDirection: 'rtl',
   },
-});
+}));

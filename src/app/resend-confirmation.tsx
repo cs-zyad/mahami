@@ -1,14 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 
 export default function ResendConfirmationScreen() {
+  const styles = useStyles();
   const { resendConfirmation } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -60,10 +62,10 @@ export default function ResendConfirmationScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   form: { gap: 20 },
-  notice: { backgroundColor: Palette.surface, borderRadius: Radius.large, padding: 22, gap: 14 },
-  noticeTitle: { color: Palette.ink, fontSize: 21, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  noticeBody: { color: Palette.inkMuted, fontSize: 14, lineHeight: 23, textAlign: 'right', writingDirection: 'rtl' },
-  error: { color: Palette.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
-});
+  notice: { backgroundColor: P.surface, borderRadius: Radius.large, padding: 22, gap: 14 },
+  noticeTitle: { color: P.ink, fontSize: 21, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  noticeBody: { color: P.inkMuted, fontSize: 14, lineHeight: 23, textAlign: 'right', writingDirection: 'rtl' },
+  error: { color: P.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
+}));

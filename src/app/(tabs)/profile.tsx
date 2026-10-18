@@ -5,8 +5,9 @@ import { useEffect, useState } from 'react';
 import { Alert, AppState, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { PRIVACY_URL, SUPPORT_URL } from '@/constants/links';
 import { useAuth } from '@/contexts/auth-context';
 import { getSmartScanStatus } from '@/lib/smart-capture';
@@ -23,23 +24,27 @@ type SettingRowProps = {
 };
 
 function SettingRow({ title, subtitle, icon, androidIcon, trailing, danger, onPress }: SettingRowProps) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   return (
     <Pressable disabled={!onPress} onPress={onPress} style={({ pressed }) => [styles.settingRow, pressed && styles.pressed]}>
       {trailing ?? (onPress ? (
-        <AppIcon name={{ ios: 'chevron.left', android: 'chevron_left', web: 'chevron_left' }} size={16} tintColor={Palette.inkMuted} fallback="‹" />
+        <AppIcon name={{ ios: 'chevron.left', android: 'chevron_left', web: 'chevron_left' }} size={16} tintColor={palette.inkMuted} fallback="‹" />
       ) : null)}
       <View style={styles.settingCopy}>
         <Text style={[styles.settingTitle, danger && styles.danger]}>{title}</Text>
         {!!subtitle && <Text style={styles.settingSubtitle}>{subtitle}</Text>}
       </View>
       <View style={[styles.settingIcon, danger && styles.dangerIcon]}>
-        <AppIcon name={{ ios: icon as never, android: androidIcon as never, web: androidIcon as never }} size={19} tintColor={danger ? Palette.danger : Palette.primary} fallback="•" />
+        <AppIcon name={{ ios: icon as never, android: androidIcon as never, web: androidIcon as never }} size={19} tintColor={danger ? palette.danger : palette.primary} fallback="•" />
       </View>
     </Pressable>
   );
 }
 
 export default function ProfileScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const { session, signOut, deleteAccount } = useAuth();
   const [smartStatus, setSmartStatus] = useState<SmartScanStatus | null>(null);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -179,8 +184,8 @@ export default function ProfileScreen() {
               <Switch
                 value={notificationsEnabled}
                 onValueChange={() => void handleNotificationsPress()}
-                trackColor={{ true: Palette.accentSoft }}
-                thumbColor={notificationsEnabled ? Palette.primary : undefined}
+                trackColor={{ true: palette.accentSoft }}
+                thumbColor={notificationsEnabled ? palette.primary : undefined}
               />
             )}
           />
@@ -224,7 +229,7 @@ export default function ProfileScreen() {
             <AppIcon
               name={{ ios: 'rectangle.portrait.and.arrow.right', android: 'logout', web: 'logout' }}
               size={18}
-              tintColor={Palette.danger}
+              tintColor={palette.danger}
               fallback="×"
             />
           </View>
@@ -235,28 +240,28 @@ export default function ProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P, S) => ({
+  safeArea: { flex: 1, backgroundColor: P.canvas },
   content: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 110 },
   header: { alignItems: 'flex-end' },
-  title: { color: Palette.ink, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
-  subtitle: { color: Palette.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
-  profileCard: { backgroundColor: Palette.primary, borderRadius: Radius.large, padding: 20, marginTop: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 16, ...Shadow.card },
+  title: { color: P.ink, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
+  subtitle: { color: P.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
+  profileCard: { backgroundColor: P.primary, borderRadius: Radius.large, padding: 20, marginTop: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 16, ...S.card },
   profileCopy: { flex: 1, alignItems: 'flex-end' },
-  profileName: { color: Palette.white, fontSize: 21, fontWeight: '900', writingDirection: 'rtl' },
+  profileName: { color: P.white, fontSize: 21, fontWeight: '900', writingDirection: 'rtl' },
   profileEmail: { color: '#DFD0C4', fontSize: 11, marginTop: 4 },
   editProfile: { color: '#F0CDAE', fontSize: 11, fontWeight: '800', marginTop: 13, writingDirection: 'rtl' },
-  avatar: { width: 66, height: 66, borderRadius: 23, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  avatarText: { color: Palette.primary, fontSize: 24, fontWeight: '900' },
-  sectionLabel: { color: Palette.inkMuted, fontSize: 12, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl', marginTop: 27, marginBottom: 10, paddingRight: 4 },
-  settingsCard: { backgroundColor: Palette.surface, borderRadius: Radius.large, paddingHorizontal: 15, ...Shadow.card },
+  avatar: { width: 66, height: 66, borderRadius: 23, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  avatarText: { color: P.primary, fontSize: 24, fontWeight: '900' },
+  sectionLabel: { color: P.inkMuted, fontSize: 12, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl', marginTop: 27, marginBottom: 10, paddingRight: 4 },
+  settingsCard: { backgroundColor: P.surface, borderRadius: Radius.large, paddingHorizontal: 15, ...S.card },
   settingRow: { minHeight: 72, flexDirection: 'row', alignItems: 'center', gap: 12 },
   settingCopy: { flex: 1, alignItems: 'flex-end' },
-  settingTitle: { color: Palette.ink, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
-  settingSubtitle: { color: Palette.inkMuted, fontSize: 10, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
-  settingIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  divider: { height: StyleSheet.hairlineWidth, backgroundColor: Palette.line },
-  danger: { color: Palette.danger },
+  settingTitle: { color: P.ink, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
+  settingSubtitle: { color: P.inkMuted, fontSize: 10, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
+  settingIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  divider: { height: StyleSheet.hairlineWidth, backgroundColor: P.line },
+  danger: { color: P.danger },
   dangerIcon: { backgroundColor: '#F5E1DD' },
   pressed: { opacity: 0.7 },
   logoutButton: {
@@ -272,7 +277,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   logoutText: {
-    color: Palette.danger,
+    color: P.danger,
     fontSize: 14,
     fontWeight: '900',
     writingDirection: 'rtl',
@@ -286,5 +291,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoutPressed: { opacity: 0.78, transform: [{ scale: 0.99 }] },
-  version: { color: Palette.inkMuted, fontSize: 10, textAlign: 'center', marginTop: 22, writingDirection: 'rtl' },
-});
+  version: { color: P.inkMuted, fontSize: 10, textAlign: 'center', marginTop: 22, writingDirection: 'rtl' },
+}));

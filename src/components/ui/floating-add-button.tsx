@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
-import { Palette, Shadow } from '@/constants/design';
 
 type FloatingAddButtonProps = {
   label: string;
@@ -10,6 +10,8 @@ type FloatingAddButtonProps = {
 };
 
 export function FloatingAddButton({ label, accessibilityLabel, onPress }: FloatingAddButtonProps) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -20,7 +22,7 @@ export function FloatingAddButton({ label, accessibilityLabel, onPress }: Floati
         <AppIcon
           name={{ ios: 'plus', android: 'add', web: 'add' }}
           size={20}
-          tintColor={Palette.primary}
+          tintColor={palette.primary}
           fallback="+"
         />
       </View>
@@ -29,7 +31,7 @@ export function FloatingAddButton({ label, accessibilityLabel, onPress }: Floati
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P, S) => ({
   button: {
     position: 'absolute',
     left: 20,
@@ -37,30 +39,30 @@ const styles = StyleSheet.create({
     minWidth: 150,
     height: 58,
     borderRadius: 20,
-    backgroundColor: Palette.primary,
+    backgroundColor: P.primary,
     paddingHorizontal: 9,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,
-    ...Shadow.card,
+    ...S.card,
   },
   icon: {
     width: 40,
     height: 40,
     borderRadius: 14,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: P.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
   label: {
-    color: Palette.white,
+    color: P.white,
     fontSize: 14,
     fontWeight: '900',
     writingDirection: 'rtl',
   },
   buttonPressed: {
-    backgroundColor: Palette.primaryPressed,
+    backgroundColor: P.primaryPressed,
     transform: [{ scale: 0.97 }],
   },
-});
+}));

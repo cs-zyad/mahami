@@ -3,12 +3,13 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { DueDateTimeField } from '@/components/ui/due-date-time-field';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 import { useTasks } from '@/contexts/tasks-context';
 import { defaultTaskCategories, TaskCategoryOption } from '@/lib/task-categories';
@@ -64,6 +65,8 @@ function PriorityChoice({
   selected: boolean;
   onPress: () => void;
 }) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   return (
     <Pressable
       accessibilityRole="radio"
@@ -81,7 +84,7 @@ function PriorityChoice({
           <AppIcon
             name={{ ios: 'checkmark', android: 'check', web: 'check' }}
             size={11}
-            tintColor={Palette.white}
+            tintColor={palette.white}
             fallback="✓"
           />
         )}
@@ -93,6 +96,7 @@ function PriorityChoice({
 }
 
 function BrandSwitch({ value, onValueChange }: { value: boolean; onValueChange: (value: boolean) => void }) {
+  const styles = useStyles();
   return (
     <Pressable
       accessibilityRole="switch"
@@ -110,6 +114,8 @@ function BrandSwitch({ value, onValueChange }: { value: boolean; onValueChange: 
 }
 
 export default function AddTaskScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const { session } = useAuth();
   const { addTask, updateTask, tasks } = useTasks();
   const { taskId } = useLocalSearchParams<{ taskId?: string }>();
@@ -255,7 +261,7 @@ export default function AddTaskScreen() {
           onPress={() => setCategoryOpen((current) => !current)}
           style={({ pressed }) => [styles.categoryField, categoryOpen && styles.categoryFieldOpen, pressed && styles.pressed]}>
           <View style={styles.categoryIcon}>
-            <AppIcon name={selectedCategory.icon} size={17} tintColor={Palette.primary} fallback={selectedCategory.fallback} />
+            <AppIcon name={selectedCategory.icon} size={17} tintColor={palette.primary} fallback={selectedCategory.fallback} />
           </View>
           <View style={styles.categoryCopy}>
             <Text style={styles.categoryHint}>اضغط لاختيار التصنيف</Text>
@@ -264,7 +270,7 @@ export default function AddTaskScreen() {
           <AppIcon
             name={{ ios: categoryOpen ? 'chevron.up' : 'chevron.down', android: categoryOpen ? 'expand_less' : 'expand_more' }}
             size={14}
-            tintColor={Palette.inkMuted}
+            tintColor={palette.inkMuted}
             fallback={categoryOpen ? '⌃' : '⌄'}
           />
         </Pressable>
@@ -285,11 +291,11 @@ export default function AddTaskScreen() {
                   }}
                   style={({ pressed }) => [styles.categoryOption, selected && styles.categoryOptionSelected, pressed && styles.pressed]}>
                   <View style={styles.categoryOptionIcon}>
-                    <AppIcon name={item.icon} size={16} tintColor={Palette.primary} fallback={item.fallback} />
+                    <AppIcon name={item.icon} size={16} tintColor={palette.primary} fallback={item.fallback} />
                   </View>
                   <Text style={[styles.categoryOptionText, selected && styles.categoryOptionTextSelected]}>{item.label}</Text>
                   {selected && (
-                    <AppIcon name={{ ios: 'checkmark', android: 'check', web: 'check' }} size={14} tintColor={Palette.primary} fallback="✓" />
+                    <AppIcon name={{ ios: 'checkmark', android: 'check', web: 'check' }} size={14} tintColor={palette.primary} fallback="✓" />
                   )}
                 </Pressable>
               );
@@ -308,7 +314,7 @@ export default function AddTaskScreen() {
                   <AppIcon
                     name={{ ios: 'plus', android: 'add', web: 'add' }}
                     size={16}
-                    tintColor={Palette.primary}
+                    tintColor={palette.primary}
                     fallback="+"
                   />
                 </View>
@@ -328,7 +334,7 @@ export default function AddTaskScreen() {
                     }}
                     onSubmitEditing={() => void handleAddCategory()}
                     placeholder="مثال: مشروع التخرج"
-                    placeholderTextColor={Palette.inkMuted}
+                    placeholderTextColor={palette.inkMuted}
                     maxLength={40}
                     returnKeyType="done"
                     style={styles.categoryInput}
@@ -346,7 +352,7 @@ export default function AddTaskScreen() {
                     <AppIcon
                       name={{ ios: 'checkmark', android: 'check', web: 'check' }}
                       size={16}
-                      tintColor={Palette.white}
+                      tintColor={palette.white}
                       fallback="✓"
                     />
                   </Pressable>
@@ -401,7 +407,7 @@ export default function AddTaskScreen() {
             <AppIcon
               name={{ ios: 'bell.fill', android: 'notifications', web: 'notifications' }}
               size={18}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="•"
             />
           </View>
@@ -434,55 +440,55 @@ export default function AddTaskScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   form: { gap: 17 },
   description: { minHeight: 88, paddingTop: 15, textAlignVertical: 'top' },
-  label: { color: Palette.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl', marginTop: 3 },
+  label: { color: P.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl', marginTop: 3 },
   priorityChoices: { flexDirection: 'row-reverse', gap: 8 },
   priorityChoice: { flex: 1, minWidth: 0, minHeight: 96, borderRadius: Radius.medium, borderWidth: 1, borderColor: 'transparent', paddingHorizontal: 7, paddingVertical: 11, alignItems: 'center', justifyContent: 'center', gap: 4 },
   priorityMark: { width: 22, height: 22, borderRadius: 8, borderWidth: 1.5, backgroundColor: 'rgba(255,255,255,0.42)', alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
   priorityTitle: { minHeight: 31, fontSize: 11, lineHeight: 15, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },
   priorityHint: { fontSize: 9, fontWeight: '700', opacity: 0.78, writingDirection: 'rtl' },
-  categoryField: { minHeight: 74, borderRadius: Radius.medium, backgroundColor: Palette.surface, borderWidth: 1, borderColor: Palette.line, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 11 },
-  categoryFieldOpen: { borderColor: Palette.primary, backgroundColor: '#FBF6F0' },
-  categoryIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  categoryField: { minHeight: 74, borderRadius: Radius.medium, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 11 },
+  categoryFieldOpen: { borderColor: P.primary, backgroundColor: '#FBF6F0' },
+  categoryIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   categoryCopy: { flex: 1, alignItems: 'flex-end', gap: 3 },
-  categoryHint: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
-  categoryValue: { color: Palette.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-  categoryMenu: { marginTop: -8, borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, overflow: 'hidden' },
-  categoryOption: { minHeight: 52, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: Palette.line },
-  categoryOptionSelected: { backgroundColor: Palette.accentSoft },
-  categoryOptionIcon: { width: 30, height: 30, borderRadius: 10, backgroundColor: Palette.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
-  categoryOptionText: { flex: 1, color: Palette.inkMuted, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
-  categoryOptionTextSelected: { color: Palette.primary, fontWeight: '900' },
+  categoryHint: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
+  categoryValue: { color: P.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  categoryMenu: { marginTop: -8, borderRadius: Radius.medium, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, overflow: 'hidden' },
+  categoryOption: { minHeight: 52, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: P.line },
+  categoryOptionSelected: { backgroundColor: P.accentSoft },
+  categoryOptionIcon: { width: 30, height: 30, borderRadius: 10, backgroundColor: P.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
+  categoryOptionText: { flex: 1, color: P.inkMuted, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
+  categoryOptionTextSelected: { color: P.primary, fontWeight: '900' },
   addCategoryButton: { minHeight: 58, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 10, backgroundColor: '#FBF6F0' },
-  addCategoryIcon: { width: 30, height: 30, borderRadius: 10, borderWidth: 1, borderColor: Palette.accent, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  addCategoryText: { flex: 1, color: Palette.primary, fontSize: 12, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  addCategoryIcon: { width: 30, height: 30, borderRadius: 10, borderWidth: 1, borderColor: P.accent, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  addCategoryText: { flex: 1, color: P.primary, fontSize: 12, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   categoryCreator: { padding: 13, backgroundColor: '#FBF6F0', gap: 8 },
-  categoryCreatorLabel: { color: Palette.ink, fontSize: 11, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  categoryCreatorLabel: { color: P.ink, fontSize: 11, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   categoryCreatorRow: { minHeight: 48, flexDirection: 'row-reverse', gap: 8 },
-  categoryInput: { flex: 1, borderRadius: Radius.small, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, paddingHorizontal: 12, color: Palette.ink, fontSize: 13, fontWeight: '700', textAlign: 'right', writingDirection: 'rtl' },
-  saveCategoryButton: { width: 48, borderRadius: Radius.small, backgroundColor: Palette.primary, alignItems: 'center', justifyContent: 'center' },
+  categoryInput: { flex: 1, borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, paddingHorizontal: 12, color: P.ink, fontSize: 13, fontWeight: '700', textAlign: 'right', writingDirection: 'rtl' },
+  saveCategoryButton: { width: 48, borderRadius: Radius.small, backgroundColor: P.primary, alignItems: 'center', justifyContent: 'center' },
   saveCategoryButtonDisabled: { opacity: 0.4 },
-  categoryError: { color: Palette.danger, fontSize: 10, textAlign: 'right', writingDirection: 'rtl' },
+  categoryError: { color: P.danger, fontSize: 10, textAlign: 'right', writingDirection: 'rtl' },
   cancelCategoryButton: { minHeight: 30, alignSelf: 'flex-start', justifyContent: 'center', paddingHorizontal: 4 },
-  cancelCategoryText: { color: Palette.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
-  reminderRow: { minHeight: 78, borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, paddingHorizontal: 13, flexDirection: 'row', alignItems: 'center', gap: 13 },
+  cancelCategoryText: { color: P.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
+  reminderRow: { minHeight: 78, borderRadius: Radius.medium, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, paddingHorizontal: 13, flexDirection: 'row', alignItems: 'center', gap: 13 },
   reminderCopy: { flex: 1, alignItems: 'flex-end' },
-  reminderIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  reminderTitle: { color: Palette.ink, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
-  reminderText: { color: Palette.inkMuted, fontSize: 10, marginTop: 4, writingDirection: 'rtl' },
-  switchTrack: { width: 54, height: 32, borderRadius: Radius.pill, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surfaceMuted, padding: 3, justifyContent: 'center', alignItems: 'flex-start' },
-  switchTrackActive: { borderColor: Palette.primary, backgroundColor: Palette.primary, alignItems: 'flex-end' },
-  switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: Palette.surface, borderWidth: 1, borderColor: Palette.line },
-  switchThumbActive: { borderColor: '#E7D5C4', backgroundColor: Palette.canvas },
+  reminderIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  reminderTitle: { color: P.ink, fontSize: 14, fontWeight: '800', writingDirection: 'rtl' },
+  reminderText: { color: P.inkMuted, fontSize: 10, marginTop: 4, writingDirection: 'rtl' },
+  switchTrack: { width: 54, height: 32, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.surfaceMuted, padding: 3, justifyContent: 'center', alignItems: 'flex-start' },
+  switchTrackActive: { borderColor: P.primary, backgroundColor: P.primary, alignItems: 'flex-end' },
+  switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line },
+  switchThumbActive: { borderColor: '#E7D5C4', backgroundColor: P.canvas },
   switchPressed: { opacity: 0.8 },
   reminderOptions: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 7, marginTop: -8 },
-  reminderOption: { minHeight: 38, borderRadius: Radius.pill, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, paddingHorizontal: 12, alignItems: 'center', justifyContent: 'center' },
-  reminderOptionSelected: { borderColor: Palette.primary, backgroundColor: Palette.accentSoft },
-  reminderOptionText: { color: Palette.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
-  reminderOptionTextSelected: { color: Palette.primary, fontWeight: '900' },
-  error: { color: Palette.danger, fontSize: 12, lineHeight: 19, textAlign: 'right', writingDirection: 'rtl' },
+  reminderOption: { minHeight: 38, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, paddingHorizontal: 12, alignItems: 'center', justifyContent: 'center' },
+  reminderOptionSelected: { borderColor: P.primary, backgroundColor: P.accentSoft },
+  reminderOptionText: { color: P.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
+  reminderOptionTextSelected: { color: P.primary, fontWeight: '900' },
+  error: { color: P.danger, fontSize: 12, lineHeight: 19, textAlign: 'right', writingDirection: 'rtl' },
   save: { marginTop: 5 },
   pressed: { opacity: 0.76, transform: [{ scale: 0.99 }] },
-});
+}));

@@ -1,12 +1,13 @@
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Modal, Pressable, RefreshControl, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { EmptyState } from '@/components/ui/empty-state';
 import { FloatingAddButton } from '@/components/ui/floating-add-button';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Palette, Radius } from '@/constants/design';
 import { useTasks } from '@/contexts/tasks-context';
 import { isTaskInTodayList, isTaskOverdue, isTaskUpcoming, taskCountdown, TaskCountdown, taskDescriptionPreview, taskPriorityColor, taskTimeLabel } from '@/lib/task-utils';
 
@@ -45,6 +46,8 @@ const homeViewFilters: Record<string, TaskFilter> = {
 };
 
 export default function TasksScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const params = useLocalSearchParams<{ view?: string | string[]; category?: string | string[] }>();
   const requestedView = Array.isArray(params.view) ? params.view[0] : params.view;
   const requestedCategory = Array.isArray(params.category) ? params.category[0] : params.category;
@@ -134,7 +137,7 @@ export default function TasksScreen() {
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={syncing} onRefresh={() => void refresh()} tintColor={Palette.primary} />}>
+        refreshControl={<RefreshControl refreshing={syncing} onRefresh={() => void refresh()} tintColor={palette.primary} />}>
         <View style={styles.header}>
           <Pressable
             style={styles.searchButton}
@@ -149,7 +152,7 @@ export default function TasksScreen() {
                 ? { ios: 'xmark', android: 'close', web: 'close' }
                 : { ios: 'magnifyingglass', android: 'search', web: 'search' }}
               size={20}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback={searchOpen ? '×' : '⌕'}
             />
           </Pressable>
@@ -164,7 +167,7 @@ export default function TasksScreen() {
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder="ابحث في عناوين مهامك"
-            placeholderTextColor={Palette.inkMuted}
+            placeholderTextColor={palette.inkMuted}
             autoFocus
             style={styles.searchField}
           />
@@ -175,7 +178,7 @@ export default function TasksScreen() {
             <Text style={styles.month}>{monthLabel}</Text>
             {!!selectedDay && (
               <Pressable style={styles.calendarLink} onPress={() => setSelectedDay(undefined)}>
-                <AppIcon name={{ ios: 'xmark', android: 'close', web: 'close' }} size={14} tintColor={Palette.primary} fallback="×" />
+                <AppIcon name={{ ios: 'xmark', android: 'close', web: 'close' }} size={14} tintColor={palette.primary} fallback="×" />
                 <Text style={styles.calendarLinkText}>إلغاء تحديد اليوم</Text>
               </Pressable>
             )}
@@ -251,7 +254,7 @@ export default function TasksScreen() {
               <AppIcon
                 name={{ ios: 'folder.fill', android: 'folder', web: 'folder' }}
                 size={18}
-                tintColor={Palette.primary}
+                tintColor={palette.primary}
                 fallback="□"
               />
             )}
@@ -260,7 +263,7 @@ export default function TasksScreen() {
 
         {loading && !tasks.length ? (
           <View style={styles.loadingCard}>
-            <ActivityIndicator color={Palette.primary} />
+            <ActivityIndicator color={palette.primary} />
             <Text style={styles.loadingText}>جاري تجهيز مهامك...</Text>
           </View>
         ) : filteredTasks.length ? (
@@ -277,10 +280,10 @@ export default function TasksScreen() {
                 onPress={() => router.push({ pathname: '/add-task', params: { taskId: task.id } })}
                 style={({ pressed }) => [styles.taskCard, pressed && styles.pressed]}>
                 <View style={styles.timeColumn}>
-                  <View style={[styles.countdownBox, countdownBoxStyle[countdown.state]]}>
+                  <View style={[styles.countdownBox, countdownBoxStyle(countdown.state, palette)]}>
                     <Text numberOfLines={2} style={styles.countdownText}>{countdown.label}</Text>
                   </View>
-                  <View style={[styles.priorityLine, { backgroundColor: taskPriorityColor(task) }]} />
+                  <View style={[styles.priorityLine, { backgroundColor: taskPriorityColor(task, palette) }]} />
                 </View>
                 <View style={styles.taskCopy}>
                   <Text style={[styles.taskTitle, completed && styles.completedText]}>{task.title}</Text>
@@ -403,92 +406,94 @@ export default function TasksScreen() {
   );
 }
 
-const countdownBoxStyle: Record<TaskCountdown['state'], { backgroundColor: string }> = {
-  completed: { backgroundColor: Palette.line },
-  none: { backgroundColor: Palette.inkMuted },
-  overdue: { backgroundColor: Palette.danger },
-  soon: { backgroundColor: Palette.accent },
-  upcoming: { backgroundColor: Palette.primary },
-};
+function countdownBoxStyle(state: TaskCountdown['state'], palette: Palette) {
+  switch (state) {
+    case 'completed': return { backgroundColor: palette.line };
+    case 'overdue': return { backgroundColor: palette.danger };
+    case 'soon': return { backgroundColor: palette.accent };
+    case 'upcoming': return { backgroundColor: palette.primary };
+    default: return { backgroundColor: palette.inkMuted };
+  }
+}
 
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P, S) => ({
+  safeArea: { flex: 1, backgroundColor: P.canvas },
   content: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 150 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   headerCopy: { alignItems: 'flex-end' },
-  title: { color: Palette.ink, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
-  subtitle: { color: Palette.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
-  searchButton: { width: 46, height: 46, borderRadius: 16, backgroundColor: Palette.surface, alignItems: 'center', justifyContent: 'center' },
-  searchField: { minHeight: 48, borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, paddingHorizontal: 16, color: Palette.ink, fontSize: 15, textAlign: 'right', writingDirection: 'rtl' },
-  calendarCard: { backgroundColor: Palette.surface, borderRadius: Radius.large, marginTop: 24, padding: 17, ...Shadow.card },
+  title: { color: P.ink, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
+  subtitle: { color: P.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
+  searchButton: { width: 46, height: 46, borderRadius: 16, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center' },
+  searchField: { minHeight: 48, borderRadius: Radius.medium, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, paddingHorizontal: 16, color: P.ink, fontSize: 15, textAlign: 'right', writingDirection: 'rtl' },
+  calendarCard: { backgroundColor: P.surface, borderRadius: Radius.large, marginTop: 24, padding: 17, ...S.card },
   calendarHeader: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center' },
-  month: { color: Palette.ink, fontSize: 15, fontWeight: '900', writingDirection: 'rtl' },
+  month: { color: P.ink, fontSize: 15, fontWeight: '900', writingDirection: 'rtl' },
   calendarLink: { flexDirection: 'row', gap: 5, alignItems: 'center' },
-  calendarLinkText: { color: Palette.primary, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
+  calendarLinkText: { color: P.primary, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
   daysRow: { flexDirection: 'row-reverse', justifyContent: 'space-between', marginTop: 18 },
   day: { width: 48, minHeight: 66, borderRadius: 17, alignItems: 'center', justifyContent: 'center', gap: 6 },
-  daySelected: { backgroundColor: Palette.primary },
-  dayName: { color: Palette.inkMuted, fontSize: 11, fontWeight: '700' },
-  dayDate: { color: Palette.ink, fontSize: 16, fontWeight: '900' },
-  dayTextSelected: { color: Palette.white },
+  daySelected: { backgroundColor: P.primary },
+  dayName: { color: P.inkMuted, fontSize: 11, fontWeight: '700' },
+  dayDate: { color: P.ink, fontSize: 16, fontWeight: '900' },
+  dayTextSelected: { color: P.white },
   filterSection: { paddingVertical: 24, gap: 11 },
-  primaryFilters: { minHeight: 48, padding: 4, borderRadius: Radius.medium, backgroundColor: Palette.surface, flexDirection: 'row-reverse', ...Shadow.card },
+  primaryFilters: { minHeight: 48, padding: 4, borderRadius: Radius.medium, backgroundColor: P.surface, flexDirection: 'row-reverse', ...S.card },
   primaryFilter: { flex: 1, minWidth: 0, borderRadius: 14, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 4 },
-  primaryFilterSelected: { backgroundColor: Palette.primary },
-  primaryFilterText: { color: Palette.inkMuted, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
-  primaryFilterTextSelected: { color: Palette.white },
+  primaryFilterSelected: { backgroundColor: P.primary },
+  primaryFilterText: { color: P.inkMuted, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
+  primaryFilterTextSelected: { color: P.white },
   moreFilterRow: { minHeight: 34, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
-  moreFilterButton: { minHeight: 34, borderRadius: Radius.pill, paddingHorizontal: 14, borderWidth: 1, borderColor: Palette.line, backgroundColor: 'rgba(255,253,252,0.7)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
-  moreFilterButtonActive: { borderColor: Palette.primary, backgroundColor: Palette.accentSoft },
-  moreFilterText: { color: Palette.inkMuted, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
-  moreFilterTextActive: { color: Palette.primary },
-  activeFilterDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: Palette.primary },
-  filterSummary: { flex: 1, color: Palette.inkMuted, fontSize: 10, textAlign: 'right', writingDirection: 'rtl' },
-  syncNotice: { backgroundColor: Palette.successSoft, borderRadius: Radius.small, padding: 12, marginBottom: 16 },
-  syncNoticeText: { color: Palette.primary, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
+  moreFilterButton: { minHeight: 34, borderRadius: Radius.pill, paddingHorizontal: 14, borderWidth: 1, borderColor: P.line, backgroundColor: 'rgba(255,253,252,0.7)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
+  moreFilterButtonActive: { borderColor: P.primary, backgroundColor: P.accentSoft },
+  moreFilterText: { color: P.inkMuted, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
+  moreFilterTextActive: { color: P.primary },
+  activeFilterDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: P.primary },
+  filterSummary: { flex: 1, color: P.inkMuted, fontSize: 10, textAlign: 'right', writingDirection: 'rtl' },
+  syncNotice: { backgroundColor: P.successSoft, borderRadius: Radius.small, padding: 12, marginBottom: 16 },
+  syncNoticeText: { color: P.primary, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
   listHeading: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 13 },
-  count: { color: Palette.inkMuted, fontSize: 12, writingDirection: 'rtl' },
+  count: { color: P.inkMuted, fontSize: 12, writingDirection: 'rtl' },
   listTitleRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 7 },
-  listTitle: { color: Palette.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
+  listTitle: { color: P.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
   taskList: { gap: 11 },
-  taskCard: { minHeight: 92, backgroundColor: Palette.surface, borderRadius: Radius.medium, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 12, ...Shadow.card },
+  taskCard: { minHeight: 92, backgroundColor: P.surface, borderRadius: Radius.medium, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 12, ...S.card },
   timeColumn: { alignItems: 'center', gap: 7 },
   countdownBox: { width: 58, minHeight: 44, borderRadius: 13, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 5 },
-  countdownText: { color: Palette.white, fontSize: 11, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },
+  countdownText: { color: P.white, fontSize: 11, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },
   priorityLine: { width: 35, height: 4, borderRadius: 2 },
   taskCopy: { flex: 1, alignItems: 'flex-end' },
-  taskTitle: { color: Palette.ink, fontSize: 14, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  taskDescription: { color: Palette.inkMuted, fontSize: 11, lineHeight: 17, marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
+  taskTitle: { color: P.ink, fontSize: 14, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  taskDescription: { color: P.inkMuted, fontSize: 11, lineHeight: 17, marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
   completedDescription: { opacity: 0.62 },
   taskMetaRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 5, marginTop: 8 },
-  category: { color: Palette.primary, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
-  separator: { color: Palette.line },
-  remain: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
-  overdueText: { color: Palette.danger, fontWeight: '800' },
-  checkbox: { width: 27, height: 27, borderRadius: 9, borderWidth: 1.5, borderColor: Palette.line, alignItems: 'center', justifyContent: 'center' },
-  checkboxCompleted: { borderColor: Palette.success, backgroundColor: Palette.success },
-  checkText: { color: Palette.white, fontSize: 15, fontWeight: '900' },
-  completedText: { color: Palette.inkMuted, textDecorationLine: 'line-through' },
-  loadingCard: { minHeight: 180, borderRadius: Radius.large, backgroundColor: Palette.surface, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  loadingText: { color: Palette.inkMuted, fontSize: 12, writingDirection: 'rtl' },
+  category: { color: P.primary, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
+  separator: { color: P.line },
+  remain: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
+  overdueText: { color: P.danger, fontWeight: '800' },
+  checkbox: { width: 27, height: 27, borderRadius: 9, borderWidth: 1.5, borderColor: P.line, alignItems: 'center', justifyContent: 'center' },
+  checkboxCompleted: { borderColor: P.success, backgroundColor: P.success },
+  checkText: { color: P.white, fontSize: 15, fontWeight: '900' },
+  completedText: { color: P.inkMuted, textDecorationLine: 'line-through' },
+  loadingCard: { minHeight: 180, borderRadius: Radius.large, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center', gap: 12 },
+  loadingText: { color: P.inkMuted, fontSize: 12, writingDirection: 'rtl' },
   modalBackdrop: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(46,36,29,0.36)' },
-  filterSheet: { backgroundColor: Palette.canvas, borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 38 },
-  sheetHandle: { width: 42, height: 4, borderRadius: 2, backgroundColor: Palette.line, alignSelf: 'center', marginBottom: 20 },
+  filterSheet: { backgroundColor: P.canvas, borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 38 },
+  sheetHandle: { width: 42, height: 4, borderRadius: 2, backgroundColor: P.line, alignSelf: 'center', marginBottom: 20 },
   sheetHeader: { alignItems: 'flex-end', marginBottom: 24 },
-  sheetTitle: { color: Palette.ink, fontSize: 22, fontWeight: '900', writingDirection: 'rtl' },
-  sheetSubtitle: { color: Palette.inkMuted, fontSize: 11, marginTop: 4, writingDirection: 'rtl' },
-  sheetSectionTitle: { color: Palette.ink, fontSize: 13, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginBottom: 10, marginTop: 4 },
+  sheetTitle: { color: P.ink, fontSize: 22, fontWeight: '900', writingDirection: 'rtl' },
+  sheetSubtitle: { color: P.inkMuted, fontSize: 11, marginTop: 4, writingDirection: 'rtl' },
+  sheetSectionTitle: { color: P.ink, fontSize: 13, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginBottom: 10, marginTop: 4 },
   detailedFilterGrid: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 9, marginBottom: 20 },
-  detailedFilter: { flexGrow: 1, flexBasis: '46%', minHeight: 46, borderRadius: 15, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
-  detailedFilterSelected: { borderColor: Palette.primary, backgroundColor: Palette.primary },
-  detailedFilterText: { color: Palette.ink, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
-  detailedFilterTextSelected: { color: Palette.white },
+  detailedFilter: { flexGrow: 1, flexBasis: '46%', minHeight: 46, borderRadius: 15, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
+  detailedFilterSelected: { borderColor: P.primary, backgroundColor: P.primary },
+  detailedFilterText: { color: P.ink, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
+  detailedFilterTextSelected: { color: P.white },
   categoryFilters: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 8, marginBottom: 18 },
-  categoryFilter: { maxWidth: '100%', minHeight: 38, borderRadius: Radius.pill, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, justifyContent: 'center', paddingHorizontal: 15 },
-  categoryFilterSelected: { borderColor: Palette.primary, backgroundColor: Palette.accentSoft },
-  categoryFilterText: { color: Palette.inkMuted, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
-  categoryFilterTextSelected: { color: Palette.primary },
+  categoryFilter: { maxWidth: '100%', minHeight: 38, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, justifyContent: 'center', paddingHorizontal: 15 },
+  categoryFilterSelected: { borderColor: P.primary, backgroundColor: P.accentSoft },
+  categoryFilterText: { color: P.inkMuted, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
+  categoryFilterTextSelected: { color: P.primary },
   resetFilterButton: { minHeight: 46, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginTop: 2 },
-  resetFilterText: { color: Palette.danger, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
+  resetFilterText: { color: P.danger, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
   pressed: { opacity: 0.8, transform: [{ scale: 0.99 }] },
-});
+}));

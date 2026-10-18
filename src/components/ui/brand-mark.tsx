@@ -1,12 +1,13 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
-import { Palette } from '@/constants/design';
+import { makeStyles } from '@/contexts/theme-context';
 
 type BrandMarkProps = {
   compact?: boolean;
 };
 
 export function BrandMark({ compact = false }: BrandMarkProps) {
+  const styles = useStyles();
   return (
     <View style={styles.row}>
       <Image
@@ -18,7 +19,7 @@ export function BrandMark({ compact = false }: BrandMarkProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   row: { flexDirection: 'row-reverse', alignItems: 'center', gap: 10 },
   mark: {
     width: 42,
@@ -26,5 +27,5 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   markCompact: { width: 36, height: 36, borderRadius: 12 },
-  name: { color: Palette.ink, fontSize: 26, fontWeight: '900', writingDirection: 'rtl' },
-});
+  name: { color: P.ink, fontSize: 26, fontWeight: '900', writingDirection: 'rtl' },
+}));

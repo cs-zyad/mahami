@@ -1,14 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, Text, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { RoutineIcon, routineIconOptions } from '@/components/ui/routine-icon';
 import { TextField } from '@/components/ui/text-field';
 import { TimePickerField } from '@/components/ui/time-picker-field';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useRoutines } from '@/contexts/routines-context';
 
 const weekDays = [
@@ -37,6 +38,7 @@ function dateFromTime(time?: string | null) {
 }
 
 function BrandSwitch({ value, onValueChange }: { value: boolean; onValueChange: (value: boolean) => void }) {
+  const styles = useStyles();
   return (
     <Pressable
       accessibilityRole="switch"
@@ -54,6 +56,8 @@ function BrandSwitch({ value, onValueChange }: { value: boolean; onValueChange: 
 }
 
 export default function AddRoutineScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const params = useLocalSearchParams<{ routineId?: string | string[] }>();
   const routineId = Array.isArray(params.routineId) ? params.routineId[0] : params.routineId;
   const { routines, addRoutine, updateRoutine, deleteRoutine } = useRoutines();
@@ -221,7 +225,7 @@ export default function AddRoutineScreen() {
                 <AppIcon
                   name={{ ios: 'checkmark', android: 'check', web: 'check' }}
                   size={11}
-                  tintColor={Palette.white}
+                  tintColor={palette.white}
                   fallback="✓"
                 />
                 )}
@@ -273,7 +277,7 @@ export default function AddRoutineScreen() {
             <AppIcon
               name={{ ios: 'bell.fill', android: 'notifications', web: 'notifications' }}
               size={18}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="•"
             />
           </View>
@@ -284,7 +288,7 @@ export default function AddRoutineScreen() {
             <AppIcon
               name={{ ios: 'flame.fill', android: 'local_fire_department', web: 'local_fire_department' }}
               size={21}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="♢"
             />
           </View>
@@ -317,7 +321,7 @@ export default function AddRoutineScreen() {
               <AppIcon
                 name={{ ios: 'trash', android: 'delete_outline', web: 'delete_outline' }}
                 size={19}
-                tintColor={Palette.danger}
+                tintColor={palette.danger}
                 fallback="×"
               />
             </View>
@@ -332,77 +336,77 @@ export default function AddRoutineScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   form: { gap: 24 },
   fieldGroup: { gap: 12 },
-  label: { color: Palette.ink, fontSize: 14, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  label: { color: P.ink, fontSize: 14, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   iconHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  iconHint: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
+  iconHint: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
   iconOptions: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 9 },
   iconOption: {
     width: 48,
     height: 48,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surfaceMuted,
+    borderColor: P.line,
+    backgroundColor: P.surfaceMuted,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconOptionSelected: { borderWidth: 2, borderColor: Palette.primary, backgroundColor: Palette.accentSoft },
+  iconOptionSelected: { borderWidth: 2, borderColor: P.primary, backgroundColor: P.accentSoft },
   daysHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   everyDayButton: {
     minHeight: 40,
     borderRadius: Radius.pill,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     paddingHorizontal: 10,
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 5,
   },
-  everyDayButtonActive: { borderColor: Palette.primary, backgroundColor: Palette.accentSoft },
-  everyDayButtonText: { color: Palette.inkMuted, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
-  everyDayButtonTextActive: { color: Palette.primary },
-  everyDayCheck: { width: 20, height: 20, borderRadius: 7, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
-  everyDayCheckActive: { borderColor: Palette.primary, backgroundColor: Palette.primary },
+  everyDayButtonActive: { borderColor: P.primary, backgroundColor: P.accentSoft },
+  everyDayButtonText: { color: P.inkMuted, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
+  everyDayButtonTextActive: { color: P.primary },
+  everyDayCheck: { width: 20, height: 20, borderRadius: 7, borderWidth: 1, borderColor: P.line, backgroundColor: P.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
+  everyDayCheckActive: { borderColor: P.primary, backgroundColor: P.primary },
   days: { flexDirection: 'row-reverse', justifyContent: 'space-between', gap: 5 },
   day: {
     width: 42,
     height: 46,
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  daySelected: { borderColor: Palette.primary, backgroundColor: Palette.primary },
-  dayText: { color: Palette.inkMuted, fontSize: 13, fontWeight: '900' },
-  dayTextSelected: { color: Palette.white },
-  daysSummary: { color: Palette.inkMuted, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
-  daysSummaryError: { color: Palette.danger },
+  daySelected: { borderColor: P.primary, backgroundColor: P.primary },
+  dayText: { color: P.inkMuted, fontSize: 13, fontWeight: '900' },
+  dayTextSelected: { color: P.white },
+  daysSummary: { color: P.inkMuted, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
+  daysSummaryError: { color: P.danger },
   reminderRow: {
     minHeight: 84,
     borderRadius: Radius.medium,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     paddingHorizontal: 13,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
   },
   reminderCopy: { flex: 1, alignItems: 'flex-end' },
-  reminderIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  reminderTitle: { color: Palette.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-  reminderText: { color: Palette.inkMuted, fontSize: 11, marginTop: 4, writingDirection: 'rtl' },
-  switchTrack: { width: 54, height: 32, borderRadius: Radius.pill, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surfaceMuted, padding: 3, justifyContent: 'center', alignItems: 'flex-start' },
-  switchTrackActive: { borderColor: Palette.primary, backgroundColor: Palette.primary, alignItems: 'flex-end' },
-  switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: Palette.surface, borderWidth: 1, borderColor: Palette.line },
-  switchThumbActive: { borderColor: '#E7D5C4', backgroundColor: Palette.canvas },
+  reminderIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  reminderTitle: { color: P.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  reminderText: { color: P.inkMuted, fontSize: 11, marginTop: 4, writingDirection: 'rtl' },
+  switchTrack: { width: 54, height: 32, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.surfaceMuted, padding: 3, justifyContent: 'center', alignItems: 'flex-start' },
+  switchTrackActive: { borderColor: P.primary, backgroundColor: P.primary, alignItems: 'flex-end' },
+  switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line },
+  switchThumbActive: { borderColor: '#E7D5C4', backgroundColor: P.canvas },
   switchPressed: { opacity: 0.8 },
   streakNote: {
     minHeight: 86,
@@ -415,9 +419,9 @@ const styles = StyleSheet.create({
   },
   streakIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: '#E9D2B4', alignItems: 'center', justifyContent: 'center' },
   streakCopy: { flex: 1, alignItems: 'flex-end' },
-  streakTitle: { color: Palette.primary, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
-  streakText: { color: Palette.inkMuted, fontSize: 11, lineHeight: 18, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
-  error: { color: Palette.danger, fontSize: 13, lineHeight: 20, textAlign: 'right', writingDirection: 'rtl' },
+  streakTitle: { color: P.primary, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
+  streakText: { color: P.inkMuted, fontSize: 11, lineHeight: 18, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
+  error: { color: P.danger, fontSize: 13, lineHeight: 20, textAlign: 'right', writingDirection: 'rtl' },
   save: { marginTop: 2 },
   deleteRoutineButton: {
     minHeight: 72,
@@ -433,8 +437,8 @@ const styles = StyleSheet.create({
   deleteRoutineButtonPressed: { opacity: 0.72, transform: [{ scale: 0.99 }] },
   deleteRoutineIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: '#F1DBD5', alignItems: 'center', justifyContent: 'center' },
   deleteRoutineCopy: { flex: 1, alignItems: 'flex-end', gap: 3 },
-  deleteRoutineTitle: { color: Palette.danger, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-  deleteRoutineText: { color: Palette.danger, opacity: 0.78, fontSize: 10, textAlign: 'right', writingDirection: 'rtl' },
+  deleteRoutineTitle: { color: P.danger, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  deleteRoutineText: { color: P.danger, opacity: 0.78, fontSize: 10, textAlign: 'right', writingDirection: 'rtl' },
   disabled: { opacity: 0.55 },
   pressed: { opacity: 0.78, transform: [{ scale: 0.98 }] },
-});
+}));

@@ -1,11 +1,12 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 
 type Step = 'phone' | 'otp';
@@ -42,6 +43,7 @@ function formatPhone(phone: string) {
 }
 
 export default function PhoneLoginScreen() {
+  const styles = useStyles();
   const [step, setStep] = useState<Step>('phone');
   const [phone, setPhone] = useState(__DEV__ ? TEST_PHONE_INPUT : '+966 ');
   const [verifiedPhone, setVerifiedPhone] = useState('');
@@ -301,15 +303,15 @@ export default function PhoneLoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   form: { gap: 18 },
   submit: { marginTop: 4 },
   countryBadge: {
     minHeight: 70,
     borderRadius: Radius.medium,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surfaceMuted,
+    borderColor: P.line,
+    backgroundColor: P.surfaceMuted,
     paddingHorizontal: 16,
     paddingVertical: 12,
     flexDirection: 'row-reverse',
@@ -319,14 +321,14 @@ const styles = StyleSheet.create({
   countryFlag: { fontSize: 25 },
   countryTextGroup: { flex: 1, alignItems: 'flex-end', gap: 3 },
   countryName: {
-    color: Palette.ink,
+    color: P.ink,
     fontSize: 14,
     fontWeight: '800',
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   countryCode: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 12,
     textAlign: 'right',
     writingDirection: 'rtl',
@@ -337,21 +339,21 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   privacyNote: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 12,
     lineHeight: 20,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   authError: {
-    color: Palette.danger,
+    color: P.danger,
     fontSize: 13,
     lineHeight: 21,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   successText: {
-    color: Palette.success,
+    color: P.success,
     fontSize: 13,
     fontWeight: '700',
     textAlign: 'right',
@@ -361,8 +363,8 @@ const styles = StyleSheet.create({
     minHeight: 76,
     borderRadius: Radius.medium,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     padding: 14,
     flexDirection: 'row-reverse',
     alignItems: 'center',
@@ -371,13 +373,13 @@ const styles = StyleSheet.create({
   },
   numberTextGroup: { flex: 1, alignItems: 'flex-end', gap: 5 },
   numberCaption: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 12,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   numberValue: {
-    color: Palette.ink,
+    color: P.ink,
     fontSize: 16,
     fontWeight: '800',
     writingDirection: 'ltr',
@@ -386,13 +388,13 @@ const styles = StyleSheet.create({
     minWidth: 58,
     height: 36,
     borderRadius: Radius.pill,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: P.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 12,
   },
   editButtonText: {
-    color: Palette.primary,
+    color: P.primary,
     fontSize: 12,
     fontWeight: '900',
     writingDirection: 'rtl',
@@ -416,16 +418,16 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   resendText: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 13,
     textAlign: 'center',
     writingDirection: 'rtl',
   },
   resendLink: {
-    color: Palette.primary,
+    color: P.primary,
     fontSize: 13,
     fontWeight: '900',
     writingDirection: 'rtl',
   },
-  disabledLink: { color: Palette.inkMuted, opacity: 0.7 },
-});
+  disabledLink: { color: P.inkMuted, opacity: 0.7 },
+}));

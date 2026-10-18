@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { BackButton } from '@/components/ui/back-button';
-import { Palette } from '@/constants/design';
 
 export function FormScreen({
   title,
@@ -16,6 +16,7 @@ export function FormScreen({
   children: ReactNode;
   showBack?: boolean;
 }) {
+  const styles = useStyles();
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView style={styles.keyboard} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -36,12 +37,12 @@ export function FormScreen({
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P) => ({
+  safeArea: { flex: 1, backgroundColor: P.canvas },
   keyboard: { flex: 1 },
   content: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 14, paddingBottom: 30 },
   topBar: { flexDirection: 'row-reverse', marginBottom: 24 },
   headerCopy: { alignItems: 'flex-end', marginBottom: 30 },
-  title: { color: Palette.ink, fontSize: 29, fontWeight: '900', writingDirection: 'rtl' },
-  subtitle: { color: Palette.inkMuted, fontSize: 12, marginTop: 4, writingDirection: 'rtl' },
-});
+  title: { color: P.ink, fontSize: 29, fontWeight: '900', writingDirection: 'rtl' },
+  subtitle: { color: P.inkMuted, fontSize: 12, marginTop: 4, writingDirection: 'rtl' },
+}));

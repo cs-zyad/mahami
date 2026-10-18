@@ -3,11 +3,12 @@ import { useMemo } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { EmptyState } from '@/components/ui/empty-state';
 import { FloatingAddButton } from '@/components/ui/floating-add-button';
 import { RoutineIcon } from '@/components/ui/routine-icon';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useRoutines } from '@/contexts/routines-context';
 import { localDateKey, routineStreak, shiftDate } from '@/lib/routine-utils';
 import { Routine } from '@/types/routine';
@@ -40,6 +41,8 @@ function RoutineCard({
   onToggle: () => void;
   onEdit: () => void;
 }) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -58,7 +61,7 @@ function RoutineCard({
             <AppIcon
               name={{ ios: 'checkmark', android: 'check', web: 'check' }}
               size={10}
-              tintColor={Palette.white}
+              tintColor={palette.white}
               fallback="✓"
             />
           </View>
@@ -74,7 +77,7 @@ function RoutineCard({
             <AppIcon
               name={{ ios: 'bell.fill', android: 'notifications', web: 'notifications' }}
               size={13}
-              tintColor={Palette.inkMuted}
+              tintColor={palette.inkMuted}
               fallback="•"
             />
           )}
@@ -93,7 +96,7 @@ function RoutineCard({
           <AppIcon
             name={{ ios: 'flame.fill', android: 'local_fire_department', web: 'local_fire_department' }}
             size={13}
-            tintColor={Palette.primary}
+            tintColor={palette.primary}
             fallback="♢"
           />
           <Text style={styles.streakBadgeText}>{toArabicDigits(streak)}</Text>
@@ -110,7 +113,7 @@ function RoutineCard({
           <AppIcon
             name={{ ios: 'pencil', android: 'edit', web: 'edit' }}
             size={17}
-            tintColor={Palette.primary}
+            tintColor={palette.primary}
             fallback="✎"
           />
         </Pressable>
@@ -120,6 +123,8 @@ function RoutineCard({
 }
 
 export default function RoutineScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const {
     routines,
     completions,
@@ -151,7 +156,7 @@ export default function RoutineScreen() {
     return (
       <SafeAreaView style={styles.safeArea} edges={['top']}>
         <View style={styles.loadingState}>
-          <ActivityIndicator color={Palette.primary} />
+          <ActivityIndicator color={palette.primary} />
           <Text style={styles.loadingText}>جاري تجهيز روتينك...</Text>
         </View>
       </SafeAreaView>
@@ -167,8 +172,8 @@ export default function RoutineScreen() {
           <RefreshControl
             refreshing={syncing}
             onRefresh={refresh}
-            tintColor={Palette.primary}
-            colors={[Palette.primary]}
+            tintColor={palette.primary}
+            colors={[palette.primary]}
           />
         )}>
         <View style={styles.header}>
@@ -244,7 +249,7 @@ export default function RoutineScreen() {
                       <AppIcon
                         name={{ ios: 'checkmark', android: 'check', web: 'check' }}
                         size={14}
-                        tintColor={Palette.white}
+                        tintColor={palette.white}
                         fallback="✓"
                       />
                     ) : (
@@ -264,7 +269,7 @@ export default function RoutineScreen() {
             <AppIcon
               name={{ ios: 'icloud.slash', android: 'cloud_off', web: 'cloud_off' }}
               size={18}
-              tintColor={Palette.danger}
+              tintColor={palette.danger}
               fallback="!"
             />
             <Text style={styles.syncBannerText}>{lastError}</Text>
@@ -290,7 +295,7 @@ export default function RoutineScreen() {
                 <AppIcon
                   name={{ ios: 'sparkles', android: 'auto_awesome', web: 'auto_awesome' }}
                   size={19}
-                  tintColor={Palette.primary}
+                  tintColor={palette.primary}
                   fallback="✦"
                 />
               </View>
@@ -333,26 +338,26 @@ export default function RoutineScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P, S) => ({
+  safeArea: { flex: 1, backgroundColor: P.canvas },
   content: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 150 },
   loadingState: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
-  loadingText: { color: Palette.inkMuted, fontSize: 13, writingDirection: 'rtl' },
+  loadingText: { color: P.inkMuted, fontSize: 13, writingDirection: 'rtl' },
   header: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between' },
   headerCopy: { alignItems: 'flex-end' },
-  title: { color: Palette.ink, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
-  subtitle: { color: Palette.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
+  title: { color: P.ink, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
+  subtitle: { color: P.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
   progressCard: {
     marginTop: 24,
     borderRadius: Radius.large,
-    backgroundColor: Palette.primary,
+    backgroundColor: P.primary,
     padding: 20,
-    ...Shadow.card,
+    ...S.card,
   },
   progressTop: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', gap: 16 },
   progressCopy: { flex: 1, alignItems: 'flex-end' },
   progressEyebrow: { color: '#DCCABC', fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
-  progressTitle: { color: Palette.white, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
+  progressTitle: { color: P.white, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
   progressCircle: {
     width: 68,
     height: 68,
@@ -363,37 +368,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  progressPercent: { color: Palette.white, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
+  progressPercent: { color: P.white, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
   progressTrack: { height: 7, borderRadius: Radius.pill, backgroundColor: 'rgba(255,255,255,0.15)', marginTop: 20, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: Radius.pill, backgroundColor: '#F1D2B5' },
   statsRow: { minHeight: 53, marginTop: 15, flexDirection: 'row-reverse', alignItems: 'center' },
   statItem: { flex: 1, alignItems: 'center', gap: 3 },
   statDivider: { width: StyleSheet.hairlineWidth, height: 31, backgroundColor: 'rgba(255,255,255,0.2)' },
-  statValue: { color: Palette.white, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  statValue: { color: P.white, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
   statLabel: { color: '#DCCABC', fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
   weekSection: { marginTop: 27 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 26, marginBottom: 12 },
-  sectionTitle: { color: Palette.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
-  sectionHint: { color: Palette.inkMuted, fontSize: 11, fontWeight: '700', writingDirection: 'rtl' },
+  sectionTitle: { color: P.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
+  sectionHint: { color: P.inkMuted, fontSize: 11, fontWeight: '700', writingDirection: 'rtl' },
   weekCard: {
     minHeight: 96,
     borderRadius: Radius.large,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     paddingHorizontal: 11,
     paddingVertical: 14,
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
   },
   dayColumn: { alignItems: 'center', gap: 8 },
-  dayName: { color: Palette.inkMuted, fontSize: 9, fontWeight: '700' },
-  dayNameToday: { color: Palette.primary, fontWeight: '900' },
-  dayBubble: { width: 35, height: 35, borderRadius: 13, backgroundColor: Palette.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
-  dayBubbleToday: { borderWidth: 1.5, borderColor: Palette.primary, backgroundColor: Palette.surface },
-  dayBubbleCompleted: { borderColor: Palette.success, backgroundColor: Palette.success },
-  dayNumber: { color: Palette.inkMuted, fontSize: 11, fontWeight: '800' },
-  dayNumberToday: { color: Palette.primary },
+  dayName: { color: P.inkMuted, fontSize: 9, fontWeight: '700' },
+  dayNameToday: { color: P.primary, fontWeight: '900' },
+  dayBubble: { width: 35, height: 35, borderRadius: 13, backgroundColor: P.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
+  dayBubbleToday: { borderWidth: 1.5, borderColor: P.primary, backgroundColor: P.surface },
+  dayBubbleCompleted: { borderColor: P.success, backgroundColor: P.success },
+  dayNumber: { color: P.inkMuted, fontSize: 11, fontWeight: '800' },
+  dayNumberToday: { color: P.primary },
   syncBanner: {
     minHeight: 58,
     marginTop: 18,
@@ -405,14 +410,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-  syncBannerText: { flex: 1, color: Palette.danger, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
+  syncBannerText: { flex: 1, color: P.danger, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
   routinesList: { gap: 11 },
   routineCard: {
     minHeight: 86,
     borderRadius: Radius.medium,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surface,
+    borderColor: P.line,
+    backgroundColor: P.surface,
     paddingHorizontal: 14,
     paddingVertical: 13,
     flexDirection: 'row-reverse',
@@ -425,8 +430,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 17,
     borderWidth: 1,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surfaceMuted,
+    borderColor: P.line,
+    backgroundColor: P.surfaceMuted,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -438,35 +443,35 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: Palette.surface,
-    backgroundColor: Palette.success,
+    borderColor: P.surface,
+    backgroundColor: P.success,
     alignItems: 'center',
     justifyContent: 'center',
   },
   routineCopy: { flex: 1, alignItems: 'flex-end', gap: 7 },
-  routineTitle: { color: Palette.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  routineTitleCompleted: { color: Palette.success, textDecorationLine: 'line-through' },
+  routineTitle: { color: P.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  routineTitleCompleted: { color: P.success, textDecorationLine: 'line-through' },
   routineMeta: { flexDirection: 'row-reverse', alignItems: 'center', gap: 5 },
-  routineMetaText: { color: Palette.inkMuted, fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
-  metaDot: { width: 3, height: 3, borderRadius: 2, backgroundColor: Palette.line },
+  routineMetaText: { color: P.inkMuted, fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
+  metaDot: { width: 3, height: 3, borderRadius: 2, backgroundColor: P.line },
   routineActions: { alignItems: 'center', gap: 7 },
   streakBadge: { minWidth: 49, height: 30, borderRadius: 11, backgroundColor: '#F5E7D4', flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'center', gap: 4, paddingHorizontal: 8 },
-  streakBadgeText: { color: Palette.primary, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
+  streakBadgeText: { color: P.primary, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
   editButton: {
     width: 38,
     height: 34,
     borderRadius: 11,
     borderWidth: 1,
     borderColor: '#E4D2BD',
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: P.surfaceMuted,
     alignItems: 'center',
     justifyContent: 'center',
   },
   editButtonPressed: { opacity: 0.65, transform: [{ scale: 0.94 }] },
-  tipCard: { minHeight: 76, marginTop: 14, borderRadius: Radius.medium, backgroundColor: Palette.accentSoft, padding: 14, flexDirection: 'row-reverse', alignItems: 'center', gap: 12 },
+  tipCard: { minHeight: 76, marginTop: 14, borderRadius: Radius.medium, backgroundColor: P.accentSoft, padding: 14, flexDirection: 'row-reverse', alignItems: 'center', gap: 12 },
   tipIcon: { width: 42, height: 42, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.52)', alignItems: 'center', justifyContent: 'center' },
   tipCopy: { flex: 1, alignItems: 'flex-end', gap: 4 },
-  tipTitle: { color: Palette.primary, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
-  tipText: { color: Palette.inkMuted, fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl' },
+  tipTitle: { color: P.primary, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
+  tipText: { color: P.inkMuted, fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl' },
   pressed: { opacity: 0.78, transform: [{ scale: 0.985 }] },
-});
+}));

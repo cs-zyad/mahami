@@ -1,7 +1,7 @@
 import { ColorValue } from 'react-native';
 
+import { useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
-import { Palette } from '@/constants/design';
 
 export const routineIconOptions = [
   { key: 'sparkles', label: 'عام', ios: 'sparkles', android: 'auto_awesome', fallback: '✦' },
@@ -23,19 +23,20 @@ export type RoutineIconKey = typeof routineIconOptions[number]['key'];
 export function RoutineIcon({
   icon,
   size = 22,
-  color = Palette.primary,
+  color,
 }: {
   icon: string;
   size?: number;
   color?: ColorValue;
 }) {
+  const { palette } = useTheme();
   const selectedIcon = routineIconOptions.find((option) => option.key === icon) ?? routineIconOptions[0];
 
   return (
     <AppIcon
       name={{ ios: selectedIcon.ios, android: selectedIcon.android, web: selectedIcon.android }}
       size={size}
-      tintColor={color}
+      tintColor={color ?? palette.primary}
       fallback={selectedIcon.fallback}
     />
   );

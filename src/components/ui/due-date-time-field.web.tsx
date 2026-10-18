@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 
-import { Palette, Radius } from '@/constants/design';
+import { makeStyles } from '@/contexts/theme-context';
+import { Radius } from '@/constants/design';
 
 type DueDateTimeFieldProps = {
   value: Date | null;
@@ -19,6 +20,7 @@ function timeText(value: Date | null) {
 }
 
 export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
+  const styles = useStyles();
   const [date, setDate] = useState(dateText(value));
   const [time, setTime] = useState(timeText(value));
 
@@ -63,9 +65,9 @@ export function DueDateTimeField({ value, onChange }: DueDateTimeFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   row: { flexDirection: 'row-reverse', gap: 10 },
-  field: { flex: 1, minHeight: 76, borderRadius: Radius.medium, borderWidth: 1, borderColor: Palette.line, backgroundColor: Palette.surface, padding: 12, alignItems: 'flex-end', justifyContent: 'center', gap: 5 },
-  label: { color: Palette.inkMuted, fontSize: 10, writingDirection: 'rtl' },
-  input: { width: '100%', color: Palette.ink, fontSize: 13, fontWeight: '900', textAlign: 'right' },
-});
+  field: { flex: 1, minHeight: 76, borderRadius: Radius.medium, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, padding: 12, alignItems: 'flex-end', justifyContent: 'center', gap: 5 },
+  label: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
+  input: { width: '100%', color: P.ink, fontSize: 13, fontWeight: '900', textAlign: 'right' },
+}));

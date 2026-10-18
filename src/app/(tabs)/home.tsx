@@ -3,11 +3,12 @@ import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { EmptyState } from '@/components/ui/empty-state';
 import { FloatingAddButton } from '@/components/ui/floating-add-button';
 import { RoutineIcon } from '@/components/ui/routine-icon';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 import { useRoutines } from '@/contexts/routines-context';
 import { useTasks } from '@/contexts/tasks-context';
@@ -25,6 +26,7 @@ function sameLocalDay(value: string | null, date = new Date()) {
 }
 
 function SectionHeader({ title, action, onAction }: { title: string; action?: string; onAction?: () => void }) {
+  const styles = useStyles();
   return (
     <View style={styles.sectionHeader}>
       {!!action && (
@@ -43,6 +45,8 @@ function SectionHeader({ title, action, onAction }: { title: string; action?: st
 }
 
 export default function HomeScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const { session } = useAuth();
   const { tasks, toggleTask } = useTasks();
   const { routines, completions, toggleRoutineToday } = useRoutines();
@@ -99,8 +103,8 @@ export default function HomeScreen() {
       key: 'completed',
       label: 'المنتهية',
       count: tasks.filter((task) => task.status === 'completed').length,
-      color: Palette.success,
-      tint: Palette.successSoft,
+      color: palette.success,
+      tint: palette.successSoft,
     },
   ];
   const todayRoutines = routines.filter((routine) => routine.repeat_days.includes(now.getDay()));
@@ -170,7 +174,7 @@ export default function HomeScreen() {
             <AppIcon
               name={{ ios: 'chevron.left', android: 'chevron_left', web: 'chevron_left' }}
               size={16}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="‹"
             />
           </View>
@@ -185,7 +189,7 @@ export default function HomeScreen() {
             <AppIcon
               name={{ ios: 'text.viewfinder', android: 'document_scanner', web: 'document_scanner' }}
               size={23}
-              tintColor={Palette.primary}
+              tintColor={palette.primary}
               fallback="▣"
             />
           </View>
@@ -195,7 +199,7 @@ export default function HomeScreen() {
           <AppIcon
             name={{ ios: 'chevron.left', android: 'chevron_left', web: 'chevron_left' }}
             size={18}
-            tintColor={Palette.danger}
+            tintColor={palette.danger}
             fallback="‹"
           />
           <View style={styles.overdueCopy}>
@@ -206,7 +210,7 @@ export default function HomeScreen() {
             <AppIcon
               name={{ ios: 'clock.badge.exclamationmark.fill', android: 'alarm_on', web: 'alarm_on' }}
               size={21}
-              tintColor={Palette.danger}
+              tintColor={palette.danger}
               fallback="!"
             />
           </View>
@@ -300,7 +304,7 @@ export default function HomeScreen() {
                   <AppIcon
                     name={{ ios: 'flame.fill', android: 'local_fire_department', web: 'local_fire_department' }}
                     size={12}
-                    tintColor={Palette.primary}
+                    tintColor={palette.primary}
                     fallback="♢"
                   />
                   <Text style={styles.streakText}>{routineStreak(item.id, completions, item.repeat_days)}</Text>
@@ -351,7 +355,7 @@ export default function HomeScreen() {
                     <AppIcon
                       name={taskCategoryOption(folder.name).icon}
                       size={24}
-                      tintColor={Palette.primary}
+                      tintColor={palette.primary}
                       fallback={taskCategoryOption(folder.name).fallback}
                     />
                   </View>
@@ -371,7 +375,7 @@ export default function HomeScreen() {
               <AppIcon
                 name={{ ios: 'folder.badge.plus', android: 'create_new_folder', web: 'create_new_folder' }}
                 size={24}
-                tintColor={Palette.primary}
+                tintColor={palette.primary}
                 fallback="+"
               />
             </View>
@@ -430,7 +434,7 @@ export default function HomeScreen() {
                   <AppIcon
                     name={{ ios: 'text.viewfinder', android: 'document_scanner', web: 'document_scanner' }}
                     size={22}
-                    tintColor={Palette.primary}
+                    tintColor={palette.primary}
                     fallback="▣"
                   />
                 </View>
@@ -450,98 +454,98 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P, S) => ({
+  safeArea: { flex: 1, backgroundColor: P.canvas },
   content: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 126 },
   topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
-  avatar: { width: 44, height: 44, borderRadius: 16, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  avatarText: { color: Palette.primary, fontSize: 17, fontWeight: '900' },
+  avatar: { width: 44, height: 44, borderRadius: 16, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  avatarText: { color: P.primary, fontSize: 17, fontWeight: '900' },
   greeting: { alignItems: 'flex-end' },
-  hello: { color: Palette.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
-  date: { color: Palette.inkMuted, fontSize: 12, marginTop: 4, writingDirection: 'rtl' },
-  dayCard: { backgroundColor: Palette.primary, borderRadius: Radius.large, padding: 20, ...Shadow.card },
-  dayCardPressed: { backgroundColor: Palette.primaryPressed, transform: [{ scale: 0.99 }] },
+  hello: { color: P.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
+  date: { color: P.inkMuted, fontSize: 12, marginTop: 4, writingDirection: 'rtl' },
+  dayCard: { backgroundColor: P.primary, borderRadius: Radius.large, padding: 20, ...S.card },
+  dayCardPressed: { backgroundColor: P.primaryPressed, transform: [{ scale: 0.99 }] },
   dayCardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 },
   dayCopy: { alignItems: 'flex-end', flex: 1 },
   dayEyebrow: { color: '#D9C7B7', fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
-  dayTitle: { color: Palette.white, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
+  dayTitle: { color: P.white, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
   remainingPill: { backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 11, paddingVertical: 7, borderRadius: Radius.pill },
-  remainingPillText: { color: Palette.white, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
+  remainingPillText: { color: P.white, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
   progressMeta: { flexDirection: 'row-reverse', justifyContent: 'space-between', marginTop: 24 },
   progressCount: { color: '#E9DCD1', fontSize: 11, writingDirection: 'rtl' },
-  progressPercent: { color: Palette.white, fontSize: 11, fontWeight: '900' },
+  progressPercent: { color: P.white, fontSize: 11, fontWeight: '900' },
   progressTrack: { height: 7, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.14)', marginTop: 9, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: 4, backgroundColor: '#E7B58F' },
   dayCardAction: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', gap: 3, marginTop: 13 },
   dayCardActionText: { color: '#EEDFD3', fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
-  smartCaptureCard: { minHeight: 92, borderRadius: Radius.medium, borderWidth: 1, borderColor: '#DCC4AF', backgroundColor: '#F0E2D3', padding: 14, marginTop: 14, flexDirection: 'row', alignItems: 'center', gap: 11, ...Shadow.card },
+  smartCaptureCard: { minHeight: 92, borderRadius: Radius.medium, borderWidth: 1, borderColor: '#DCC4AF', backgroundColor: '#F0E2D3', padding: 14, marginTop: 14, flexDirection: 'row', alignItems: 'center', gap: 11, ...S.card },
   smartCaptureArrow: { width: 31, height: 31, borderRadius: 11, backgroundColor: 'rgba(255,255,255,0.55)', alignItems: 'center', justifyContent: 'center' },
   smartCaptureCopy: { flex: 1, alignItems: 'flex-end' },
   smartCaptureTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 7 },
-  smartCaptureTitle: { color: Palette.ink, fontSize: 16, fontWeight: '900', writingDirection: 'rtl' },
-  smartCaptureBadge: { color: Palette.white, fontSize: 8, fontWeight: '900', backgroundColor: Palette.primary, borderRadius: Radius.pill, paddingHorizontal: 7, paddingVertical: 4, writingDirection: 'rtl' },
-  smartCaptureText: { color: Palette.inkMuted, fontSize: 10, marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
-  smartCaptureIcon: { width: 50, height: 50, borderRadius: 17, backgroundColor: Palette.surface, alignItems: 'center', justifyContent: 'center' },
+  smartCaptureTitle: { color: P.ink, fontSize: 16, fontWeight: '900', writingDirection: 'rtl' },
+  smartCaptureBadge: { color: P.white, fontSize: 8, fontWeight: '900', backgroundColor: P.primary, borderRadius: Radius.pill, paddingHorizontal: 7, paddingVertical: 4, writingDirection: 'rtl' },
+  smartCaptureText: { color: P.inkMuted, fontSize: 10, marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
+  smartCaptureIcon: { width: 50, height: 50, borderRadius: 17, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center' },
   overdueBanner: { minHeight: 78, backgroundColor: '#F6E5E0', borderRadius: Radius.medium, marginTop: 16, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 12 },
   overdueCopy: { flex: 1, alignItems: 'flex-end' },
-  overdueTitle: { color: Palette.danger, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  overdueTitle: { color: P.danger, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
   overdueText: { color: '#8A625D', fontSize: 11, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
   overdueIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: '#F0CFC8', alignItems: 'center', justifyContent: 'center' },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 28, marginBottom: 13 },
-  sectionTitle: { color: Palette.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
-  sectionAction: { color: Palette.primary, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
+  sectionTitle: { color: P.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
+  sectionAction: { color: P.primary, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
   actionPressed: { opacity: 0.55 },
   priorityGrid: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 10 },
   priorityCard: { width: '48.5%', minHeight: 112, borderRadius: Radius.medium, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
   priorityDot: { width: 25, height: 25, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
   priorityDotInner: { width: 8, height: 8, borderRadius: 4 },
-  priorityCount: { color: Palette.ink, fontSize: 24, fontWeight: '900', marginTop: 7 },
+  priorityCount: { color: P.ink, fontSize: 24, fontWeight: '900', marginTop: 7 },
   priorityLabel: { minHeight: 30, fontSize: 10, lineHeight: 14, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },
   cardPressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
-  listCard: { backgroundColor: Palette.surface, borderRadius: Radius.large, paddingHorizontal: 16, ...Shadow.card },
+  listCard: { backgroundColor: P.surface, borderRadius: Radius.large, paddingHorizontal: 16, ...S.card },
   taskRow: { minHeight: 75, flexDirection: 'row', alignItems: 'center', gap: 13 },
   taskCopy: { flex: 1, alignItems: 'flex-end' },
-  taskTitle: { color: Palette.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
-  taskDescription: { color: Palette.inkMuted, fontSize: 11, lineHeight: 16, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
-  taskMeta: { color: Palette.inkMuted, fontSize: 11, marginTop: 5, writingDirection: 'rtl' },
-  overdueMeta: { color: Palette.danger, fontWeight: '800' },
-  rowBorder: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: Palette.line },
-  checkbox: { width: 27, height: 27, borderRadius: 9, borderWidth: 1.5, borderColor: Palette.line, alignItems: 'center', justifyContent: 'center' },
-  checkboxCompleted: { borderColor: Palette.success, backgroundColor: Palette.success },
-  checkText: { color: Palette.white, fontSize: 15, fontWeight: '900' },
-  completedText: { color: Palette.inkMuted, textDecorationLine: 'line-through' },
+  taskTitle: { color: P.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
+  taskDescription: { color: P.inkMuted, fontSize: 11, lineHeight: 16, marginTop: 4, textAlign: 'right', writingDirection: 'rtl' },
+  taskMeta: { color: P.inkMuted, fontSize: 11, marginTop: 5, writingDirection: 'rtl' },
+  overdueMeta: { color: P.danger, fontWeight: '800' },
+  rowBorder: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: P.line },
+  checkbox: { width: 27, height: 27, borderRadius: 9, borderWidth: 1.5, borderColor: P.line, alignItems: 'center', justifyContent: 'center' },
+  checkboxCompleted: { borderColor: P.success, backgroundColor: P.success },
+  checkText: { color: P.white, fontSize: 15, fontWeight: '900' },
+  completedText: { color: P.inkMuted, textDecorationLine: 'line-through' },
   routineRow: { minHeight: 68, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  routineTitle: { flex: 1, color: Palette.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
+  routineTitle: { flex: 1, color: P.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
   streakPill: { backgroundColor: '#F6E7D3', borderRadius: Radius.pill, paddingHorizontal: 9, paddingVertical: 6, flexDirection: 'row-reverse', alignItems: 'center', gap: 4 },
   streakText: { color: '#9B632F', fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
-  homeRoutineIcon: { width: 32, height: 32, borderRadius: 10, backgroundColor: Palette.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
+  homeRoutineIcon: { width: 32, height: 32, borderRadius: 10, backgroundColor: P.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
   categoryGrid: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 10 },
   categoryFolder: { width: '48.5%', minHeight: 128, borderRadius: Radius.medium, borderWidth: 1, borderColor: '#DEC8B4', backgroundColor: '#F2E4D5', padding: 14, justifyContent: 'space-between' },
   categoryFolderWarm: { borderColor: '#E7D2BA', backgroundColor: '#F8EDDE' },
   categoryFolderMuted: { borderColor: '#DCD5CB', backgroundColor: '#EEEAE4' },
   categoryFolderTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
   categoryFolderIcon: { width: 44, height: 40, borderRadius: 13, backgroundColor: 'rgba(255,255,255,0.55)', alignItems: 'center', justifyContent: 'center' },
-  categoryFolderCount: { minWidth: 27, height: 27, borderRadius: Radius.pill, backgroundColor: 'rgba(109,73,53,0.1)', color: Palette.primary, fontSize: 11, fontWeight: '900', textAlign: 'center', textAlignVertical: 'center', lineHeight: 27 },
-  categoryFolderName: { color: Palette.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginTop: 12 },
-  categoryFolderMeta: { color: Palette.inkMuted, fontSize: 10, textAlign: 'right', writingDirection: 'rtl', marginTop: 4 },
-  emptyCategories: { minHeight: 92, borderRadius: Radius.medium, borderWidth: 1, borderStyle: 'dashed', borderColor: Palette.accent, backgroundColor: '#FAF4EC', padding: 15, flexDirection: 'row-reverse', alignItems: 'center', gap: 13 },
-  emptyCategoryIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  categoryFolderCount: { minWidth: 27, height: 27, borderRadius: Radius.pill, backgroundColor: 'rgba(109,73,53,0.1)', color: P.primary, fontSize: 11, fontWeight: '900', textAlign: 'center', textAlignVertical: 'center', lineHeight: 27 },
+  categoryFolderName: { color: P.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginTop: 12 },
+  categoryFolderMeta: { color: P.inkMuted, fontSize: 10, textAlign: 'right', writingDirection: 'rtl', marginTop: 4 },
+  emptyCategories: { minHeight: 92, borderRadius: Radius.medium, borderWidth: 1, borderStyle: 'dashed', borderColor: P.accent, backgroundColor: '#FAF4EC', padding: 15, flexDirection: 'row-reverse', alignItems: 'center', gap: 13 },
+  emptyCategoryIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   emptyCategoryCopy: { flex: 1, alignItems: 'flex-end' },
-  emptyCategoryTitle: { color: Palette.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-  emptyCategoryText: { color: Palette.inkMuted, fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl', marginTop: 4 },
+  emptyCategoryTitle: { color: P.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  emptyCategoryText: { color: P.inkMuted, fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl', marginTop: 4 },
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(46,36,29,0.34)', justifyContent: 'flex-end' },
-  addSheet: { backgroundColor: Palette.canvas, borderTopLeftRadius: 32, borderTopRightRadius: 32, paddingHorizontal: 22, paddingTop: 12, paddingBottom: 34 },
-  sheetHandle: { width: 42, height: 5, borderRadius: 3, backgroundColor: Palette.line, alignSelf: 'center', marginBottom: 21 },
-  sheetTitle: { color: Palette.ink, fontSize: 24, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  sheetSubtitle: { color: Palette.inkMuted, fontSize: 13, textAlign: 'right', writingDirection: 'rtl', marginTop: 5 },
+  addSheet: { backgroundColor: P.canvas, borderTopLeftRadius: 32, borderTopRightRadius: 32, paddingHorizontal: 22, paddingTop: 12, paddingBottom: 34 },
+  sheetHandle: { width: 42, height: 5, borderRadius: 3, backgroundColor: P.line, alignSelf: 'center', marginBottom: 21 },
+  sheetTitle: { color: P.ink, fontSize: 24, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  sheetSubtitle: { color: P.inkMuted, fontSize: 13, textAlign: 'right', writingDirection: 'rtl', marginTop: 5 },
   addChoices: { gap: 12, marginTop: 22 },
-  addChoice: { minHeight: 84, backgroundColor: Palette.surface, borderRadius: Radius.medium, padding: 15, flexDirection: 'row-reverse', alignItems: 'center', gap: 13 },
+  addChoice: { minHeight: 84, backgroundColor: P.surface, borderRadius: Radius.medium, padding: 15, flexDirection: 'row-reverse', alignItems: 'center', gap: 13 },
   smartAddChoice: { borderWidth: 1, borderColor: '#DCC4AF', backgroundColor: '#FBF4EC' },
-  addChoiceIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  addChoiceIconText: { color: Palette.primary, fontSize: 22, fontWeight: '900' },
+  addChoiceIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  addChoiceIconText: { color: P.primary, fontSize: 22, fontWeight: '900' },
   addChoiceCopy: { alignItems: 'flex-end' },
   addChoiceTitleLine: { flexDirection: 'row', alignItems: 'center', gap: 7 },
-  miniPlusBadge: { color: Palette.white, fontSize: 8, fontWeight: '900', backgroundColor: Palette.primary, borderRadius: Radius.pill, paddingHorizontal: 7, paddingVertical: 3, writingDirection: 'rtl' },
-  addChoiceTitle: { color: Palette.ink, fontSize: 15, fontWeight: '900', writingDirection: 'rtl' },
-  addChoiceText: { color: Palette.inkMuted, fontSize: 11, marginTop: 4, writingDirection: 'rtl' },
-});
+  miniPlusBadge: { color: P.white, fontSize: 8, fontWeight: '900', backgroundColor: P.primary, borderRadius: Radius.pill, paddingHorizontal: 7, paddingVertical: 3, writingDirection: 'rtl' },
+  addChoiceTitle: { color: P.ink, fontSize: 15, fontWeight: '900', writingDirection: 'rtl' },
+  addChoiceText: { color: P.inkMuted, fontSize: 11, marginTop: 4, writingDirection: 'rtl' },
+}));

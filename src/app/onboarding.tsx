@@ -1,14 +1,15 @@
 import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { BackButton } from '@/components/ui/back-button';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette, Radius, Shadow } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 
 type SetupOptionProps = {
@@ -21,6 +22,8 @@ type SetupOptionProps = {
 };
 
 function SetupOption({ title, description, selected, onPress, icon, androidIcon }: SetupOptionProps) {
+  const styles = useStyles();
+  const { palette } = useTheme();
   return (
     <Pressable
       accessibilityRole="checkbox"
@@ -35,7 +38,7 @@ function SetupOption({ title, description, selected, onPress, icon, androidIcon 
         <AppIcon
           name={{ ios: icon, android: androidIcon, web: androidIcon }}
           size={22}
-          tintColor={selected ? Palette.white : Palette.primary}
+          tintColor={selected ? palette.white : palette.primary}
           fallback={selected ? '✓' : '○'}
         />
       </View>
@@ -44,6 +47,7 @@ function SetupOption({ title, description, selected, onPress, icon, androidIcon 
 }
 
 export default function OnboardingScreen() {
+  const styles = useStyles();
   const { completeOnboarding, session } = useAuth();
   // Prefilled when Apple shared a name on first sign-in; empty when the
   // account hid it, which is the case this screen exists to cover.
@@ -134,34 +138,34 @@ export default function OnboardingScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: Palette.canvas },
+const useStyles = makeStyles((P, S) => ({
+  screen: { flex: 1, backgroundColor: P.canvas },
   content: { flex: 1, paddingHorizontal: 24, paddingTop: 14, paddingBottom: 20 },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  step: { color: Palette.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
+  step: { color: P.inkMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
   heading: { alignItems: 'flex-end', marginTop: 52 },
-  title: { color: Palette.ink, fontSize: 35, lineHeight: 47, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  subtitle: { color: Palette.inkMuted, fontSize: 15, lineHeight: 25, textAlign: 'right', writingDirection: 'rtl', marginTop: 10, maxWidth: 350 },
+  title: { color: P.ink, fontSize: 35, lineHeight: 47, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  subtitle: { color: P.inkMuted, fontSize: 15, lineHeight: 25, textAlign: 'right', writingDirection: 'rtl', marginTop: 10, maxWidth: 350 },
   nameField: { marginTop: 28 },
   options: { gap: 14, marginTop: 22 },
   option: {
-    minHeight: 105, backgroundColor: Palette.surface, borderRadius: Radius.large,
+    minHeight: 105, backgroundColor: P.surface, borderRadius: Radius.large,
     borderWidth: 1, borderColor: 'transparent', padding: 18,
-    flexDirection: 'row', alignItems: 'center', gap: 15, ...Shadow.card,
+    flexDirection: 'row', alignItems: 'center', gap: 15, ...S.card,
   },
-  optionSelected: { borderColor: Palette.accent, backgroundColor: '#FFF9F4' },
+  optionSelected: { borderColor: P.accent, backgroundColor: '#FFF9F4' },
   optionCopy: { flex: 1, alignItems: 'flex-end', gap: 5 },
-  optionTitle: { color: Palette.ink, fontSize: 16, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  optionDescription: { color: Palette.inkMuted, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
-  optionIcon: { width: 48, height: 48, borderRadius: 17, backgroundColor: Palette.accentSoft, alignItems: 'center', justifyContent: 'center' },
-  optionIconSelected: { backgroundColor: Palette.primary },
+  optionTitle: { color: P.ink, fontSize: 16, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
+  optionDescription: { color: P.inkMuted, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
+  optionIcon: { width: 48, height: 48, borderRadius: 17, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
+  optionIconSelected: { backgroundColor: P.primary },
   pressed: { opacity: 0.82 },
   insight: { flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 14, marginTop: 28, paddingRight: 6 },
-  insightNumber: { color: Palette.accent, fontSize: 38, fontWeight: '900' },
+  insightNumber: { color: P.accent, fontSize: 38, fontWeight: '900' },
   insightCopy: { alignItems: 'flex-end' },
-  insightTitle: { color: Palette.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
-  insightText: { color: Palette.inkMuted, fontSize: 12, marginTop: 2, writingDirection: 'rtl' },
+  insightTitle: { color: P.ink, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  insightText: { color: P.inkMuted, fontSize: 12, marginTop: 2, writingDirection: 'rtl' },
   footer: { marginTop: 'auto', gap: 12 },
-  privacy: { color: Palette.inkMuted, fontSize: 11, textAlign: 'center', writingDirection: 'rtl' },
-  setupError: { color: Palette.danger, fontSize: 12, lineHeight: 20, textAlign: 'right', writingDirection: 'rtl' },
-});
+  privacy: { color: P.inkMuted, fontSize: 11, textAlign: 'center', writingDirection: 'rtl' },
+  setupError: { color: P.danger, fontSize: 12, lineHeight: 20, textAlign: 'right', writingDirection: 'rtl' },
+}));

@@ -1,14 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
+import { makeStyles } from '@/contexts/theme-context';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 
 export default function ResetPasswordScreen() {
+  const styles = useStyles();
   const { session, signOut, updatePassword } = useAuth();
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -83,10 +85,10 @@ export default function ResetPasswordScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   form: { gap: 18 },
-  error: { color: Palette.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
-  successCard: { backgroundColor: Palette.surface, borderRadius: Radius.large, padding: 22, gap: 16, alignItems: 'center' },
-  successIcon: { color: Palette.success, fontSize: 36, fontWeight: '900' },
-  successText: { color: Palette.ink, fontSize: 15, lineHeight: 24, textAlign: 'center', writingDirection: 'rtl' },
-});
+  error: { color: P.danger, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },
+  successCard: { backgroundColor: P.surface, borderRadius: Radius.large, padding: 22, gap: 16, alignItems: 'center' },
+  successIcon: { color: P.success, fontSize: 36, fontWeight: '900' },
+  successText: { color: P.ink, fontSize: 15, lineHeight: 24, textAlign: 'center', writingDirection: 'rtl' },
+}));

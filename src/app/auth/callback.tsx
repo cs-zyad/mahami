@@ -1,14 +1,17 @@
 import * as Linking from 'expo-linking';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
+import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AuthShell } from '@/components/auth/auth-shell';
 import { PrimaryButton } from '@/components/ui/primary-button';
-import { Palette, Radius } from '@/constants/design';
+import { Radius } from '@/constants/design';
 import { createSessionFromAuthUrl } from '@/lib/auth-links';
 
 export default function AuthCallbackScreen() {
+  const styles = useStyles();
+  const { palette } = useTheme();
   const url = Linking.useLinkingURL();
   const handledUrl = useRef<string | undefined>(undefined);
   const [error, setError] = useState<string>();
@@ -55,7 +58,7 @@ export default function AuthCallbackScreen() {
           </>
         ) : (
           <>
-            <ActivityIndicator color={Palette.primary} />
+            <ActivityIndicator color={palette.primary} />
             <Text style={styles.loading}>جاري التحقق من الرابط الآمن...</Text>
           </>
         )}
@@ -64,16 +67,16 @@ export default function AuthCallbackScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   card: {
     minHeight: 160,
     borderRadius: Radius.large,
-    backgroundColor: Palette.surface,
+    backgroundColor: P.surface,
     padding: 22,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 18,
   },
-  loading: { color: Palette.inkMuted, fontSize: 14, writingDirection: 'rtl' },
-  error: { color: Palette.danger, fontSize: 14, lineHeight: 23, textAlign: 'center', writingDirection: 'rtl' },
-});
+  loading: { color: P.inkMuted, fontSize: 14, writingDirection: 'rtl' },
+  error: { color: P.danger, fontSize: 14, lineHeight: 23, textAlign: 'center', writingDirection: 'rtl' },
+}));

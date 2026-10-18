@@ -1,6 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
-import { Palette, Radius } from '@/constants/design';
+import { makeStyles } from '@/contexts/theme-context';
+import { Radius } from '@/constants/design';
 
 type EmptyStateProps = {
   symbol: string;
@@ -19,6 +20,7 @@ export function EmptyState({
   onAction,
   compact = false,
 }: EmptyStateProps) {
+  const styles = useStyles();
   return (
     <View style={[styles.container, compact && styles.compact]}>
       <View style={styles.symbolBox}><Text style={styles.symbol}>{symbol}</Text></View>
@@ -36,14 +38,14 @@ export function EmptyState({
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((P) => ({
   container: {
     minHeight: 230,
     borderRadius: Radius.large,
     borderWidth: 1,
-    borderColor: Palette.line,
+    borderColor: P.line,
     borderStyle: 'dashed',
-    backgroundColor: Palette.surface,
+    backgroundColor: P.surface,
     paddingHorizontal: 24,
     paddingVertical: 26,
     alignItems: 'center',
@@ -54,14 +56,14 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 18,
-    backgroundColor: Palette.accentSoft,
+    backgroundColor: P.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  symbol: { color: Palette.primary, fontSize: 22, fontWeight: '900' },
-  title: { color: Palette.ink, fontSize: 16, fontWeight: '900', marginTop: 14, writingDirection: 'rtl' },
+  symbol: { color: P.primary, fontSize: 22, fontWeight: '900' },
+  title: { color: P.ink, fontSize: 16, fontWeight: '900', marginTop: 14, writingDirection: 'rtl' },
   description: {
-    color: Palette.inkMuted,
+    color: P.inkMuted,
     fontSize: 12,
     lineHeight: 20,
     textAlign: 'center',
@@ -72,12 +74,12 @@ const styles = StyleSheet.create({
   action: {
     minHeight: 44,
     borderRadius: Radius.medium,
-    backgroundColor: Palette.primary,
+    backgroundColor: P.primary,
     paddingHorizontal: 18,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 17,
   },
-  actionText: { color: Palette.white, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
+  actionText: { color: P.white, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
   pressed: { opacity: 0.84, transform: [{ scale: 0.98 }] },
-});
+}));
