@@ -84,7 +84,7 @@ function PriorityChoice({
           <AppIcon
             name={{ ios: 'checkmark', android: 'check', web: 'check' }}
             size={11}
-            tintColor={palette.white}
+            tintColor={palette.onPrimary}
             fallback="✓"
           />
         )}
@@ -352,7 +352,7 @@ export default function AddTaskScreen() {
                     <AppIcon
                       name={{ ios: 'checkmark', android: 'check', web: 'check' }}
                       size={16}
-                      tintColor={palette.white}
+                      tintColor={palette.onPrimary}
                       fallback="✓"
                     />
                   </Pressable>

@@ -48,7 +48,7 @@ const useStyles = makeStyles((P) => ({
   primary: { backgroundColor: P.primary },
   secondary: { backgroundColor: P.surface, borderWidth: 1, borderColor: P.line },
   ghost: { backgroundColor: 'transparent' },
-  label: { color: P.white, fontSize: 16, fontWeight: '800', writingDirection: 'rtl' },
+  label: { color: P.onPrimary, fontSize: 16, fontWeight: '800', writingDirection: 'rtl' },
   darkLabel: { color: P.primary },
   pressed: { opacity: 0.86, transform: [{ scale: 0.99 }] },
   disabled: { opacity: 0.45 },

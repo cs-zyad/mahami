@@ -14,7 +14,7 @@ function TabIcon({ focused, color, icon, androidIcon, fallback }: IconProps) {
       <AppIcon
         name={{ ios: icon as never, android: androidIcon as never, web: androidIcon as never }}
         size={21}
-        tintColor={focused ? palette.white : color}
+        tintColor={focused ? palette.onPrimary : color}
         fallback={fallback}
       />
     </View>

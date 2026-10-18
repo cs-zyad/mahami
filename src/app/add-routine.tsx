@@ -225,7 +225,7 @@ export default function AddRoutineScreen() {
                 <AppIcon
                   name={{ ios: 'checkmark', android: 'check', web: 'check' }}
                   size={11}
-                  tintColor={palette.white}
+                  tintColor={palette.onPrimary}
                   fallback="✓"
                 />
                 )}
@@ -385,7 +385,7 @@ const useStyles = makeStyles((P) => ({
   },
   daySelected: { borderColor: P.primary, backgroundColor: P.primary },
   dayText: { color: P.inkMuted, fontSize: 13, fontWeight: '900' },
-  dayTextSelected: { color: P.white },
+  dayTextSelected: { color: P.onPrimary },
   daysSummary: { color: P.inkMuted, fontSize: 11, lineHeight: 18, textAlign: 'right', writingDirection: 'rtl' },
   daysSummaryError: { color: P.danger },
   reminderRow: {

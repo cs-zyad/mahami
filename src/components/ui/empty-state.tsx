@@ -80,6 +80,6 @@ const useStyles = makeStyles((P) => ({
     justifyContent: 'center',
     marginTop: 17,
   },
-  actionText: { color: P.white, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
+  actionText: { color: P.onPrimary, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
   pressed: { opacity: 0.84, transform: [{ scale: 0.98 }] },
 }));

@@ -56,7 +56,7 @@ const useStyles = makeStyles((P, S) => ({
     justifyContent: 'center',
   },
   label: {
-    color: P.white,
+    color: P.onPrimary,
     fontSize: 14,
     fontWeight: '900',
     writingDirection: 'rtl',

@@ -345,7 +345,7 @@ export default function SmartCaptureScreen() {
               <AppIcon
                 name={{ ios: 'mic.fill', android: 'mic', web: 'mic' }}
                 size={27}
-                tintColor={palette.white}
+                tintColor={palette.onPrimary}
                 fallback="●"
               />
             </View>
@@ -404,10 +404,10 @@ const useStyles = makeStyles((P, S) => ({
   voiceCardSoon: { opacity: 0.75 },
   voiceIcon: { width: 54, height: 54, borderRadius: 19, backgroundColor: P.accent, alignItems: 'center', justifyContent: 'center' },
   voiceCopy: { flex: 1, minWidth: 180, alignItems: 'flex-end' },
-  voiceTitle: { color: P.white, fontSize: 17, fontWeight: '900', writingDirection: 'rtl' },
+  voiceTitle: { color: P.onPrimary, fontSize: 17, fontWeight: '900', writingDirection: 'rtl' },
   voiceText: { color: '#EEDFD3', fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl', marginTop: 5 },
   voiceSoonBadge: { width: '100%', minHeight: 42, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.14)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
-  voiceSoonText: { color: P.white, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
+  voiceSoonText: { color: P.onPrimary, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
   methodDivider: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 4 },
   dividerLine: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: P.line },
   dividerText: { color: P.inkMuted, fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
@@ -417,7 +417,7 @@ const useStyles = makeStyles((P, S) => ({
   quotaTitle: { color: P.ink, fontSize: 13, fontWeight: '900', writingDirection: 'rtl' },
   quotaText: { color: P.inkMuted, fontSize: 10, marginTop: 4, writingDirection: 'rtl' },
   upgradePill: { backgroundColor: P.primary, borderRadius: Radius.pill, paddingHorizontal: 13, paddingVertical: 8 },
-  upgradePillText: { color: P.white, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
+  upgradePillText: { color: P.onPrimary, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
   startWrap: { gap: 12, marginTop: 18 },
   heroCard: { minHeight: 190, borderRadius: Radius.large, backgroundColor: '#EFE3D5', padding: 22, alignItems: 'center', justifyContent: 'center', ...S.card },
   heroSymbol: { width: 68, height: 68, borderRadius: 23, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
@@ -442,7 +442,7 @@ const useStyles = makeStyles((P, S) => ({
   draftNumber: { color: P.inkMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
   checkbox: { width: 28, height: 28, borderRadius: 9, borderWidth: 1.5, borderColor: P.line, alignItems: 'center', justifyContent: 'center' },
   checkboxSelected: { backgroundColor: P.success, borderColor: P.success },
-  check: { color: P.white, fontWeight: '900' },
+  check: { color: P.onPrimary, fontWeight: '900' },
   titleInput: { minHeight: 52, borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.canvas, paddingHorizontal: 13, color: P.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   descriptionInput: { minHeight: 68, borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.canvas, padding: 13, color: P.ink, fontSize: 12, textAlign: 'right', textAlignVertical: 'top', writingDirection: 'rtl' },
   fieldLabel: { color: P.ink, fontSize: 11, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginTop: 2 },

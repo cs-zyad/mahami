@@ -38,7 +38,7 @@ function SetupOption({ title, description, selected, onPress, icon, androidIcon 
         <AppIcon
           name={{ ios: icon, android: androidIcon, web: androidIcon }}
           size={22}
-          tintColor={selected ? palette.white : palette.primary}
+          tintColor={selected ? palette.onPrimary : palette.primary}
           fallback={selected ? '✓' : '○'}
         />
       </View>

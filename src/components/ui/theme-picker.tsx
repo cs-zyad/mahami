@@ -43,7 +43,7 @@ export function ThemePicker() {
               </View>
               {selected && (
                 <View style={[styles.check, { backgroundColor: preview.primary }]}>
-                  <Text style={[styles.checkMark, { color: preview.white }]}>✓</Text>
+                  <Text style={[styles.checkMark, { color: preview.onPrimary }]}>✓</Text>
                 </View>
               )}
             </View>

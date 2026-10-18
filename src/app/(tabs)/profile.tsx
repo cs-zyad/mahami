@@ -252,7 +252,7 @@ const useStyles = makeStyles((P, S) => ({
   subtitle: { color: P.inkMuted, fontSize: 12, marginTop: 3, writingDirection: 'rtl' },
   profileCard: { backgroundColor: P.primary, borderRadius: Radius.large, padding: 20, marginTop: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 16, ...S.card },
   profileCopy: { flex: 1, alignItems: 'flex-end' },
-  profileName: { color: P.white, fontSize: 21, fontWeight: '900', writingDirection: 'rtl' },
+  profileName: { color: P.onPrimary, fontSize: 21, fontWeight: '900', writingDirection: 'rtl' },
   profileEmail: { color: '#DFD0C4', fontSize: 11, marginTop: 4 },
   editProfile: { color: '#F0CDAE', fontSize: 11, fontWeight: '800', marginTop: 13, writingDirection: 'rtl' },
   avatar: { width: 66, height: 66, borderRadius: 23, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },

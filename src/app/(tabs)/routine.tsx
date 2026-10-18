@@ -61,7 +61,7 @@ function RoutineCard({
             <AppIcon
               name={{ ios: 'checkmark', android: 'check', web: 'check' }}
               size={10}
-              tintColor={palette.white}
+              tintColor={palette.onPrimary}
               fallback="✓"
             />
           </View>
@@ -249,7 +249,7 @@ export default function RoutineScreen() {
                       <AppIcon
                         name={{ ios: 'checkmark', android: 'check', web: 'check' }}
                         size={14}
-                        tintColor={palette.white}
+                        tintColor={palette.onPrimary}
                         fallback="✓"
                       />
                     ) : (
@@ -357,7 +357,7 @@ const useStyles = makeStyles((P, S) => ({
   progressTop: { flexDirection: 'row-reverse', alignItems: 'center', justifyContent: 'space-between', gap: 16 },
   progressCopy: { flex: 1, alignItems: 'flex-end' },
   progressEyebrow: { color: '#DCCABC', fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
-  progressTitle: { color: P.white, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
+  progressTitle: { color: P.onPrimary, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
   progressCircle: {
     width: 68,
     height: 68,
@@ -368,13 +368,13 @@ const useStyles = makeStyles((P, S) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  progressPercent: { color: P.white, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
+  progressPercent: { color: P.onPrimary, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
   progressTrack: { height: 7, borderRadius: Radius.pill, backgroundColor: 'rgba(255,255,255,0.15)', marginTop: 20, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: Radius.pill, backgroundColor: '#F1D2B5' },
   statsRow: { minHeight: 53, marginTop: 15, flexDirection: 'row-reverse', alignItems: 'center' },
   statItem: { flex: 1, alignItems: 'center', gap: 3 },
   statDivider: { width: StyleSheet.hairlineWidth, height: 31, backgroundColor: 'rgba(255,255,255,0.2)' },
-  statValue: { color: P.white, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
+  statValue: { color: P.onPrimary, fontSize: 14, fontWeight: '900', writingDirection: 'rtl' },
   statLabel: { color: '#DCCABC', fontSize: 10, fontWeight: '700', writingDirection: 'rtl' },
   weekSection: { marginTop: 27 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 26, marginBottom: 12 },

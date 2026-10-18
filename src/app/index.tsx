@@ -84,7 +84,7 @@ const useStyles = makeStyles((P, S) => ({
   progressFill: { width: '62%', height: '100%', backgroundColor: P.accent, borderRadius: 3 },
   taskPreview: { flexDirection: 'row-reverse', alignItems: 'center', gap: 12, marginTop: 15 },
   previewCheck: { width: 26, height: 26, borderRadius: 9, backgroundColor: P.success, alignItems: 'center', justifyContent: 'center' },
-  previewCheckText: { color: P.white, fontWeight: '900' },
+  previewCheckText: { color: P.onPrimary, fontWeight: '900' },
   previewEmpty: { width: 26, height: 26, borderRadius: 9, borderWidth: 1.5, borderColor: P.line },
   previewCopy: { flex: 1, alignItems: 'flex-end', gap: 6 },
   previewLine: { width: '68%', height: 7, borderRadius: 4, backgroundColor: '#675346' },

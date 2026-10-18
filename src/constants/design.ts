@@ -18,6 +18,8 @@ export type Palette = {
   urgent: string;
   important: string;
   later: string;
+  /** Text and icons drawn on top of `primary`. */
+  onPrimary: string;
   white: string;
 };
 
@@ -38,51 +40,57 @@ const sand: Palette = {
   urgent: '#A9493D',
   important: '#C47A3C',
   later: '#9A8E82',
+  onPrimary: '#FFFFFF',
   white: '#FFFFFF',
 };
 
-// A plain dark mode: warm greys with no red cast, so it reads as night rather
-// than as a second heritage theme. The brand's brown survives in the accent.
+// A conventional dark mode, blue-leaning. Material's guidance is a dark grey
+// base rather than pure black — black hides elevation and the contrast against
+// white text is harsher than it needs to be — with surfaces that lighten as
+// they rise and accents that are desaturated rather than vivid.
 const dark: Palette = {
-  canvas: '#15130F',
-  surface: '#1F1C17',
-  surfaceMuted: '#2B2721',
-  ink: '#EFE9DF',
-  inkMuted: '#A89F93',
-  primary: '#C08E63',
-  primaryPressed: '#A5764E',
-  accent: '#D9B98C',
-  accentSoft: '#2E2920',
-  line: '#38332B',
-  success: '#6FAF8B',
-  successSoft: '#22362B',
-  danger: '#E0766B',
-  urgent: '#E0766B',
-  important: '#E0A85F',
-  later: '#8E867B',
+  canvas: '#121418',
+  surface: '#1B1F26',
+  surfaceMuted: '#262B34',
+  ink: '#E8EBF0',
+  inkMuted: '#9AA3B2',
+  primary: '#6E9BD8',
+  primaryPressed: '#5781BC',
+  accent: '#8FB8E8',
+  accentSoft: '#1F2733',
+  line: '#323945',
+  success: '#6FB48F',
+  successSoft: '#1D3329',
+  danger: '#E0796F',
+  urgent: '#E0796F',
+  important: '#E0A95F',
+  later: '#7E8798',
+  onPrimary: '#121418',
   white: '#FFFFFF',
 };
 
-// Sampled from a بيت الشعر majlis: the near-black of the tent, the crimson of
-// the carpets, cream from the sheepskin, and the camel and brass of the sadu
-// weaving. Every pairing a screen actually renders clears WCAG AA.
+// The majlis in daylight: the cream of the sheepskin as the ground, the crimson
+// of the carpets as the primary, brass from the sadu as the accent. A light
+// theme like sand, not a second dark one — the sadu banding carries the
+// heritage rather than the background.
 const asiri: Palette = {
-  canvas: '#150B0A',
-  surface: '#21110F',
-  surfaceMuted: '#2F1815',
-  ink: '#F4EADF',
-  inkMuted: '#C0A595',
+  canvas: '#FBF4E9',
+  surface: '#FFFCF6',
+  surfaceMuted: '#F2E6D4',
+  ink: '#2A1A16',
+  inkMuted: '#6E5A50',
   primary: '#9E2328',
-  primaryPressed: '#781A1E',
-  accent: '#C9A06A',
-  accentSoft: '#3A1D19',
-  line: '#3E221E',
-  success: '#5A9676',
-  successSoft: '#1F3A2D',
-  danger: '#D15950',
-  urgent: '#D15950',
-  important: '#C9A06A',
-  later: '#9B8378',
+  primaryPressed: '#7C181D',
+  accent: '#8A5E1F',
+  accentSoft: '#F3DFC8',
+  line: '#E3D2BC',
+  success: '#44705A',
+  successSoft: '#DCE8DF',
+  danger: '#A32F28',
+  urgent: '#A32F28',
+  important: '#8A5E1F',
+  later: '#8D7F72',
+  onPrimary: '#FFFFFF',
   white: '#FFFFFF',
 };
 
@@ -100,8 +108,8 @@ export const themeLabels: Record<ThemeName, string> = {
 
 export const themeDescriptions: Record<ThemeName, string> = {
   sand: 'فاتح وهادئ، المظهر الأساسي.',
-  dark: 'داكن محايد يريح العين ليلًا.',
-  asiri: 'أحمر مستوحى من مجالس بيت الشعر.',
+  dark: 'أزرق ليلي يريح العين.',
+  asiri: 'كريمي دافئ بلمسات حمراء وزخارف السدو.',
 };
 
 // Only the heritage theme carries the sadu banding; the other two stay plain.
@@ -115,7 +123,7 @@ export const themeOrnament: Record<ThemeName, boolean> = {
 export const themeStatusBar: Record<ThemeName, 'light' | 'dark'> = {
   sand: 'dark',
   dark: 'light',
-  asiri: 'light',
+  asiri: 'dark',
 };
 
 export const defaultTheme: ThemeName = 'sand';
@@ -130,7 +138,7 @@ export const Radius = {
 export function shadowFor(palette: Palette) {
   // The sand theme lifts cards off a light canvas; on a near-black one the same
   // shadow is invisible, so it leans harder and darker to keep the edge.
-  const isDark = palette.canvas === asiri.canvas || palette.canvas === dark.canvas;
+  const isDark = palette.canvas === dark.canvas;
   return {
     card: {
       shadowColor: isDark ? '#000000' : '#493326',
