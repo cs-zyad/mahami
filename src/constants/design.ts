@@ -44,28 +44,33 @@ const sand: Palette = {
   white: '#FFFFFF',
 };
 
-// A conventional dark mode, blue-leaning. Material's guidance is a dark grey
-// base rather than pure black — black hides elevation and the contrast against
-// white text is harsher than it needs to be — with surfaces that lighten as
-// they rise and accents that are desaturated rather than vivid.
+// iOS system dark, the layering people already know from every native app on
+// the phone: a true-black grouped base, cards at systemGray6, separators at
+// systemGray4, white labels and the grey iOS itself uses for secondary text.
+// Nothing warm survives here — the beige that made this theme muddy is gone.
+//
+// primary and accent are deliberately different blues. primary is a filled
+// surface, so what matters is the white label on it; accent is drawn as text
+// and icons, so it has to clear the backgrounds behind it. One blue cannot do
+// both on black, which is why iOS ships two as well.
 const dark: Palette = {
-  canvas: '#121418',
-  surface: '#1B1F26',
-  surfaceMuted: '#262B34',
-  ink: '#E8EBF0',
-  inkMuted: '#9AA3B2',
-  primary: '#6E9BD8',
-  primaryPressed: '#5781BC',
-  accent: '#8FB8E8',
-  accentSoft: '#1F2733',
-  line: '#323945',
-  success: '#6FB48F',
-  successSoft: '#1D3329',
-  danger: '#E0796F',
-  urgent: '#E0796F',
-  important: '#E0A95F',
-  later: '#7E8798',
-  onPrimary: '#121418',
+  canvas: '#000000',
+  surface: '#1C1C1E',
+  surfaceMuted: '#2C2C2E',
+  ink: '#FFFFFF',
+  inkMuted: '#98989F',
+  primary: '#1E72E4',
+  primaryPressed: '#1A5FBF',
+  accent: '#64B5FF',
+  accentSoft: '#152435',
+  line: '#38383A',
+  success: '#30D158',
+  successSoft: '#15291B',
+  danger: '#FF453A',
+  urgent: '#FF453A',
+  important: '#FF9F0A',
+  later: '#8E8E93',
+  onPrimary: '#FFFFFF',
   white: '#FFFFFF',
 };
 
