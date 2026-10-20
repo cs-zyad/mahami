@@ -153,7 +153,7 @@ const useStyles = makeStyles((P, S) => ({
     borderWidth: 1, borderColor: 'transparent', padding: 18,
     flexDirection: 'row', alignItems: 'center', gap: 15, ...S.card,
   },
-  optionSelected: { borderColor: P.accent, backgroundColor: '#FFF9F4' },
+  optionSelected: { borderColor: P.accent, backgroundColor: P.tintSoft },
   optionCopy: { flex: 1, alignItems: 'flex-end', gap: 5 },
   optionTitle: { color: P.ink, fontSize: 16, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   optionDescription: { color: P.inkMuted, fontSize: 13, lineHeight: 21, textAlign: 'right', writingDirection: 'rtl' },

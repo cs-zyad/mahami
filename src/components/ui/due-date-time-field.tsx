@@ -162,7 +162,7 @@ const useStyles = makeStyles((P) => ({
     alignItems: 'center',
     gap: 9,
   },
-  fieldOpen: { borderColor: P.primary, backgroundColor: '#FBF6F0' },
+  fieldOpen: { borderColor: P.primary, backgroundColor: P.tintSoft },
   iconBox: { width: 34, height: 34, borderRadius: 11, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   copy: { flex: 1, alignItems: 'flex-end', gap: 4 },
   label: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },

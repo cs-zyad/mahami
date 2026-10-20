@@ -8,16 +8,16 @@ import { AppIcon } from '@/components/ui/app-icon';
 import { DueDateTimeField } from '@/components/ui/due-date-time-field';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
-import { Radius } from '@/constants/design';
+import { Palette, Radius } from '@/constants/design';
 import { useTasks } from '@/contexts/tasks-context';
 import { defaultTaskCategories } from '@/lib/task-categories';
 import { analyzeTaskImage, getSmartScanStatus, SmartCaptureError, smartCaptureErrorMessage } from '@/lib/smart-capture';
 import { SmartScanStatus, SmartTaskDraft, SmartTaskPriority } from '@/types/smart-capture';
 
-const priorityOptions: { value: SmartTaskPriority; label: string; color: string; soft: string }[] = [
-  { value: 'important_urgent', label: 'مهم وعاجل', color: '#A84F46', soft: '#F6E3E0' },
-  { value: 'important', label: 'مهم غير عاجل', color: '#A66A32', soft: '#F6E8D6' },
-  { value: 'later', label: 'لاحقًا', color: '#766B62', soft: '#EEE9E2' },
+const priorityOptions: { value: SmartTaskPriority; label: string; color: keyof Palette; soft: keyof Palette }[] = [
+  { value: 'important_urgent', label: 'مهم وعاجل', color: 'danger', soft: 'dangerSoft' },
+  { value: 'important', label: 'مهم غير عاجل', color: 'warnInk', soft: 'warnSoft' },
+  { value: 'later', label: 'لاحقًا', color: 'tintInk', soft: 'tintSoft' },
 ];
 
 const reminderOptions: { value: number | null; label: string }[] = [
@@ -276,10 +276,10 @@ export default function SmartCaptureScreen() {
                     onPress={() => updateDraft(draft.id, { priority: option.value })}
                     style={[
                       styles.priority,
-                      { backgroundColor: option.soft },
-                      draft.priority === option.value && { borderColor: option.color, borderWidth: 2 },
+                      { backgroundColor: palette[option.soft] },
+                      draft.priority === option.value && { borderColor: palette[option.color], borderWidth: 2 },
                     ]}>
-                    <Text numberOfLines={1} style={[styles.priorityText, { color: option.color }]}>{option.label}</Text>
+                    <Text numberOfLines={1} style={[styles.priorityText, { color: palette[option.color] }]}>{option.label}</Text>
                   </Pressable>
                 ))}
               </View>
@@ -405,7 +405,7 @@ const useStyles = makeStyles((P, S) => ({
   voiceIcon: { width: 54, height: 54, borderRadius: 19, backgroundColor: P.accent, alignItems: 'center', justifyContent: 'center' },
   voiceCopy: { flex: 1, minWidth: 180, alignItems: 'flex-end' },
   voiceTitle: { color: P.onPrimary, fontSize: 17, fontWeight: '900', writingDirection: 'rtl' },
-  voiceText: { color: '#EEDFD3', fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl', marginTop: 5 },
+  voiceText: { color: P.onPrimary, fontSize: 10, lineHeight: 17, textAlign: 'right', writingDirection: 'rtl', marginTop: 5 },
   voiceSoonBadge: { width: '100%', minHeight: 42, borderRadius: 14, backgroundColor: 'rgba(255,255,255,0.14)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)', alignItems: 'center', justifyContent: 'center' },
   voiceSoonText: { color: P.onPrimary, fontSize: 12, fontWeight: '900', writingDirection: 'rtl' },
   methodDivider: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 4 },
@@ -419,7 +419,7 @@ const useStyles = makeStyles((P, S) => ({
   upgradePill: { backgroundColor: P.primary, borderRadius: Radius.pill, paddingHorizontal: 13, paddingVertical: 8 },
   upgradePillText: { color: P.onPrimary, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
   startWrap: { gap: 12, marginTop: 18 },
-  heroCard: { minHeight: 190, borderRadius: Radius.large, backgroundColor: '#EFE3D5', padding: 22, alignItems: 'center', justifyContent: 'center', ...S.card },
+  heroCard: { minHeight: 190, borderRadius: Radius.large, backgroundColor: P.tintSoft, padding: 22, alignItems: 'center', justifyContent: 'center', ...S.card },
   heroSymbol: { width: 68, height: 68, borderRadius: 23, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
   heroTitle: { color: P.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
   heroText: { color: P.inkMuted, fontSize: 12, lineHeight: 21, textAlign: 'center', writingDirection: 'rtl', marginTop: 9, maxWidth: 280 },
@@ -459,5 +459,5 @@ const useStyles = makeStyles((P, S) => ({
   categoryChipSelected: { borderColor: P.primary, borderWidth: 2, backgroundColor: P.accentSoft },
   categoryChipText: { color: P.inkMuted, fontSize: 13, fontWeight: '800', writingDirection: 'rtl' },
   categoryChipTextSelected: { color: P.primary },
-  error: { color: P.danger, fontSize: 12, lineHeight: 19, textAlign: 'right', writingDirection: 'rtl', backgroundColor: '#F8E9E5', borderRadius: Radius.small, padding: 12 },
+  error: { color: P.danger, fontSize: 12, lineHeight: 19, textAlign: 'right', writingDirection: 'rtl', backgroundColor: P.tintSoft, borderRadius: Radius.small, padding: 12 },
 }));

@@ -20,6 +20,13 @@ export type Palette = {
   later: string;
   /** Text and icons drawn on top of `primary`. */
   onPrimary: string;
+  /** Tinted card fills and the ink that sits on them. */
+  warnSoft: string;
+  warnInk: string;
+  dangerSoft: string;
+  successInk: string;
+  tintSoft: string;
+  tintInk: string;
   white: string;
 };
 
@@ -41,6 +48,12 @@ const sand: Palette = {
   important: '#C47A3C',
   later: '#9A8E82',
   onPrimary: '#FFFFFF',
+  warnSoft: '#F6E8D6',
+  warnInk: '#A66A32',
+  dangerSoft: '#F6E3E0',
+  successInk: '#44705A',
+  tintSoft: '#EEE9E2',
+  tintInk: '#766B62',
   white: '#FFFFFF',
 };
 
@@ -54,23 +67,29 @@ const sand: Palette = {
 // and icons, so it has to clear the backgrounds behind it. One blue cannot do
 // both on black, which is why iOS ships two as well.
 const dark: Palette = {
-  canvas: '#000000',
-  surface: '#1C1C1E',
-  surfaceMuted: '#2C2C2E',
-  ink: '#FFFFFF',
-  inkMuted: '#98989F',
-  primary: '#1E72E4',
-  primaryPressed: '#1A5FBF',
-  accent: '#64B5FF',
-  accentSoft: '#152435',
-  line: '#38383A',
-  success: '#30D158',
-  successSoft: '#15291B',
-  danger: '#FF453A',
-  urgent: '#FF453A',
-  important: '#FF9F0A',
-  later: '#8E8E93',
-  onPrimary: '#FFFFFF',
+  canvas: '#141010',
+  surface: '#201A18',
+  surfaceMuted: '#2C2421',
+  ink: '#F2EAE3',
+  inkMuted: '#A99A8E',
+  primary: '#B07A52',
+  primaryPressed: '#95643F',
+  accent: '#D2A373',
+  accentSoft: '#2E2420',
+  line: '#3A302B',
+  success: '#8FB59A',
+  successSoft: '#242A24',
+  danger: '#E0796F',
+  urgent: '#E0796F',
+  important: '#E0A95F',
+  later: '#9A8C80',
+  onPrimary: '#1A1210',
+  warnSoft: '#33251D',
+  warnInk: '#E8A86B',
+  dangerSoft: '#331E1C',
+  successInk: '#8FB59A',
+  tintSoft: '#2A221E',
+  tintInk: '#D8BFA4',
   white: '#FFFFFF',
 };
 
@@ -96,6 +115,12 @@ const asiri: Palette = {
   important: '#8A5E1F',
   later: '#8D7F72',
   onPrimary: '#FFFFFF',
+  warnSoft: '#F6E8D6',
+  warnInk: '#8A5E1F',
+  dangerSoft: '#F7E2DF',
+  successInk: '#3C6650',
+  tintSoft: '#F0E7DA',
+  tintInk: '#6E5A50',
   white: '#FFFFFF',
 };
 
@@ -113,7 +138,7 @@ export const themeLabels: Record<ThemeName, string> = {
 
 export const themeDescriptions: Record<ThemeName, string> = {
   sand: 'فاتح وهادئ، المظهر الأساسي.',
-  dark: 'أزرق ليلي يريح العين.',
+  dark: 'بني داكن دافئ يريح العين ليلًا.',
   asiri: 'كريمي دافئ بلمسات حمراء وزخارف السدو.',
 };
 

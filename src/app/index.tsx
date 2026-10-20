@@ -69,7 +69,7 @@ const useStyles = makeStyles((P, S) => ({
   },
   orbBottom: {
     position: 'absolute', width: 230, height: 230, borderRadius: 115,
-    backgroundColor: '#E7DDCB', opacity: 0.75, bottom: -130, right: -100,
+    backgroundColor: P.line, opacity: 0.75, bottom: -130, right: -100,
   },
   hero: { flex: 1, justifyContent: 'center', alignItems: 'flex-end', paddingTop: 10 },
   previewCard: {
@@ -87,7 +87,7 @@ const useStyles = makeStyles((P, S) => ({
   previewCheckText: { color: P.onPrimary, fontWeight: '900' },
   previewEmpty: { width: 26, height: 26, borderRadius: 9, borderWidth: 1.5, borderColor: P.line },
   previewCopy: { flex: 1, alignItems: 'flex-end', gap: 6 },
-  previewLine: { width: '68%', height: 7, borderRadius: 4, backgroundColor: '#675346' },
+  previewLine: { width: '68%', height: 7, borderRadius: 4, backgroundColor: P.tintInk },
   previewLineShort: { width: '51%' },
   previewLineMuted: { width: '32%', height: 5, borderRadius: 3, backgroundColor: P.surfaceMuted },
   eyebrow: { backgroundColor: P.accentSoft, paddingHorizontal: 13, paddingVertical: 7, borderRadius: Radius.pill, marginBottom: 15 },

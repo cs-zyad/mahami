@@ -9,7 +9,7 @@ import { DueDateTimeField } from '@/components/ui/due-date-time-field';
 import { FormScreen } from '@/components/ui/form-screen';
 import { PrimaryButton } from '@/components/ui/primary-button';
 import { TextField } from '@/components/ui/text-field';
-import { Radius } from '@/constants/design';
+import { Palette, Radius } from '@/constants/design';
 import { useAuth } from '@/contexts/auth-context';
 import { useTasks } from '@/contexts/tasks-context';
 import { defaultTaskCategories, TaskCategoryOption } from '@/lib/task-categories';
@@ -30,29 +30,29 @@ const priorityOptions: Array<{
   value: PriorityValue;
   label: string;
   hint: string;
-  color: string;
-  softColor: string;
+  color: keyof Palette;
+  softColor: keyof Palette;
 }> = [
   {
     value: 'important_urgent',
     label: 'مهم وعاجل',
     hint: 'نفّذها الآن',
-    color: '#A84F46',
-    softColor: '#F6E3E0',
+    color: 'danger',
+    softColor: 'dangerSoft',
   },
   {
     value: 'important',
     label: 'مهم غير عاجل',
     hint: 'خطّط لها',
-    color: '#A66A32',
-    softColor: '#F6E8D6',
+    color: 'warnInk',
+    softColor: 'warnSoft',
   },
   {
     value: 'later',
     label: 'غير مهم وغير عاجل',
     hint: 'لاحقًا',
-    color: '#766B62',
-    softColor: '#EEE9E2',
+    color: 'tintInk',
+    softColor: 'tintSoft',
   },
 ];
 
@@ -75,11 +75,11 @@ function PriorityChoice({
       onPress={onPress}
       style={({ pressed }) => [
         styles.priorityChoice,
-        { backgroundColor: option.softColor },
-        selected && { borderColor: option.color, borderWidth: 2 },
+        { backgroundColor: palette[option.softColor] },
+        selected && { borderColor: palette[option.color], borderWidth: 2 },
         pressed && styles.pressed,
       ]}>
-      <View style={[styles.priorityMark, { borderColor: option.color }, selected && { backgroundColor: option.color }]}>
+      <View style={[styles.priorityMark, { borderColor: palette[option.color] }, selected && { backgroundColor: palette[option.color] }]}>
         {selected && (
           <AppIcon
             name={{ ios: 'checkmark', android: 'check', web: 'check' }}
@@ -89,8 +89,8 @@ function PriorityChoice({
           />
         )}
       </View>
-      <Text style={[styles.priorityTitle, { color: option.color }]}>{option.label}</Text>
-      <Text style={[styles.priorityHint, { color: option.color }]}>{option.hint}</Text>
+      <Text style={[styles.priorityTitle, { color: palette[option.color] }]}>{option.label}</Text>
+      <Text style={[styles.priorityHint, { color: palette[option.color] }]}>{option.hint}</Text>
     </Pressable>
   );
 }
@@ -450,7 +450,7 @@ const useStyles = makeStyles((P) => ({
   priorityTitle: { minHeight: 31, fontSize: 11, lineHeight: 15, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },
   priorityHint: { fontSize: 9, fontWeight: '700', opacity: 0.78, writingDirection: 'rtl' },
   categoryField: { minHeight: 74, borderRadius: Radius.medium, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 11 },
-  categoryFieldOpen: { borderColor: P.primary, backgroundColor: '#FBF6F0' },
+  categoryFieldOpen: { borderColor: P.primary, backgroundColor: P.tintSoft },
   categoryIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   categoryCopy: { flex: 1, alignItems: 'flex-end', gap: 3 },
   categoryHint: { color: P.inkMuted, fontSize: 10, writingDirection: 'rtl' },
@@ -461,10 +461,10 @@ const useStyles = makeStyles((P) => ({
   categoryOptionIcon: { width: 30, height: 30, borderRadius: 10, backgroundColor: P.surfaceMuted, alignItems: 'center', justifyContent: 'center' },
   categoryOptionText: { flex: 1, color: P.inkMuted, fontSize: 13, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl' },
   categoryOptionTextSelected: { color: P.primary, fontWeight: '900' },
-  addCategoryButton: { minHeight: 58, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 10, backgroundColor: '#FBF6F0' },
+  addCategoryButton: { minHeight: 58, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 10, backgroundColor: P.tintSoft },
   addCategoryIcon: { width: 30, height: 30, borderRadius: 10, borderWidth: 1, borderColor: P.accent, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center' },
   addCategoryText: { flex: 1, color: P.primary, fontSize: 12, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
-  categoryCreator: { padding: 13, backgroundColor: '#FBF6F0', gap: 8 },
+  categoryCreator: { padding: 13, backgroundColor: P.tintSoft, gap: 8 },
   categoryCreatorLabel: { color: P.ink, fontSize: 11, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl' },
   categoryCreatorRow: { minHeight: 48, flexDirection: 'row-reverse', gap: 8 },
   categoryInput: { flex: 1, borderRadius: Radius.small, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, paddingHorizontal: 12, color: P.ink, fontSize: 13, fontWeight: '700', textAlign: 'right', writingDirection: 'rtl' },
@@ -481,7 +481,7 @@ const useStyles = makeStyles((P) => ({
   switchTrack: { width: 54, height: 32, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.surfaceMuted, padding: 3, justifyContent: 'center', alignItems: 'flex-start' },
   switchTrackActive: { borderColor: P.primary, backgroundColor: P.primary, alignItems: 'flex-end' },
   switchThumb: { width: 24, height: 24, borderRadius: 12, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line },
-  switchThumbActive: { borderColor: '#E7D5C4', backgroundColor: P.canvas },
+  switchThumbActive: { borderColor: P.line, backgroundColor: P.canvas },
   switchPressed: { opacity: 0.8 },
   reminderOptions: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 7, marginTop: -8 },
   reminderOption: { minHeight: 38, borderRadius: Radius.pill, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, paddingHorizontal: 12, alignItems: 'center', justifyContent: 'center' },
