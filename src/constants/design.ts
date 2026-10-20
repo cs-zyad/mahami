@@ -27,6 +27,13 @@ export type Palette = {
   successInk: string;
   tintSoft: string;
   tintInk: string;
+  /** The day card at the top of home, and what is drawn on it. */
+  hero: string;
+  heroPressed: string;
+  heroBorder: string;
+  onHero: string;
+  onHeroMuted: string;
+  heroFill: string;
   white: string;
 };
 
@@ -54,6 +61,12 @@ const sand: Palette = {
   successInk: '#44705A',
   tintSoft: '#EEE9E2',
   tintInk: '#766B62',
+  hero: '#6D4935',
+  heroPressed: '#563827',
+  heroBorder: 'transparent',
+  onHero: '#FFFFFF',
+  onHeroMuted: '#E9DCD1',
+  heroFill: '#F6E8D6',
   white: '#FFFFFF',
 };
 
@@ -90,6 +103,12 @@ const dark: Palette = {
   successInk: '#8FB59A',
   tintSoft: '#2A221E',
   tintInk: '#D8BFA4',
+  hero: '#2A1F1A',
+  heroPressed: '#231A16',
+  heroBorder: '#3A302B',
+  onHero: '#F2EAE3',
+  onHeroMuted: '#BFA896',
+  heroFill: '#D2A373',
   white: '#FFFFFF',
 };
 
@@ -121,6 +140,12 @@ const asiri: Palette = {
   successInk: '#3C6650',
   tintSoft: '#F0E7DA',
   tintInk: '#6E5A50',
+  hero: '#9E2328',
+  heroPressed: '#7C181D',
+  heroBorder: 'transparent',
+  onHero: '#FFFFFF',
+  onHeroMuted: '#F2D9D3',
+  heroFill: '#F3DFC8',
   white: '#FFFFFF',
 };
 

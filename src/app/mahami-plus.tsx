@@ -149,13 +149,13 @@ export default function MahamiPlusScreen() {
 }
 
 const useStyles = makeStyles((P, S) => ({
-  hero: { minHeight: 250, borderRadius: Radius.large, backgroundColor: P.primary, padding: 24, alignItems: 'center', justifyContent: 'center', ...S.card },
+  hero: { minHeight: 250, borderRadius: Radius.large, backgroundColor: P.hero, borderWidth: 1, borderColor: P.heroBorder, padding: 24, alignItems: 'center', justifyContent: 'center', ...S.card },
   crown: { width: 68, height: 68, borderRadius: 24, backgroundColor: P.accentSoft, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  plan: { color: P.onPrimary, fontSize: 24, fontWeight: '900', writingDirection: 'rtl' },
+  plan: { color: P.onHero, fontSize: 24, fontWeight: '900', writingDirection: 'rtl' },
   priceRow: { flexDirection: 'row', alignItems: 'baseline', gap: 8, marginTop: 13 },
-  period: { color: P.line, fontSize: 11, writingDirection: 'rtl' },
-  price: { color: P.onPrimary, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
-  cancel: { color: P.line, fontSize: 10, marginTop: 10, textAlign: 'center', writingDirection: 'rtl' },
+  period: { color: P.onHeroMuted, fontSize: 11, writingDirection: 'rtl' },
+  price: { color: P.onHero, fontSize: 30, fontWeight: '900', writingDirection: 'rtl' },
+  cancel: { color: P.onHeroMuted, fontSize: 10, marginTop: 10, textAlign: 'center', writingDirection: 'rtl' },
   benefits: { borderRadius: Radius.large, backgroundColor: P.surface, paddingHorizontal: 15, marginTop: 18, ...S.card },
   benefit: { minHeight: 82, flexDirection: 'row', alignItems: 'center', gap: 12 },
   benefitBorder: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: P.line },

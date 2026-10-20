@@ -160,7 +160,7 @@ export default function HomeScreen() {
             <AppIcon
               name={{ ios: 'chevron.left', android: 'chevron_left', web: 'chevron_left' }}
               size={15}
-              tintColor="#EEDFD3"
+              tintColor={palette.onHeroMuted}
               fallback="‹"
             />
             <Text style={styles.dayCardActionText}>فتح مهام اليوم</Text>
@@ -235,7 +235,7 @@ export default function HomeScreen() {
                 { backgroundColor: item.tint, borderColor: `${item.color}30` },
                 pressed && styles.cardPressed,
               ]}>
-              <View style={[styles.priorityDot, { backgroundColor: 'rgba(255,255,255,0.48)' }]}>
+              <View style={[styles.priorityDot, { backgroundColor: palette.surface }]}>
                 <View style={[styles.priorityDotInner, { backgroundColor: item.color }]} />
               </View>
               <Text style={styles.priorityCount}>{item.count}</Text>
@@ -465,23 +465,23 @@ const useStyles = makeStyles((P, S) => ({
   greeting: { alignItems: 'flex-end' },
   hello: { color: P.ink, fontSize: 20, fontWeight: '900', writingDirection: 'rtl' },
   date: { color: P.inkMuted, fontSize: 12, marginTop: 4, writingDirection: 'rtl' },
-  dayCard: { backgroundColor: P.primary, borderRadius: Radius.large, padding: 20, ...S.card },
-  dayCardPressed: { backgroundColor: P.primaryPressed, transform: [{ scale: 0.99 }] },
+  dayCard: { backgroundColor: P.hero, borderWidth: 1, borderColor: P.heroBorder, borderRadius: Radius.large, padding: 20, ...S.card },
+  dayCardPressed: { backgroundColor: P.heroPressed, transform: [{ scale: 0.99 }] },
   dayCardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 },
   dayCopy: { alignItems: 'flex-end', flex: 1 },
-  dayEyebrow: { color: P.onPrimary, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
-  dayTitle: { color: P.onPrimary, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
+  dayEyebrow: { color: P.onHeroMuted, fontSize: 12, fontWeight: '700', writingDirection: 'rtl' },
+  dayTitle: { color: P.onHero, fontSize: 19, fontWeight: '900', marginTop: 5, textAlign: 'right', writingDirection: 'rtl' },
   remainingPill: { backgroundColor: 'rgba(255,255,255,0.12)', paddingHorizontal: 11, paddingVertical: 7, borderRadius: Radius.pill },
-  remainingPillText: { color: P.onPrimary, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
+  remainingPillText: { color: P.onHero, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
   progressMeta: { flexDirection: 'row-reverse', justifyContent: 'space-between', marginTop: 24 },
-  progressCount: { color: P.onPrimary, fontSize: 11, writingDirection: 'rtl' },
-  progressPercent: { color: P.onPrimary, fontSize: 11, fontWeight: '900' },
+  progressCount: { color: P.onHeroMuted, fontSize: 11, writingDirection: 'rtl' },
+  progressPercent: { color: P.onHero, fontSize: 11, fontWeight: '900' },
   progressTrack: { height: 7, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.14)', marginTop: 9, overflow: 'hidden' },
-  progressFill: { height: '100%', borderRadius: 4, backgroundColor: P.warnSoft },
+  progressFill: { height: '100%', borderRadius: 4, backgroundColor: P.heroFill },
   dayCardAction: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end', gap: 3, marginTop: 13 },
-  dayCardActionText: { color: P.onPrimary, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
+  dayCardActionText: { color: P.onHeroMuted, fontSize: 10, fontWeight: '800', writingDirection: 'rtl' },
   smartCaptureCard: { minHeight: 92, borderRadius: Radius.medium, borderWidth: 1, borderColor: P.line, backgroundColor: P.warnSoft, padding: 14, marginTop: 14, flexDirection: 'row', alignItems: 'center', gap: 11, ...S.card },
-  smartCaptureArrow: { width: 31, height: 31, borderRadius: 11, backgroundColor: 'rgba(255,255,255,0.55)', alignItems: 'center', justifyContent: 'center' },
+  smartCaptureArrow: { width: 31, height: 31, borderRadius: 11, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center' },
   smartCaptureCopy: { flex: 1, alignItems: 'flex-end' },
   smartCaptureTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 7 },
   smartCaptureTitle: { color: P.ink, fontSize: 16, fontWeight: '900', writingDirection: 'rtl' },
@@ -526,8 +526,8 @@ const useStyles = makeStyles((P, S) => ({
   categoryFolderWarm: { borderColor: P.line, backgroundColor: P.warnSoft },
   categoryFolderMuted: { borderColor: P.line, backgroundColor: P.tintSoft },
   categoryFolderTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  categoryFolderIcon: { width: 44, height: 40, borderRadius: 13, backgroundColor: 'rgba(255,255,255,0.55)', alignItems: 'center', justifyContent: 'center' },
-  categoryFolderCount: { minWidth: 27, height: 27, borderRadius: Radius.pill, backgroundColor: 'rgba(109,73,53,0.1)', color: P.primary, fontSize: 11, fontWeight: '900', textAlign: 'center', textAlignVertical: 'center', lineHeight: 27 },
+  categoryFolderIcon: { width: 44, height: 40, borderRadius: 13, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center' },
+  categoryFolderCount: { minWidth: 27, height: 27, borderRadius: Radius.pill, backgroundColor: P.accentSoft, color: P.primary, fontSize: 11, fontWeight: '900', textAlign: 'center', textAlignVertical: 'center', lineHeight: 27 },
   categoryFolderName: { color: P.ink, fontSize: 15, fontWeight: '900', textAlign: 'right', writingDirection: 'rtl', marginTop: 12 },
   categoryFolderMeta: { color: P.inkMuted, fontSize: 10, textAlign: 'right', writingDirection: 'rtl', marginTop: 4 },
   emptyCategories: { minHeight: 92, borderRadius: Radius.medium, borderWidth: 1, borderStyle: 'dashed', borderColor: P.accent, backgroundColor: P.tintSoft, padding: 15, flexDirection: 'row-reverse', alignItems: 'center', gap: 13 },

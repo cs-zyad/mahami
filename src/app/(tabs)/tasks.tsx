@@ -443,7 +443,7 @@ const useStyles = makeStyles((P, S) => ({
   primaryFilterText: { color: P.inkMuted, fontSize: 11, fontWeight: '800', writingDirection: 'rtl' },
   primaryFilterTextSelected: { color: P.onPrimary },
   moreFilterRow: { minHeight: 34, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12 },
-  moreFilterButton: { minHeight: 34, borderRadius: Radius.pill, paddingHorizontal: 14, borderWidth: 1, borderColor: P.line, backgroundColor: 'rgba(255,253,252,0.7)', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
+  moreFilterButton: { minHeight: 34, borderRadius: Radius.pill, paddingHorizontal: 14, borderWidth: 1, borderColor: P.line, backgroundColor: P.surface, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7 },
   moreFilterButtonActive: { borderColor: P.primary, backgroundColor: P.accentSoft },
   moreFilterText: { color: P.inkMuted, fontSize: 11, fontWeight: '900', writingDirection: 'rtl' },
   moreFilterTextActive: { color: P.primary },

@@ -446,7 +446,7 @@ const useStyles = makeStyles((P) => ({
   label: { color: P.ink, fontSize: 14, fontWeight: '800', textAlign: 'right', writingDirection: 'rtl', marginTop: 3 },
   priorityChoices: { flexDirection: 'row-reverse', gap: 8 },
   priorityChoice: { flex: 1, minWidth: 0, minHeight: 96, borderRadius: Radius.medium, borderWidth: 1, borderColor: 'transparent', paddingHorizontal: 7, paddingVertical: 11, alignItems: 'center', justifyContent: 'center', gap: 4 },
-  priorityMark: { width: 22, height: 22, borderRadius: 8, borderWidth: 1.5, backgroundColor: 'rgba(255,255,255,0.42)', alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
+  priorityMark: { width: 22, height: 22, borderRadius: 8, borderWidth: 1.5, backgroundColor: P.surface, alignItems: 'center', justifyContent: 'center', marginBottom: 2 },
   priorityTitle: { minHeight: 31, fontSize: 11, lineHeight: 15, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },
   priorityHint: { fontSize: 9, fontWeight: '700', opacity: 0.78, writingDirection: 'rtl' },
   categoryField: { minHeight: 74, borderRadius: Radius.medium, backgroundColor: P.surface, borderWidth: 1, borderColor: P.line, paddingHorizontal: 13, flexDirection: 'row-reverse', alignItems: 'center', gap: 11 },
