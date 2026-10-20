@@ -50,7 +50,26 @@
       "@react-native-community/datetimepicker",
       "expo-notifications",
       "expo-image",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-widgets",
+        {
+          "widgets": [
+            {
+              "name": "MahamiToday",
+              "displayName": "مهامي — اليوم",
+              "description": "مهامك وتقدّمك وروتينك لليوم، مع إنهاء المهام مباشرة.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium",
+                  "systemLarge"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

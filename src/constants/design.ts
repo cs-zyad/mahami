@@ -70,15 +70,14 @@ const sand: Palette = {
   white: '#FFFFFF',
 };
 
-// iOS system dark, the layering people already know from every native app on
-// the phone: a true-black grouped base, cards at systemGray6, separators at
-// systemGray4, white labels and the grey iOS itself uses for secondary text.
-// Nothing warm survives here — the beige that made this theme muddy is gone.
+// The sand theme after dark: the same warm brown family, with surfaces that go
+// deep instead of pale. Blue was tried and read as a different app bolted onto
+// this one.
 //
-// primary and accent are deliberately different blues. primary is a filled
-// surface, so what matters is the white label on it; accent is drawn as text
-// and icons, so it has to clear the backgrounds behind it. One blue cannot do
-// both on black, which is why iOS ships two as well.
+// The day card is not filled with primary here — a slab of light brown on
+// near-black was the loudest thing on the first screen — so hero sits one step
+// above the canvas with a hairline edge, and colour stays in the progress bar.
+// The tinted fills share a luminance band so no priority square shouts.
 const dark: Palette = {
   canvas: '#141010',
   surface: '#201A18',

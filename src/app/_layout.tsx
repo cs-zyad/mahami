@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from '@/contexts/auth-context';
 import { themeStatusBar } from '@/constants/design';
 import { ThemeProvider, makeStyles, useTheme } from '@/contexts/theme-context';
 import { useOverTheAirUpdates } from '@/hooks/use-over-the-air-updates';
+import { useWidgetSync } from '@/widgets/use-widget-sync';
 import { RoutinesProvider } from '@/contexts/routines-context';
 import { TasksProvider } from '@/contexts/tasks-context';
 
@@ -16,6 +17,7 @@ function AppNavigator() {
   const { palette } = useTheme();
   const styles = useStyles();
   const segments = useSegments();
+  useWidgetSync();
 
   useEffect(() => {
     if (loading) return;
