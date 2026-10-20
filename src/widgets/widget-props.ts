@@ -7,10 +7,14 @@ import type { Task } from '@/types/task';
 // cannot read the app's state, its storage or the network. That includes the
 // colours, so the widget follows whichever theme is active in the app.
 
+// No field may be null or undefined: the props are stored in the app group's
+// UserDefaults, which only accepts property-list values, so a null anywhere in
+// the tree can make the whole write fail silently and leave the widget empty.
 export type WidgetTask = {
   id: string;
   title: string;
-  time: string | null;
+  /** Empty when the task has no due time. */
+  time: string;
   done: boolean;
   tone: 'urgent' | 'important' | 'later';
 };
@@ -48,6 +52,8 @@ export type MahamiWidgetProps = {
    */
   pendingDone: string[];
   colors: WidgetColors;
+  /** When the app last pushed, shown in the widget so stale data is visible. */
+  updatedAt: string;
 };
 
 const MAX_TASKS = 5;
@@ -62,11 +68,15 @@ function sameLocalDay(value: string | null, date: Date) {
     && parsed.getDate() === date.getDate();
 }
 
+function clockLabel(date: Date) {
+  return new Intl.DateTimeFormat('ar-SA', { hour: 'numeric', minute: '2-digit' }).format(date);
+}
+
 function timeLabel(dueAt: string | null) {
-  if (!dueAt) return null;
+  if (!dueAt) return '';
   const parsed = new Date(dueAt);
-  if (Number.isNaN(parsed.getTime())) return null;
-  return new Intl.DateTimeFormat('ar-SA', { hour: 'numeric', minute: '2-digit' }).format(parsed);
+  if (Number.isNaN(parsed.getTime())) return '';
+  return clockLabel(parsed);
 }
 
 function toneOf(task: Task): WidgetTask['tone'] {
@@ -143,14 +153,14 @@ export function buildWidgetProps({
     link,
     tasks: listed.map((task) => ({
       id: task.id,
-      title: task.title,
+      title: task.title || 'مهمة',
       time: timeLabel(task.due_at),
       done: isDone(task),
       tone: toneOf(task),
     })),
     routines: todayRoutines.map((routine) => ({
       id: routine.id,
-      title: routine.title,
+      title: routine.title || 'روتين',
       done: doneRoutines.has(routine.id),
       streak: routineStreak(routine.id, completions, routine.repeat_days, now),
     })),
@@ -158,5 +168,6 @@ export function buildWidgetProps({
     total,
     pendingDone: [...pending],
     colors: widgetColors(palette),
+    updatedAt: clockLabel(now),
   };
 }

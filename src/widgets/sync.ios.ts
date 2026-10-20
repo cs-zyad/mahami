@@ -16,10 +16,10 @@ export function pushWidget(props: MahamiWidgetProps) {
 /**
  * Task ids finished from the widget while the app was closed.
  *
- * The runtime persists what a button's onPress returned, but the docs name no
- * API for reading it back. getTimeline() is the only read the library offers,
- * so every entry it returns is checked and their pendingDone lists merged.
- * Whether button-produced props show up there must be confirmed on a device.
+ * The docs name no API for reading back what a button's onPress returned, but
+ * the native intent (expo-widgets ios/Widgets/AppIntent.swift) merges those
+ * props into the same `__expo_widgets_<name>_timeline` entry that getTimeline()
+ * reads. Every entry is checked and their pendingDone lists merged.
  */
 export async function readWidgetCompletions(): Promise<string[]> {
   try {

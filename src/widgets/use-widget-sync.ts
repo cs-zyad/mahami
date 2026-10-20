@@ -1,5 +1,6 @@
 import * as Linking from 'expo-linking';
 import { useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 
 import { useAuth } from '@/contexts/auth-context';
 import { useRoutines } from '@/contexts/routines-context';
@@ -44,7 +45,8 @@ export function useWidgetSync() {
     pushWidget(
       buildWidgetProps({
         signedIn: true,
-        link: Linking.createURL('/home'),
+        // Tapping the widget opens today's tasks — the same list it shows.
+        link: Linking.createURL('/tasks', { queryParams: { view: 'today' } }),
         tasks: t,
         routines: r,
         completions: c,
@@ -114,6 +116,15 @@ export function useWidgetSync() {
       }
     })();
   }, [session, loading, tasks, routines, completions, palette]);
+
+  // Leaving the app is the last chance to hand the widget the latest state
+  // before the home screen shows it.
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'background' && drained.current) push.current();
+    });
+    return () => subscription.remove();
+  }, []);
 
   // Taps while the app is open are applied straight away.
   useEffect(
