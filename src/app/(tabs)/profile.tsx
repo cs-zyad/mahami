@@ -6,9 +6,8 @@ import { Alert, AppState, Linking, Pressable, ScrollView, StyleSheet, Switch, Te
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { makeStyles, useTheme } from '@/contexts/theme-context';
-import { ThemePicker } from '@/components/ui/theme-picker';
 import { AppIcon } from '@/components/ui/app-icon';
-import { Radius } from '@/constants/design';
+import { Radius, themeLabels } from '@/constants/design';
 import { PRIVACY_URL, SUPPORT_URL } from '@/constants/links';
 import { useAuth } from '@/contexts/auth-context';
 import { getSmartScanStatus } from '@/lib/smart-capture';
@@ -45,7 +44,7 @@ function SettingRow({ title, subtitle, icon, androidIcon, trailing, danger, onPr
 
 export default function ProfileScreen() {
   const styles = useStyles();
-  const { palette } = useTheme();
+  const { palette, theme } = useTheme();
   const { session, signOut, deleteAccount } = useAuth();
   const [smartStatus, setSmartStatus] = useState<SmartScanStatus | null>(null);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -171,11 +170,16 @@ export default function ProfileScreen() {
           />
         </View>
 
-        <Text style={styles.sectionLabel}>المظهر</Text>
-        <ThemePicker />
-
         <Text style={styles.sectionLabel}>التفضيلات</Text>
         <View style={styles.settingsCard}>
+          <SettingRow
+            title="المظهر"
+            subtitle={themeLabels[theme]}
+            icon="paintpalette.fill"
+            androidIcon="palette"
+            onPress={() => router.push('/appearance')}
+          />
+          <View style={styles.divider} />
           <SettingRow title="اللغة" subtitle="العربية" icon="globe" androidIcon="language" />
           <View style={styles.divider} />
           <SettingRow
