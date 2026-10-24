@@ -162,21 +162,31 @@ const MahamiToday = (rawProps: MahamiWidgetProps, environment: WidgetEnvironment
   }
 
   // systemLarge
+  //
+  // Capped at four tasks when routines are also shown, and the update time
+  // moves into the header instead of trailing the content: on a full list
+  // (five tasks, three routines) a footer line after a closing Spacer had
+  // nowhere left to lay out and was clipped off the bottom edge.
+  const largeTasks = routines.length > 0 ? tasks.slice(0, 4) : tasks;
+
   return (
-    <VStack alignment="leading" spacing={10} modifiers={shell}>
+    <VStack alignment="leading" spacing={9} modifiers={shell}>
       <HStack>
         <Text modifiers={[font({ size: 18, weight: 'bold' }), foregroundStyle(c.ink)]}>مهام اليوم</Text>
         <Spacer />
-        <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.muted)]}>
-          {`${completed} من ${total}`}
-        </Text>
+        <VStack alignment="trailing" spacing={1}>
+          <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.muted)]}>
+            {`${completed} من ${total}`}
+          </Text>
+          {updated}
+        </VStack>
       </HStack>
       {progress}
-      <VStack alignment="leading" spacing={10}>
-        {tasks.length === 0 ? emptyTasks : tasks.map(taskRow)}
+      <VStack alignment="leading" spacing={9}>
+        {largeTasks.length === 0 ? emptyTasks : largeTasks.map(taskRow)}
       </VStack>
       {routines.length > 0 ? (
-        <VStack alignment="leading" spacing={8}>
+        <VStack alignment="leading" spacing={7}>
           <Divider />
           <Text modifiers={[font({ size: 13, weight: 'semibold' }), foregroundStyle(c.muted)]}>الروتين</Text>
           {routines.map((routine) => (
@@ -197,8 +207,6 @@ const MahamiToday = (rawProps: MahamiWidgetProps, environment: WidgetEnvironment
           ))}
         </VStack>
       ) : null}
-      <Spacer />
-      {updated}
     </VStack>
   );
 };

@@ -13,14 +13,19 @@ import { buildWidgetProps } from './widget-props';
 /**
  * Keeps the home-screen widget in step with the app.
  *
- * Order matters on launch. A task finished from the widget while the app was
- * closed lives only in the widget's persisted props. Pushing a fresh snapshot
- * first would overwrite it with Supabase's copy, where the task is still
- * pending — so the tap would silently undo itself. Completions are drained
- * first; only then does the app start pushing.
+ * A widget button runs its AppIntent inside the widget extension — a separate
+ * OS process from the app, always, whether the app is closed, backgrounded, or
+ * even foregrounded (the home screen widget can only be tapped while the app
+ * is off-screen in the first place). The extension posts its own
+ * NotificationCenter.default event on a tap, but that is process-local: it
+ * never reaches the app, so onWidgetCompletion below cannot be relied on as
+ * the primary path and is kept only as a defensive extra.
  *
- * toggleTask flips a task rather than setting it, so a completion must never be
- * applied twice: one drain runs at a time, and each id is in flight at most once.
+ * The one moment guaranteed to follow any widget tap is the app coming back to
+ * the foreground. So the drain — reading pendingDone back out of the widget's
+ * storage and writing it to Supabase — runs on cold launch *and* every time
+ * AppState turns 'active', not once per session. Running it repeatedly is
+ * safe: finish() below is a no-op for a task the app already has as completed.
  */
 export function useWidgetSync() {
   const { session } = useAuth();
@@ -33,8 +38,8 @@ export function useWidgetSync() {
   // widget goes on showing them done.
   const unsynced = useRef(new Set<string>());
   const inFlight = useRef(new Set<string>());
-  const drained = useRef(false);
   const draining = useRef(false);
+  const everDrained = useRef(false);
 
   useEffect(() => {
     latest.current = { tasks, routines, completions, palette, toggleTask };
@@ -60,7 +65,7 @@ export function useWidgetSync() {
     if (inFlight.current.has(taskId)) return;
     const task = latest.current.tasks.find((item) => item.id === taskId);
     // Only a still-pending task is sent; one the app already completed must not
-    // be reopened by the flip.
+    // be reopened by the flip. This is also what makes repeated drains safe.
     if (!task || task.status !== 'pending') {
       unsynced.current.delete(taskId);
       return;
@@ -75,10 +80,26 @@ export function useWidgetSync() {
     }
   });
 
+  const drainAndPush = useRef(async () => {
+    if (draining.current) return;
+    draining.current = true;
+    try {
+      const ids = await readWidgetCompletions();
+      for (const id of ids) {
+        unsynced.current.add(id);
+        await finish.current(id);
+      }
+    } finally {
+      everDrained.current = true;
+      draining.current = false;
+      push.current();
+    }
+  });
+
   // Signed out: the widget asks the user to sign in, and nothing is drained.
   useEffect(() => {
     if (session) return;
-    drained.current = false;
+    everDrained.current = false;
     unsynced.current.clear();
     pushWidget(
       buildWidgetProps({
@@ -92,41 +113,29 @@ export function useWidgetSync() {
     );
   }, [session, palette]);
 
+  // Cold launch, and after that every local change (a task edited in the app
+  // itself) just pushes — it does not need to re-read the widget's storage.
   useEffect(() => {
     if (!session || loading) return;
-
-    if (drained.current) {
+    if (everDrained.current) {
       push.current();
       return;
     }
-    if (draining.current) return;
-
-    draining.current = true;
-    void (async () => {
-      try {
-        const ids = await readWidgetCompletions();
-        for (const id of ids) {
-          unsynced.current.add(id);
-          await finish.current(id);
-        }
-      } finally {
-        drained.current = true;
-        draining.current = false;
-        push.current();
-      }
-    })();
+    void drainAndPush.current();
   }, [session, loading, tasks, routines, completions, palette]);
 
-  // Leaving the app is the last chance to hand the widget the latest state
-  // before the home screen shows it.
+  // The moment that actually follows a widget tap: returning to the app.
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (state) => {
-      if (state === 'background' && drained.current) push.current();
+      if (!session) return;
+      if (state === 'active') void drainAndPush.current();
+      else if (state === 'background' && everDrained.current) push.current();
     });
     return () => subscription.remove();
-  }, []);
+  }, [session]);
 
-  // Taps while the app is open are applied straight away.
+  // Kept defensively in case a future iOS/expo-widgets version delivers this
+  // in-process after all; not relied on for the home-screen widget today.
   useEffect(
     () =>
       onWidgetCompletion((taskId) => {
