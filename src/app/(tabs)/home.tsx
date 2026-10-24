@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SaduPattern } from '@/components/ui/sadu-pattern';
 import { SaduBand } from '@/components/ui/sadu-band';
 import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
@@ -123,6 +124,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <SaduPattern density="surface" />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.topBar}>
           <Pressable
@@ -235,6 +237,7 @@ export default function HomeScreen() {
                 { backgroundColor: item.tint, borderColor: `${item.color}30` },
                 pressed && styles.cardPressed,
               ]}>
+              <SaduPattern opacity={0.12} />
               <View style={[styles.priorityDot, { backgroundColor: palette.surface }]}>
                 <View style={[styles.priorityDotInner, { backgroundColor: item.color }]} />
               </View>
@@ -498,7 +501,7 @@ const useStyles = makeStyles((P, S) => ({
   sectionAction: { color: P.primary, fontSize: 12, fontWeight: '800', writingDirection: 'rtl' },
   actionPressed: { opacity: 0.55 },
   priorityGrid: { flexDirection: 'row-reverse', flexWrap: 'wrap', gap: 10 },
-  priorityCard: { width: '48.5%', minHeight: 112, borderRadius: Radius.medium, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 12, alignItems: 'center', justifyContent: 'center' },
+  priorityCard: { width: '48.5%', minHeight: 112, borderRadius: Radius.medium, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 12, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   priorityDot: { width: 25, height: 25, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
   priorityDotInner: { width: 8, height: 8, borderRadius: 4 },
   priorityCount: { color: P.ink, fontSize: 24, fontWeight: '900', marginTop: 7 },

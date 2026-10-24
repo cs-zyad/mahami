@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, RefreshControl, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SaduPattern } from '@/components/ui/sadu-pattern';
 import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -134,6 +135,7 @@ export default function TasksScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <SaduPattern density="surface" />
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
@@ -279,6 +281,7 @@ export default function TasksScreen() {
                 accessibilityLabel={`تعديل مهمة ${task.title}`}
                 onPress={() => router.push({ pathname: '/add-task', params: { taskId: task.id } })}
                 style={({ pressed }) => [styles.taskCard, pressed && styles.pressed]}>
+                <SaduPattern />
                 <View style={styles.timeColumn}>
                   <View style={[styles.countdownBox, countdownBoxStyle(countdown.state, palette)]}>
                     <Text numberOfLines={2} style={styles.countdownText}>{countdown.label}</Text>
@@ -456,7 +459,7 @@ const useStyles = makeStyles((P, S) => ({
   listTitleRow: { flexDirection: 'row-reverse', alignItems: 'center', gap: 7 },
   listTitle: { color: P.ink, fontSize: 19, fontWeight: '900', writingDirection: 'rtl' },
   taskList: { gap: 11 },
-  taskCard: { minHeight: 92, backgroundColor: P.surface, borderRadius: Radius.medium, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 12, ...S.card },
+  taskCard: { minHeight: 92, backgroundColor: P.surface, borderRadius: Radius.medium, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 12, overflow: 'hidden', ...S.card },
   timeColumn: { alignItems: 'center', gap: 7 },
   countdownBox: { width: 58, minHeight: 44, borderRadius: 13, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 5 },
   countdownText: { color: P.onPrimary, fontSize: 11, fontWeight: '900', textAlign: 'center', writingDirection: 'rtl' },

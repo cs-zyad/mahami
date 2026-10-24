@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { SaduPattern } from '@/components/ui/sadu-pattern';
 import { makeStyles, useTheme } from '@/contexts/theme-context';
 import { AppIcon } from '@/components/ui/app-icon';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -165,6 +166,7 @@ export default function RoutineScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <SaduPattern density="surface" />
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
