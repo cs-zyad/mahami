@@ -52,6 +52,14 @@
       "expo-image",
       "expo-web-browser",
       [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
+        }
+      ],
+      [
         "expo-widgets",
         {
           "widgets": [
